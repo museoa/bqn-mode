@@ -14,6 +14,7 @@
 (require 'bqn-input)
 (require 'bqn-backslash)
 (require 'bqn-syntax)
+(require 'bqn-interactive)
 
 ;;;###autoload
 (defgroup bqn nil
