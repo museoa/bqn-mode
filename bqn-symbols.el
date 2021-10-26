@@ -113,6 +113,7 @@
                        ;; Third row
                        ;; z
                        ("zigzag" "⥊" ?z)
+                       ("bowtie" "⋈" ?Z)
                        ;; x
                        ("double-x" "𝕩" ?x)
                        ("double-upper-x" "𝕏" ?X)
