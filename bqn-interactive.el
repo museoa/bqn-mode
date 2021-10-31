@@ -51,24 +51,95 @@
     map)
   "Keymap for keymap mode buffers.")
 
+(defvar bqn--process-name "BQN"
+  "Name of BQN comint process")
+
+(defcustom *bqn-process-buffer-name* "*BQN*"
+  "Name of buffer which holds BQN process"
+  :type 'string
+  :group 'bqn)
+
+(defcustom bqn-flash-on-send t
+  "When non-nil flash the region send to BQN process"
+  :type 'boolean
+  :group 'bqn)
+
+(defun bqn--flash-region (start end &optional timeout)
+  "Temporarily highlight region from start to end"
+  (let ((overlay (make-overlay start end)))
+    (overlay-put overlay 'face 'secondary-selection)
+    (run-with-timer (or timeout 0.2) nil 'delete-overlay overlay)))
+
+(defun bqn-process-ensure-session ()
+  "Check for a running *bqn-process-buffer-name*, if it exists return it, if not
+  create it and return that one"
+  (or (get-process bqn--process-name)
+      (progn
+        (run-bqn)
+        (get-process bqn--process-name))))
+
+;;;###autoload
 (defun run-bqn ()
   "Run an inferior BQN process inside Emacs."
   (interactive)
   (let* ((bqn-program bqn-interpreter-path)
-	 (buffer (comint-check-proc "BQN")))
+	 (buffer (comint-check-proc bqn--process-name)))
     ;; pop to the "*BQN*" buffer if the process is dead, the buffer
     ;; is missing or it's got the wrong mode.
     (pop-to-buffer-same-window
      (if (or buffer (comint-check-proc (current-buffer)))
-	 (get-buffer-create (or buffer "*BQN*"))
+	 (get-buffer-create (or buffer *bqn-process-buffer-name*))
        (current-buffer)))
     ;; create the comint process if there is no buffer
     (unless buffer
-      (apply 'make-comint-in-buffer "BQN" buffer
+      (apply 'make-comint-in-buffer
+             bqn--process-name
+             buffer
 	     bqn-program bqn-cli-arguments)
-      (switch-to-buffer-other-window "*BQN*")
+      (switch-to-buffer-other-window *bqn-process-buffer-name*)
       (bqn-inferior-mode)
       (set-input-method "BQN-Z"))))
+
+(defun bqn-process-execute-region (start end &optional dont-follow)
+  "Send the current region to the bqn-process-session.
+When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was called from."
+  (interactive "r")
+  (when (= start end)
+    (error
+     (concat "Error: attempt to send empty region to: "
+             *bqn-process-buffer-name*)))
+  (when bqn-flash-on-send
+    (bqn--flash-region start end))
+  (let ((region (buffer-substring-no-properties start end))
+        (session (bqn-process-ensure-session))
+        (buffer (current-buffer)))
+    (pop-to-buffer (process-buffer session))
+    (goto-char (point-max))
+    (insert (format "\n%s\n" region))
+    (comint-send-input)
+    (when (or dont-follow nil)
+      (pop-to-buffer buffer))))
+
+(defun bqn-process-execute-line-and-follow ()
+  "Send the line which contains point to BQN process and focus BQN
+   process buffer"
+  (interactive)
+  (bqn-process-execute-region (point-at-bol) (point-at-eol)))
+
+(defun bqn-process-execute-buffer-and-follow ()
+  "Send the current buffer to BQN process and focus BQN process buffer"
+  (interactive)
+  (bqn-process-execute-region (point-min) (point-max)))
+
+(defun bqn-process-execute-line ()
+  "Send the line, which contains point, to the BQN process"
+  (interactive)
+  (bqn-process-execute-region (point-at-bol) (point-at-eol) t))
+
+(defun bqn-process-execute-buffer ()
+  "Send the current buffer to BQN process"
+  (interactive)
+  (bqn-process-execute-region (point-min) (point-max) t))
 
 (defun bqn-inferior--initialize ()
   "Helper function to initialize BQN inferior process."
