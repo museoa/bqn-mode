@@ -1,4 +1,4 @@
-;;; bqn-interactive --- Interactive BQN interpreter -*- lexical-binding: t -*-
+;;; bqn-comint --- BQN command interface -*- lexical-binding: t -*-
 ;;;
 ;;; Commentary:
 ;;;
@@ -12,16 +12,16 @@
 (defvar bqn-interpreter-path "BQN"
   "Path to the BQN interpreter used by `run-bqn`.")
 
-(defvar bqn-cli-arguments '()
+(defvar bqn-interpreter-arguments '()
   "Commandline arguments to pass to the BQN interpreter.")
 
-(defvar bqn-interactive-mode-map
+(defvar bqn-comint-mode-map
   (let ((map (nconc (make-sparse-keymap) comint-mode-map)))
     ;; add keymaps here
     map)
   "Basic mode to run BQN.")
 
-(defvar bqn-interactive-prompt-regexp "^   "
+(defvar bqn-comint-prompt-regexp "^   "
   "Prompt for BQN.")
 
 (defvar bqn-keyboard-map
@@ -32,15 +32,16 @@
 ├────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬──────┤
 │Tab    │Q ↙ │W 𝕎 │E ⍷ │R 𝕣 │T ⍋ │Y   │U   │I ⊑ │O ⊒ │P ⍳ │{ ⊣ │} ⊢ │|     │
 │       │q ⌽ │w 𝕨 │e ∊ │r ↑ │t ∧ │y   │u ⊔ │i ⊏ │o ⊐ │p π │[ ← │] → │\     │
-├───────┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴──────┤
-│Caps    │A ↖ │S 𝕊 │D   │F 𝔽 │G 𝔾 │H « │J   │K ⌾ │L » │: · │\" ˙ │Enter     │
-│Lock    │a ⍉ │s 𝕤 │d ↕ │f 𝕗 │g 𝕘 │h ⊸ │j ∘ │k ○ │l ⟜ │; ⋄ │' ↩ │          │
-├────────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──────────┤
+├───────┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴─┬──┴──────┤
+│Caps    │A ↖ │S 𝕊 │D   │F 𝔽 │G 𝔾 │H « │J   │K ⌾ │L » │: · │\" ˙ │Enter    │
+│Lock    │a ⍉ │s 𝕤 │d ↕ │f 𝕗 │g 𝕘 │h ⊸ │j ∘ │k ○ │l ⟜ │; ⋄ │' ↩  │         │
+├────────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬──┴─────────┤
 │Shift      │Z ⋈ │X 𝕏 │C   │V ⍒ │B ⌈ │N   │M ≢ │< ≤ │> ≥ │? ⇐ │Shift       │
 │           │z ⥊ │x 𝕩 │c ↓ │v ∨ │b ⌊ │n   │m ≡ │, ∾ │. ≍ │/ ≠ │            │
 └───────────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────────────┘
                              Space: ‿
-" "Keyboard map for BQN.")
+"
+  "Keyboard map for BQN.")
 
 (defvar *bqn-keymap-buffer-name* "*BQN keymap*"
   "Name of the BQN keymap buffer.")
@@ -55,24 +56,25 @@
   "Name of BQN comint process")
 
 (defcustom *bqn-process-buffer-name* "*BQN*"
-  "Name of buffer which holds BQN process"
+  "Name of buffer which holds BQN process."
   :type 'string
   :group 'bqn)
 
 (defcustom bqn-flash-on-send t
-  "When non-nil flash the region send to BQN process"
+  "When non-nil flash the region sent to BQN process."
   :type 'boolean
   :group 'bqn)
 
 (defun bqn--flash-region (start end &optional timeout)
-  "Temporarily highlight region from start to end"
+  "Temporarily highlight region from start to end."
   (let ((overlay (make-overlay start end)))
     (overlay-put overlay 'face 'secondary-selection)
     (run-with-timer (or timeout 0.2) nil 'delete-overlay overlay)))
 
 (defun bqn-process-ensure-session ()
-  "Check for a running *bqn-process-buffer-name*, if it exists return it, if not
-  create it and return that one"
+  "Check for a running *bqn-process-buffer-name*.
+
+If it doesn't exist, create and return it; else, return the existing one."
   (or (get-process bqn--process-name)
       (progn
         (run-bqn)
@@ -83,30 +85,31 @@
   "Run an inferior BQN process inside Emacs."
   (interactive)
   (let* ((bqn-program bqn-interpreter-path)
-	 (buffer (comint-check-proc bqn--process-name)))
-    ;; pop to the "*BQN*" buffer if the process is dead, the buffer
+	     (buffer (comint-check-proc bqn--process-name)))
+    ;; pop to the "*BQN*" buffer when the process is dead, the buffer
     ;; is missing or it's got the wrong mode.
     (pop-to-buffer-same-window
      (if (or buffer (comint-check-proc (current-buffer)))
-	 (get-buffer-create (or buffer *bqn-process-buffer-name*))
+	     (get-buffer-create (or buffer *bqn-process-buffer-name*))
        (current-buffer)))
-    ;; create the comint process if there is no buffer
+    ;; create the comint process unless there is a buffer already
     (unless buffer
       (apply 'make-comint-in-buffer
              bqn--process-name
              buffer
-	     bqn-program bqn-cli-arguments)
+	         bqn-program bqn-interpreter-arguments)
       (switch-to-buffer-other-window *bqn-process-buffer-name*)
       (bqn-inferior-mode)
       (set-input-method "BQN-Z"))))
 
 (defun bqn-process-execute-region (start end &optional dont-follow)
   "Send the current region to the bqn-process-session.
+
 When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was called from."
   (interactive "r")
   (when (= start end)
     (error
-     (concat "Error: attempt to send empty region to: "
+     (concat "Attempt to send empty region to "
              *bqn-process-buffer-name*)))
   (when bqn-flash-on-send
     (bqn--flash-region start end))
@@ -121,8 +124,7 @@ When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was
       (pop-to-buffer buffer))))
 
 (defun bqn-process-execute-line-and-follow ()
-  "Send the line which contains point to BQN process and focus BQN
-   process buffer"
+  "Send the current line to BQN process and focus BQN process buffer."
   (interactive)
   (bqn-process-execute-region (point-at-bol) (point-at-eol)))
 
@@ -151,11 +153,11 @@ When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was
   :syntax-table bqn--syntax-table
   (setq-local font-lock-defaults bqn--token-syntax-types)
 
-  (setq comint-prompt-regexp bqn-interactive-prompt-regexp)
+  (setq comint-prompt-regexp bqn-comint-prompt-regexp)
   (setq comint-prompt-read-only nil)
   ;; this makes it so commands like M-{ and M-} work.
   (set (make-local-variable 'paragraph-separate) "\\'")
-  (set (make-local-variable 'paragraph-start) bqn-interactive-prompt-regexp))
+  (set (make-local-variable 'paragraph-start) bqn-comint-prompt-regexp))
 
 (add-hook 'bqn-inferior-mode-hook 'bqn-inferior--initialize)
 (add-hook 'bqn-inferior-mode-hook 'bqn-init)
@@ -181,13 +183,13 @@ When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was
     (unless (and keyboard-help (get-buffer-window keyboard-help))
       ;; The buffer is not displayed.
       (let* ((buffer (get-buffer-create *bqn-keymap-buffer-name*))
-	     (window (split-window nil)))
-	(with-current-buffer buffer
-	  (insert bqn-keyboard-map)
-	  (goto-char (point-min))
-	  (bqn-keymap-mode))
+	         (window (split-window nil)))
+	    (with-current-buffer buffer
+	      (insert bqn-keyboard-map)
+	      (goto-char (point-min))
+	      (bqn-keymap-mode))
         (set-window-buffer window buffer)
         (fit-window-to-buffer window)))))
 
-(provide 'bqn-interactive)
-;;; bqn-interactive.el ends here
+(provide 'bqn-comint)
+;;; bqn-comint.el ends here
