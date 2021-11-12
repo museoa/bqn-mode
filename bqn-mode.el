@@ -15,6 +15,7 @@
 (require 'bqn-backslash)
 (require 'bqn-syntax)
 (require 'bqn-comint)
+(require 'bqn-help)
 
 ;;;###autoload
 (defgroup bqn nil
@@ -29,7 +30,7 @@
   :group 'bqn
   (use-local-map bqn--mode-map)
   (setq-local font-lock-defaults bqn--token-syntax-types)
-  )
+  (setq-local eldoc-documentation-function 'bqn-help--eldoc))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.bqn\\'" . bqn-mode))
