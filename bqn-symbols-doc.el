@@ -691,7 +691,54 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
 
 'a' ¬ @
    98"]
-      ))
+
+      ;; ================================================
+      ;; Equality and Shape
+"≡"
+
+["Monad: Depth | Dyad: Match | Input: \\m"
+
+ "≡ is a function.
+  Its monadic form returns the depth (i.e. the level of nesting) of its input.
+  Its dyadic form tests equivalency between 𝕩 (right) and 𝕨 (left), returns 1
+    if equivalent and 0 otherwise.
+  Note: see related function ≢ (Not Match)
+        always returns the same result as = (Equals) when 𝕩 and 𝕨 are atoms.
+"
+
+
+ "Examples:
+
+## Monadic form
+≡ 'a'
+   0
+
+≡ 1‿2‿3
+   1
+
+≡ \"a depth of 1\"
+   1
+
+≡ <<<< \"an extra four levels of nesting\"
+   5
+
+## Dyadic form
+\"abc\" ≡ 'a'‿'b'‿'c'
+   1  ## equivalent
+
+4 ≡ <4
+   0  ## not equivalent
+
+## Notice ≡ returns 0 but = errors out since both arguments are not atoms.
+\"abc\" ≡ 'a'‿'b'
+   0
+
+\"abc\" = \"ab\"
+   Error: =: Expected equal shape prefix (⟨3⟩ ≡ ≢𝕨, ⟨2⟩ ≡ ≢𝕩)
+at \"abc\" = \"ab\"
+         ^"]
+
+ ))
   "Table which associates BQN symbols as hash-keys to a 3-vector of docstrings
   where: position 0 is short description for eldoc, position 1 is a long
   description, position 2 is any extra description")
