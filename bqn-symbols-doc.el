@@ -553,7 +553,7 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
    0"]
 
       ;; ================================================
-      ;; Ordering functions
+      ;; Boolean functions
       ;; Sort Up
 "∧"
 
@@ -600,7 +600,6 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
    1"]
 
       ;; ================================================
-      ;; Ordering functions
       ;; Sort Up
 "∨"
 
@@ -646,6 +645,52 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
 ∨´ 'z'≤ \"purple\"
    0 "]
 
+      ;; ================================================
+      ;; Boolean Not
+"¬"
+
+["Monad: Not | Dyad: Span | Input: \\~"
+
+ "¬ is a function.
+  Its monadic form returns the Boolean negation of its input.
+  Its dyadic form returns the number of integers separating 𝕨 (left) from
+    𝕩 (right), inclusive, only when 𝕩≤𝕨 and both are integers.
+  Note: defined as the fork, 1+-
+        considered an arithmetic function.
+        considered pervasive."
+
+ "Examples:
+
+## Monadic form
+¬ 0
+   1
+
+¬ 1
+   0
+
+¬ ˜1729
+   1
+
+¬ ˜1‿0‿1‿2‿3
+   ⟨ 1 1 1 1 1 ⟩
+
+
+## Dyadic form
+## Notice 0 is counted
+10 ¬ 0
+   11
+
+## Notice that when 𝕨≥𝕩 ¬ returns the exclusive span as a negative integer
+0 ¬ 10
+   ¯9
+
+## Dyadic form can be used on characters since it is considered
+## an arithmetic function
+'a' ¬ 'c'
+   ¯1
+
+'a' ¬ @
+   98"]
       ))
   "Table which associates BQN symbols as hash-keys to a 3-vector of docstrings
   where: position 0 is short description for eldoc, position 1 is a long
