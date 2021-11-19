@@ -737,8 +737,9 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
    Error: =: Expected equal shape prefix (⟨3⟩ ≡ ≢𝕨, ⟨2⟩ ≡ ≢𝕩)
 at \"abc\" = \"ab\"
          ^"]
-
  ))
+
+
   "Table which associates BQN symbols as hash-keys to a 3-vector of docstrings
   where: position 0 is short description for eldoc, position 1 is a long
   description, position 2 is any extra description")
