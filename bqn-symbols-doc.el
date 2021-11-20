@@ -693,7 +693,7 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
    98"]
 
       ;; ================================================
-      ;; Equality and Shape
+      ;; Equality
 "≡"
 
 ["Monad: Depth | Dyad: Match | Input: \\m"
@@ -732,6 +732,67 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
 ## Notice ≡ returns 0 but = errors out since both arguments are not atoms.
 \"abc\" ≡ 'a'‿'b'
    0
+
+\"abc\" = \"ab\"
+   Error: =: Expected equal shape prefix (⟨3⟩ ≡ ≢𝕨, ⟨2⟩ ≡ ≢𝕩)
+at \"abc\" = \"ab\"
+         ^"]
+
+      ;; ================================================
+      ;; Shape
+"≢"
+
+["Monad: Shape | Dyad: Not Match | Input: \\M"
+
+ "≢ is a function.
+  Its monadic form returns the shape of its input. The shape is a list of natural
+    numbers.
+  Its dyadic form tests in-equivalency between 𝕩 (right) and 𝕨 (left), returns 0
+    if equivalent and 1 otherwise.
+  Note: = (Rank) and ≠ (Length) can be derived from ≢ (Shape).
+        Rank can be defined as =∘≢
+        Length can be defined as a fold: 1⊣´≢
+        See related function ⥊ (Reshape)"
+
+
+ "Examples:
+
+## Monadic form
+## Make a 4-dimensional array of length 1, rank 4
+## The only element is an array of shape 3‿2‿6, i.e., an array with 3-elements
+## where each element is an array of 2 elements that are length 6.
+⊢ array ← 1‿3‿2‿6 ⥊ '0'+↕10
+   ┌─
+   ┆\"012345
+     678901
+
+    ·234567
+     890123
+
+    ·456789
+     012345\"
+             ┘
+      
+≢ array # Shape
+   ⟨ 1 3 2 6 ⟩
+
+≠ array # Length
+   1
+
+= array # Rank
+   4
+
+
+## Dyadic form
+\"abc\" ≢ 'a'‿'b'‿'c'
+   0  ## equivalent
+
+4 ≢ <4
+   1  ## not equivalent
+
+## Notice ≢ returns 1 but = errors out since both arguments are not atoms.
+\"abc\" ≢ 'a'‿'b'
+   1
 
 \"abc\" = \"ab\"
    Error: =: Expected equal shape prefix (⟨3⟩ ≡ ≢𝕨, ⟨2⟩ ≡ ≢𝕩)
