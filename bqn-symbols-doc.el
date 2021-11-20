@@ -798,6 +798,69 @@ at \"abc\" = \"ab\"
    Error: =: Expected equal shape prefix (⟨3⟩ ≡ ≢𝕨, ⟨2⟩ ≡ ≢𝕩)
 at \"abc\" = \"ab\"
          ^"]
+
+      ;; ================================================
+      ;; Left Identity
+"⊣"
+
+["Monad: Identity | Dyad: Left | Input: \\{"
+
+ "⊣ is a function.
+  Its monadic form returns its input.
+  Its dyadic form returns 𝕨 (its left argument)."
+
+
+ "Examples:
+
+## Monadic form
+⊣ 1
+   1
+
+⊣ 'a'
+   'a'
+
+⊣ <<↕10
+   ┌·
+   · ┌·
+     · ⟨ 0 1 2 3 4 5 6 7 8 9 ⟩
+                              ┘
+                                ┘
+
+## Dyadic form
+## ⊣ allows a nice way to create a matrix if combined with ⌜ (the Table modifier)
+(↕4) ⊣⌜ ↕5
+   ┌─
+   ╵ 0 0 0 0 0
+     1 1 1 1 1
+     2 2 2 2 2
+     3 3 3 3 3
+               ┘
+
+## The same trick applies with ¨ (the Each modifier)
+(↕4) ⊣¨ ↕4‿5
+   ┌─
+   ╵ 0 0 0 0 0
+     1 1 1 1 1
+     2 2 2 2 2
+     3 3 3 3 3
+               ┘
+
+## Another use case is replacing values in a nested array using dyadic ⌾ (Under).
+## When 𝔽 (left operand) is ⊣, selected values come from 𝕨 (left), unselected
+## values from 𝕩 (right). This works even for deeply nested arrays as long as
+## you can write a function that accesses the values:
+\"ABCDE\" ⊣⌾(0‿1‿1‿0‿0⊸/) \"abcde\"
+   \"aBCde\"
+
+## ∘⊣ can be used to ignore a right argument for modified assignment. It applies
+## a function \"in place\" to a variable without writing the variable name twice.
+## For example, we can modify a variable with its reversal (⌽) in place:
+a ← \"hello I'm a\"
+   \"hello I'm a\"
+
+a ⌽∘⊣↩ @
+   \"a m'I olleh\""]
+
  ))
 
 
