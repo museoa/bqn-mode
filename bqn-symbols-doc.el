@@ -827,6 +827,9 @@ at \"abc\" = \"ab\"
                                 ┘
 
 ## Dyadic form
+\"left\" ⊣ \"right\"
+   \"left\"
+
 ## ⊣ allows a nice way to create a matrix if combined with ⌜ (the Table modifier)
 (↕4) ⊣⌜ ↕5
    ┌─
@@ -861,7 +864,50 @@ a ← \"hello I'm a\"
 a ⌽∘⊣↩ @
    \"a m'I olleh\""]
 
- ))
+      ;; ================================================
+      ;; Right Identity
+"⊢"
+
+["Monad: Identity | Dyad: Right | Input: \\}"
+
+ "⊢ is a function.
+  Its monadic form returns its input.
+  Its dyadic form returns 𝕩 (its right argument)."
+
+
+ "Examples:
+
+## Monadic form
+⊢ 1
+   1
+
+⊢ 'a'
+   'a'
+
+⊢ <<↕10
+   ┌·
+   · ┌·
+     · ⟨ 0 1 2 3 4 5 6 7 8 9 ⟩
+                               ┘
+                                 ┘
+
+
+## Dyadic form
+\"left\" ⊢ \"right\"
+   \"right\"
+
+## A common hack is to use ⊢ to display the value of a variable in an assignemnt
+⊢ a ← \"show me right after assignment\"
+   \"show me right after assignment\"
+
+## Note: In APL a tack can be used to avoid stranding numbers together. In BQN,
+## stranding is explicit so these are identical, notice the missing ⊢ in the
+## second example:
+÷⟜2⍟3⊢ 24
+   3
+
+÷⟜2⍟3 24
+   3"]))
 
 
   "Table which associates BQN symbols as hash-keys to a 3-vector of docstrings
