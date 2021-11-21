@@ -907,7 +907,137 @@ a ⌽∘⊣↩ @
    3
 
 ÷⟜2⍟3 24
-   3"]))
+   3"]
+
+      ;; ================================================
+      ;; Reshape
+"⥊"
+
+["Monad: Deshape | Dyad: Reshape | Input: \\z"
+
+ "⥊ is a function.
+  Its monadic form removes all shape information from its input. Returning a
+    list of all elements from the array in reading order.
+  Its dyadic form ignores the shape information of 𝕩 (right) and adds shape
+    information based on 𝕨 (left).
+  Note: in its dyadic form one entry of 𝕨 may be left for BQN to fill in.
+        when the number of elements implied by 𝕨 is equal to the number of
+          elements in 𝕩, 𝕩 is rearranged to match that shape.
+        when 𝕨 implies less elements than 𝕩 has, then only as many elements
+          as needed from 𝕩 are used, and the rest ignored.
+        when 𝕨 implies more elements than 𝕩 has, then the elements of 𝕩 are
+          reused cyclically.
+        see related function ≍ (Solo)."
+
+
+ "Examples:
+
+## Monadic form
+## Deshape returns a list in reading order: left to right, top to bottom.
+⊢ a ← +⌜´ ⟨100‿200, 30‿40, 5‿6‿7⟩
+   ┌─
+   ╎ 135 136 137
+     145 146 147
+
+     235 236 237
+     245 246 247
+                 ┘
+
+⥊ a
+   ⟨ 135 136 137 145 146 147 235 236 237 245 246 247 ⟩
+
+## When 𝕩 is an atom, ⥊ encloses it into a singleton list
+## In this scenario, ≍ (Solo) is preferred
+⥊ 2
+   ⟨ 2 ⟩
+
+≍ 2
+   ⟨ 2 ⟩
+
+## Dyadic form
+## Reshape a into 6 rows of 2, notice 𝕨 implies 12 elements which is exactly
+## ×´≢ a (the number of elements in 𝕩), thus every element is used.
+6‿2 ⥊ a
+   ┌─
+   ╵ 135 136
+     137 145
+     146 147
+     235 236
+     237 245
+     246 247
+             ┘
+
+## A common use case is to generate an array with a specified shape that counts
+## up from 0.
+2‿7 ⥊ ↕14
+   ┌─
+   ╵ 0 1 2  3  4  5  6
+     7 8 9 10 11 12 13
+                       ┘
+
+## prefer the phrase ⥊⟜(↕×´) 2‿7 for this use case, it only requires the shape
+⥊⟜(↕×´) 2‿7
+   ┌─
+   ╵ 0 1 2  3  4  5  6
+     7 8 9 10 11 12 13
+                       ┘
+
+## Reshape into 3 rows of 3 elements, notice 𝕨 implies 9 elements but 𝕩 has 12
+## thus only the first 9 elements in reading order of 𝕩 are returned
+3‿3 ⥊ a
+   ┌─
+   ╵ 135 136 137
+     145 146 147
+     235 236 237
+                 ┘
+
+## Reshape into a list of 15 elements, notice 3 elements are reused since 𝕨
+## implies more elements than 𝕩 has.
+15 ⥊ a
+   ⟨ 135 136 137 145 146 147 235 236 237 245 246 247 135 136 137 ⟩
+
+## A common use case for ⥊ is to create an array filled with a constant value
+3‿4 ⥊ 0
+   ┌─
+   ╵ 0 0 0 0
+     0 0 0 0
+     0 0 0 0
+             ┘
+
+## For an atom, first enclose the atom, then reshape
+5 ⥊ < \"I'm an atom\"
+   ⟨ \"I'm an atom\" \"I'm an atom\" \"I'm an atom\" \"I'm an atom\" \"I'm an atom\" ⟩
+
+## Combine ⥊, with ∘ (Atop), ⌊ (Floor), ⌽ (Reverse), ↑ (Take), to omit an
+## argument in 𝕨
+
+## with ∘, lengths must match, that is 2| ×´≢ 𝕩 = 0
+2‿∘ ⥊ \"abcde\"
+   Error: ⥊: Shape must be exact when reshaping with ∘
+at 2‿∘ ⥊ \"abcde\"
+       ^
+
+## with ⌊, the length is rounded down, so some elements are discarded
+2‿⌊ ⥊ \"abcde\"
+   ┌─
+   ╵\"ab
+     cd\"
+        ┘
+
+## with ⌽, the length is rounded up, thus elements are repeatedly used
+2‿⌽ ⥊ \"abcde\"
+   ┌─
+   ╵\"abc
+     dea\"
+         ┘
+
+## with ↑, the fill element is used to pad the array to the proper shape
+2‿↑ ⥊ \"abcde\"
+   ┌─
+   ╵\"abc
+     de \"
+         ┘"]
+))
 
 
   "Table which associates BQN symbols as hash-keys to a 3-vector of docstrings
