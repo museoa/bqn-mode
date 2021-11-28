@@ -1219,6 +1219,73 @@ F ← {𝕩 × 𝕩}
 
 F 2
    4"]
+
+      ;; ================================================
+      ;; 𝕨
+"𝕨"
+
+["Left argument of a block or function | Input: \\w or \\W"
+
+ "𝕨 and 𝕎 is a reserved name.
+  It always refers to the left argument of a function.
+  See related form, 𝕩 (right argument)."
+
+
+ "Examples:
+
+## Use in a block
+'c' {𝕨=𝕩} \"abcd\"
+   ⟨ 0 0 1 0 ⟩
+
+3 { (2×𝕨)-𝕩 } 1
+   5
+
+
+## When 𝕨 occurs in a function called with one argument, it is filled
+## with · (Nothing). This use of 𝕨 is discouraged.
+3 { (2×𝕨)-𝕩 } 1
+   5
+
+{ (2×𝕨)-𝕩 } 1          # 𝕨 is · so (2×𝕨) is not evaluated, then - is monadic
+   ¯1
+
+## Note: this may lead to surprisingly different behavior for ⊸ and ⟜
+{ 𝕨 ⋆⊸- 𝕩 } 5
+   143.4131591025766   # · ⋆⊸- 𝕩, expands to, ⋆⊸- 𝕩, which is, (⋆𝕩)-𝕩"]
+
+      ;; ================================================
+      ;; 𝕎
+"𝕎"
+
+["Left argument of a block or function | Input: \\w or \\W"
+
+ "𝕨 and 𝕎 is a reserved name.
+  It always refers to the left argument of a function.
+  See related form, 𝕩 (right argument)."
+
+
+ "Examples:
+
+## Use in a block
+'c' {𝕨=𝕩} \"abcd\"
+   ⟨ 0 0 1 0 ⟩
+
+3 { (2×𝕨)-𝕩 } 1
+   5
+
+
+## When 𝕨 occurs in a function called with one argument, it is filled
+## with · (Nothing). This use of 𝕨 is discouraged.
+3 { (2×𝕨)-𝕩 } 1
+   5
+
+{ (2×𝕨)-𝕩 } 1          # 𝕨 is · so (2×𝕨) is not evaluated, then - is monadic
+   ¯1
+
+## Note: this may lead to surprisingly different behavior for ⊸ and ⟜
+{ 𝕨 ⋆⊸- 𝕩 } 5
+   143.4131591025766   # · ⋆⊸- 𝕩, expands to, ⋆⊸- 𝕩, which is, (⋆𝕩)-𝕩"]
+
 ))
 
 
