@@ -1037,6 +1037,135 @@ at 2‿∘ ⥊ \"abcde\"
    ╵\"abc
      de \"
          ┘"]
+
+      ;; ================================================
+      ;; Join
+"∾"
+
+["Monad: Join | Dyad: Join to | Input: \,"
+
+ "∾ is a function.
+  Its monadic form concatenates the elements of its input.
+  Its dyadic form returns an array whose major cells are the major cells from
+     𝕨 (left) followed by the major cells of 𝕩 (right)."
+
+
+ "Examples:
+
+## Monadic form
+∾ \"time\"‿\"to\"‿\"join\"‿\"some\"‿\"words\"
+   \"timetojoinsomewords\"
+
+## Result must be rank 0
+∾ \"abcd\"
+   Error: ∾𝕩: 𝕩 must have an element with rank at least =𝕩
+at ∾ \"abcd\"
+   ^
+
+## join with a space separator, then remove the leading space after joining
+1↓∾' '∾¨\"time\"‿\"to\"‿\"join\"‿\"some\"‿\"words\"
+   \"time to join some words\"
+
+## join can be used to merge higher-dimensional arrays, as long as m≤n, where
+## m is the rank of 𝕨, and n the rank of 𝕩.
+⊢ m ← (3‿1≍⌜4‿2‿5) ⥊¨ 2‿3⥊↕6
+   ┌─
+   ╵ ┌─          ┌─      ┌─
+     ╵ 0 0 0 0   ╵ 1 1   ╵ 2 2 2 2 2
+       0 0 0 0     1 1     2 2 2 2 2
+       0 0 0 0     1 1     2 2 2 2 2
+               ┘       ┘             ┘
+     ┌─          ┌─      ┌─
+     ╵ 3 3 3 3   ╵ 4 4   ╵ 5 5 5 5 5
+               ┘       ┘             ┘
+                                       ┘
+
+## now join the array
+∾ m
+   ┌─
+   ╵ 0 0 0 0 1 1 2 2 2 2 2
+     0 0 0 0 1 1 2 2 2 2 2
+     0 0 0 0 1 1 2 2 2 2 2
+     3 3 3 3 4 4 5 5 5 5 5
+                           ┘
+
+## Axes with length 1 can be left out, but must be consistently left out
+⊢ n ← 2‿4‿6 ×{⟨𝕗,𝕩⟩≍⟨𝕨,𝕨𝔽⌜𝕩⟩} 5‿6‿7‿8
+   ┌─
+   ╵ ×         ⟨ 5 6 7 8 ⟩
+     ⟨ 2 4 6 ⟩ ┌─
+               ╵ 10 12 14 16
+                 20 24 28 32
+                 30 36 42 48
+                             ┘
+                               ┘
+
+## return the shape of each element, notice we have different shapes but
+## compatible ranks
+≢¨ n
+   ┌─
+   ╵ ⟨⟩    ⟨ 4 ⟩
+     ⟨ 3 ⟩ ⟨ 3 4 ⟩
+                   ┘
+
+## and so we can join, and the length 1 axes are used consistently as borders of
+## the multiplication table
+∾ n
+   ┌─
+   ╵ × 5  6  7  8
+     2 10 12 14 16
+     4 20 24 28 32
+     6 30 36 42 48
+                   ┘
+
+
+## Dyadic form
+\"abcd\" ∾ \"EFG\"
+   \"abcdEFG\"
+
+## arrays of rank 2 or more are joined vertically
+⊢ a ← 3 +⌜○↕ 4
+   ┌─
+   ╵ 0 1 2 3
+     1 2 3 4
+     2 3 4 5
+             ┘
+
+⊢ b ← 2‿4 ⥊ ↕8
+   ┌─
+   ╵ 0 1 2 3
+     4 5 6 7
+             ┘
+
+a ∾ b
+   ┌─
+   ╵ 0 1 2 3
+     1 2 3 4
+     2 3 4 5
+     0 1 2 3
+     4 5 6 7
+             ┘
+
+## Edge case: can be applied to units to make a list
+## Why: rank of the result is greater than either argument.
+'a' ∾ 0
+   ⟨ 'a' 0 ⟩
+
+## 𝕨 (left) and 𝕩 (right) must have the same shape
+a ∾ 2‿5⥊b  # Shapes don't fit
+   Error: ∾: Lengths not matchable (3‿4 ≡ ≢𝕨, 2‿5 ≡ ≢𝕩)
+at a ∾ 2‿5⥊b  # Shapes don't fit
+     ^
+
+## however, ranks can be at most one apart
+4‿2‿3‿0 ∾ a
+   ┌─
+   ╵ 4 2 3 0
+     0 1 2 3
+     1 2 3 4
+     2 3 4 5
+             ┘"]
+
 ))
 
 
