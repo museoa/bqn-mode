@@ -1166,6 +1166,59 @@ at a ∾ 2‿5⥊b  # Shapes don't fit
      2 3 4 5
              ┘"]
 
+      ;; ================================================
+      ;; 𝕩
+"𝕩"
+
+["Right argument of a block or function | Input: \\x or \\X"
+
+ "𝕩 and 𝕏 is a reserved name.
+  It always refers to the right argument of a function.
+  See related form, 𝕨 (left argument)."
+
+
+ "Examples:
+
+## Use in a block
+{𝕩+1} 2
+   3
+
+×{𝕩𝔽𝕩} 4
+   16
+
+## In a function
+F ← {𝕩 × 𝕩}
+   (function block)
+
+F 2
+   4 "]
+
+      ;; ================================================
+      ;; 𝕏
+"𝕏"
+
+["Right argument of a block or function | Input: \\x or \\X"
+
+ "𝕩 and 𝕏 is a reserved name.
+  It always refers to the right argument of a function.
+  See related form, 𝕨 (left argument)."
+
+
+ "Examples:
+
+## Use in a block
+{𝕩+1} 2
+   3
+
+×{𝕩𝔽𝕩} 4
+   16
+
+## In a function
+F ← {𝕩 × 𝕩}
+   (function block)
+
+F 2
+   4"]
 ))
 
 
