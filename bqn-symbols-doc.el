@@ -1251,7 +1251,7 @@ F 2
 
 ## Note: this may lead to surprisingly different behavior for ⊸ and ⟜
 { 𝕨 ⋆⊸- 𝕩 } 5
-   143.4131591025766   # · ⋆⊸- 𝕩, expands to, ⋆⊸- 𝕩, which is, (⋆𝕩)-𝕩"]
+   143.4131591025766   # · ⋆⊸- 𝕩, expands to, ⋆⊸- 𝕩, which is, (⋆𝕩)-𝕩, not -𝕩"]
 
       ;; ================================================
       ;; 𝕎
@@ -1284,7 +1284,7 @@ F 2
 
 ## Note: this may lead to surprisingly different behavior for ⊸ and ⟜
 { 𝕨 ⋆⊸- 𝕩 } 5
-   143.4131591025766   # · ⋆⊸- 𝕩, expands to, ⋆⊸- 𝕩, which is, (⋆𝕩)-𝕩"]
+   143.4131591025766   # · ⋆⊸- 𝕩, expands to, ⋆⊸- 𝕩, which is (⋆𝕩)-𝕩, not -𝕩"]
 
 ))
 
