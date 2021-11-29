@@ -158,7 +158,7 @@ Note:
     euler ← ⋆1
     ⋆⁼ euler  => 1
 
-    # The left argument is base in dyadic form
+    # 𝕨 is base in dyadic form
     2 ⋆⁼ 1024 => 10
     10 ⋆⁼ 100 => 2 "]
 
@@ -207,7 +207,7 @@ Note:
 
        "⋆ is a function.
   Its monadic form raises its argument to euler's number.
-  Its dyadic form raises its left argument to its right argument."
+  Its dyadic form raises 𝕨 to 𝕩."
 
        "Examples:
 ## Monadic form
@@ -246,8 +246,7 @@ Note:
 
        "√ is a function.
   Its monadic form computes the square root of its argument.
-  Its dyadic form computes the root of its right argument with the degree of its
-  left."
+  Its dyadic form computes the root of 𝕩 with the degree 𝕨."
 
        "Examples:
 ## Monadic form
@@ -338,8 +337,7 @@ Note:
 
        "| is a function.
   Its monadic form returns the absolute value of its argument.
-  Its dyadic form returns the remainder resulting from division of its right
-  argument by its left argument."
+  Its dyadic form returns the remainder resulting from division of 𝕩 by 𝕨."
 
        "Examples:
 ## Monadic form
@@ -466,7 +464,7 @@ Even ↕10
 
  "< is a function.
   It monadic form returns its argument in a unit array.
-  Its dyadic form returns the result comparing the left argument with the right argument:
+  Its dyadic form returns the result comparing 𝕨 with 𝕩.
   Note: characters are always considered greater than numbers, even ∞"
 
  "Examples:
@@ -512,7 +510,7 @@ Even ↕10
  "> is a function.
   It monadic form ensures that any inner arrays, in its argument,
     can fit together in an array (i.e. flatten ragged inner arrays).
-  Its dyadic form returns the result comparing the left argument with the right argument:
+  Its dyadic form returns the result comparing 𝕨 with 𝕩.
   Note: characters are always considered greater than numbers, even ∞"
 
  "Examples:
@@ -653,8 +651,8 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
 
  "¬ is a function.
   Its monadic form returns the Boolean negation of its input.
-  Its dyadic form returns the number of integers separating 𝕨 (left) from
-    𝕩 (right), inclusive, only when 𝕩≤𝕨 and both are integers.
+  Its dyadic form returns the number of integers separating 𝕨 from 𝕩, inclusive,
+    only when 𝕩≤𝕨 and both are integers.
   Note: defined as the fork, 1+-
         considered an arithmetic function.
         considered pervasive."
@@ -700,8 +698,8 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
 
  "≡ is a function.
   Its monadic form returns the depth (i.e. the level of nesting) of its input.
-  Its dyadic form tests equivalency between 𝕩 (right) and 𝕨 (left), returns 1
-    if equivalent and 0 otherwise.
+  Its dyadic form tests equivalency between 𝕩 and 𝕨, returns 1 if equivalent
+    and 0 otherwise.
   Note: see related function ≢ (Not Match)
         always returns the same result as = (Equals) when 𝕩 and 𝕨 are atoms.
 "
@@ -747,8 +745,8 @@ at \"abc\" = \"ab\"
  "≢ is a function.
   Its monadic form returns the shape of its input. The shape is a list of natural
     numbers.
-  Its dyadic form tests in-equivalency between 𝕩 (right) and 𝕨 (left), returns 0
-    if equivalent and 1 otherwise.
+  Its dyadic form tests in-equivalency between 𝕩 and 𝕨, returns 0 if equivalent
+    and 1 otherwise.
   Note: = (Rank) and ≠ (Length) can be derived from ≢ (Shape).
         Rank can be defined as =∘≢
         Length can be defined as a fold: 1⊣´≢
@@ -807,7 +805,7 @@ at \"abc\" = \"ab\"
 
  "⊣ is a function.
   Its monadic form returns its input.
-  Its dyadic form returns 𝕨 (its left argument)."
+  Its dyadic form returns 𝕨."
 
 
  "Examples:
@@ -918,9 +916,9 @@ a ⌽∘⊣↩ @
  "⥊ is a function.
   Its monadic form removes all shape information from its input. Returning a
     list of all elements from the array in reading order.
-  Its dyadic form ignores the shape information of 𝕩 (right) and adds shape
-    information based on 𝕨 (left).
-  Note: in its dyadic form one entry of 𝕨 may be left for BQN to fill in.
+  Its dyadic form ignores the shape information of 𝕩 and adds shape information
+    based on 𝕨.
+  Note: in its dyadic form, one entry of 𝕨 may be left for BQN to fill in.
         when the number of elements implied by 𝕨 is equal to the number of
           elements in 𝕩, 𝕩 is rearranged to match that shape.
         when 𝕨 implies less elements than 𝕩 has, then only as many elements
@@ -1047,7 +1045,7 @@ at 2‿∘ ⥊ \"abcde\"
  "∾ is a function.
   Its monadic form concatenates the elements of its input.
   Its dyadic form returns an array whose major cells are the major cells from
-     𝕨 (left) followed by the major cells of 𝕩 (right)."
+     𝕨 followed by the major cells of 𝕩."
 
 
  "Examples:
