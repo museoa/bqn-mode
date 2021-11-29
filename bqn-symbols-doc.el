@@ -1284,6 +1284,66 @@ F 2
 { 𝕨 ⋆⊸- 𝕩 } 5
    143.4131591025766   # · ⋆⊸- 𝕩, expands to, ⋆⊸- 𝕩, which is (⋆𝕩)-𝕩, not -𝕩"]
 
+      ;; ================================================
+      ;; Solo
+"≍"
+
+["Monad: Solo | Dyad: Couple | Input: \\."
+
+ "≍ is a function.
+  Its monadic form returns an array with its input as the only major cell.
+  Its dyadic form returns an array with elements 𝕩 and 𝕨, and outer axis of
+    length-2
+  See related form, > (Merge). Merge is considered a generalized form of ≍.
+  See related form, ⋈ (Pair).
+  Note: ≍ ←→ >{⟨𝕩⟩;⟨𝕨,𝕩⟩} or in other words: Solo is {>⟨𝕩⟩}, Couple is {>⟨𝕨,𝕩⟩}"
+
+
+ "Examples:
+
+## Monadic form
+## Notice that ≍ always adds an axis, thus applied to unit values returns a list
+≍ 2
+   ⟨ 2 ⟩
+
+≍ 'a'
+   \"a\"
+
+## a length-1 axis is always added
+≢ ↕5
+   ⟨ 5 ⟩
+
+≢ ≍ ↕5
+   ⟨ 1 5 ⟩
+
+## Dyadic form
+## Couple two arrays of shape 2‿3
+ ⊢ p ← 3‿5×⌜↕3
+   ┌─
+   ╵ 0 3  6
+     0 5 10
+            ┘
+
+⊢ q ← 2‿3⥊\"abcdef\"
+   ┌─
+   ╵\"abc
+     def\"
+         ┘
+
+p ≍ q   # p coupled to q
+   ┌─
+   ╎ 0   3   6
+     0   5   10
+
+     'a' 'b' 'c'
+     'd' 'e' 'f'
+                 ┘
+
+## Notice that the outer axis is length 2 because ≍ had two arguments
+≢ p ≍ q
+   ⟨ 2 2 3 ⟩
+
+   "]
 ))
 
 
