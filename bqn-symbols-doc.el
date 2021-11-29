@@ -1341,9 +1341,57 @@ p ≍ q   # p coupled to q
 
 ## Notice that the outer axis is length 2 because ≍ had two arguments
 ≢ p ≍ q
-   ⟨ 2 2 3 ⟩
+   ⟨ 2 2 3 ⟩"]
 
-   "]
+      ;; ================================================
+      ;; Pair
+"⋈"
+
+["Monad: Enlist | Dyad: Pair | Input: \\Z"
+
+ "⋈ is a function.
+  Its monadic form returns a singleton list containing its input.
+  Its dyadic form a list containing both 𝕨 and 𝕩.
+  See related form, > (Merge).
+  See related form, ≍ (Solo).
+  Note: ⋈ ←→ ≍○<, and ≍ ←→ >∘⋈"
+
+
+ "Examples:
+
+## Monadic form
+⋈ \"enlist\"    # ⟨𝕩⟩
+   ⟨ \"enlist\" ⟩
+
+⋈ ↕5
+   ⟨ ⟨ 0 1 2 3 4 ⟩ ⟩
+
+## Dyadic form
+## A common pattern is to use ⋈ in a train, to give the results of applying each
+## of two functions
+'c' (+⋈-)  1‿2       # capture the result of + and - using ⋈
+   ⟨ \"de\" \"ba\" ⟩
+
+# This pattern can be extended with <⊸∾ (prepend a single element to a list)
+# Lispers would call <⊸∾ \"cons\"
+\"e0\" <⊸∾ \"e1\" <⊸∾ \"e2\" ⋈ \"e3\"
+   ⟨ \"e0\" \"e1\" \"e2\" \"e3\" ⟩
+
+# or use a list of functions
+6 (+ <⊸∾ - <⊸∾ × ⋈ ÷) 3
+   ⟨ 9 3 18 2 ⟩
+
+## ⋈ vs ≍ (Couple)
+## the crucial difference is ⋈ always returns a list (rank 1) while ≍ always
+## returns an array _of at least_ rank 1. Consider:
+\"abc\" ⋈ \"def\"
+   ⟨ \"abc\" \"def\" ⟩
+
+\"abc\" ≍ \"def\"
+   ┌─
+   ╵\"abc
+     def\"
+         ┘"]
 ))
 
 
