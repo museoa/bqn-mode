@@ -1392,6 +1392,95 @@ p ≍ q   # p coupled to q
    ╵\"abc
      def\"
          ┘"]
+
+      ;; ================================================
+      ;; Prefixes
+"↑"
+
+["Monad: Prefixes | Dyad: Take | Input: \\r"
+
+ "↑ is a function.
+  Its monadic form returns a list of all prefixes of its argument along the
+    first axis.
+  Its dyadic form returns the first 𝕨 elements of 𝕩.
+  Note: Prefix is defined as (↕1+≠)↑¨<
+        when 𝕩 is an atom, or array of any rank the result will be an array.
+        when 𝕨 is negative, elements are returned from the end rather than the
+          beginning of the array.
+        if 𝕨≥ =𝕩, then fills are added to the result.
+        𝕨 may also have many numbers, corresponding to the leading axes of 𝕩.
+        𝕨 can be longer than the rank of 𝕩, in such a case 𝕩 is extended to fit.
+        See related form, ↓ (Drop)."
+
+
+ "Examples:
+
+## Monadic form
+↑ \"hello\"              # notice the empty array and input is in the result
+   ⟨ ⟨⟩ \"h\" \"he\" \"hel\" \"hell\" \"hello\" ⟩
+
+## return the prefix of a range
+↑ 1+↕6
+   ⟨ ⟨⟩ ⟨ 1 ⟩ ⟨ 1 2 ⟩ ⟨ 1 2 3 ⟩ ⟨ 1 2 3 4 ⟩ ⟨ 1 2 3 4 5 ⟩ ⟨ 1 2 3 4 5 6 ⟩ ⟩
+
+## with ↓, we can get all list slices along the first axis by taking suffix of
+## each prefix.
+↓¨↑ \"abc\"
+   ┌─
+   · ⟨ ⟨⟩ ⟩ ⟨ \"a\" ⟨⟩ ⟩ ⟨ \"ab\" \"b\" ⟨⟩ ⟩ ⟨ \"abc\" \"bc\" \"c\" ⟨⟩ ⟩
+                                                             ┘
+
+## Dyadic form
+4 ↑ \"take and drop\"
+   \"take\"
+
+1 ↓ >\"maj\"‿\"orc\"‿\"ell\"
+   ┌─
+   ╵\"orc
+     ell\"
+         ┘
+
+10 ↑ ↕5
+   ⟨ 0 1 2 3 4 0 0 0 0 0 ⟩
+
+¯2 ↑ ↕5
+   ⟨ 3 4 ⟩
+
+## Multiple axes
+⊢ m ← (10×↕5) +⌜ ↕7
+   ┌─
+   ╵  0  1  2  3  4  5  6
+     10 11 12 13 14 15 16
+     20 21 22 23 24 25 26
+     30 31 32 33 34 35 36
+     40 41 42 43 44 45 46
+                          ┘
+
+¯4‿2 ↑ m  # Last four rows; first two columns
+   ┌─
+   ╵ 10 11
+     20 21
+     30 31
+     40 41
+           ┘
+
+## when the rank of =𝕩 < ≠𝕨, length-1 axes are added to the beginning to fit.
+## In this case, the return is 𝕩 with a lot of fills.
+3‿4 ↑ <1‿1
+   ┌─
+   ╵ ⟨ 1 1 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩
+     ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩
+     ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩ ⟨ 0 0 ⟩
+                                     ┘
+
+## when that isn't the case, here = 3‿¯12 ≡ 1, and ≠m ≡ 5, the result has shape
+## |𝕨 and trailing axes from 𝕩
+3‿¯12 ↑ m
+   ┌─
+   ╵ 0 0 0 0 0  0  1  2  3  4  5  6
+     0 0 0 0 0 10 11 12 13 14 15 16
+     0 0 0 0 0 20 21 22 23 24 25 26
+                                    ┘"]
 ))
 
 
