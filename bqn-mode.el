@@ -30,7 +30,8 @@
   :group 'bqn
   (use-local-map bqn--mode-map)
   (setq-local font-lock-defaults bqn--token-syntax-types)
-  (setq-local eldoc-documentation-function 'bqn-help--eldoc))
+  (setq-local eldoc-documentation-function 'bqn-help--eldoc)
+  (setq-local comment-start "# "))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.bqn\\'" . bqn-mode))
