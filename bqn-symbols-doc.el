@@ -1404,10 +1404,10 @@ p ≍ q   # p coupled to q
     first axis.
   Its dyadic form returns the first 𝕨 elements of 𝕩.
   Note: Prefix is defined as (↕1+≠)↑¨<
-        when 𝕩 is an atom, or array of any rank the result will be an array.
+        (Take) when 𝕩 is an atom, or array of any rank, the result will be an array.
         when 𝕨 is negative, elements are returned from the end rather than the
           beginning of the array.
-        if 𝕨≥ =𝕩, then fills are added to the result.
+        if 𝕨 ≥ ≠𝕩, then fills are added to the result.
         𝕨 may also have many numbers, corresponding to the leading axes of 𝕩.
         𝕨 can be longer than the rank of 𝕩, in such a case 𝕩 is extended to fit.
         See related form, ↓ (Drop)."
@@ -1434,10 +1434,9 @@ p ≍ q   # p coupled to q
 4 ↑ \"take and drop\"
    \"take\"
 
-1 ↓ >\"maj\"‿\"orc\"‿\"ell\"
+1 ↑ >\"maj\"‿\"orc\"‿\"ell\"
    ┌─
-   ╵\"orc
-     ell\"
+   ╵\"maj\"
          ┘
 
 10 ↑ ↕5
@@ -1456,7 +1455,7 @@ p ≍ q   # p coupled to q
      40 41 42 43 44 45 46
                           ┘
 
-¯4‿2 ↑ m  # Last four rows; first two columns
+¯4‿2 ↑ m  # Take the last four rows; first two columns
    ┌─
    ╵ 10 11
      20 21
@@ -1464,7 +1463,7 @@ p ≍ q   # p coupled to q
      40 41
            ┘
 
-## when the rank of =𝕩 < ≠𝕨, length-1 axes are added to the beginning to fit.
+## when =𝕩 < ≠𝕨, length-1 axes are added to the beginning to fit.
 ## In this case, the return is 𝕩 with a lot of fills.
 3‿4 ↑ <1‿1
    ┌─
@@ -1481,6 +1480,85 @@ p ≍ q   # p coupled to q
      0 0 0 0 0 10 11 12 13 14 15 16
      0 0 0 0 0 20 21 22 23 24 25 26
                                     ┘"]
+
+      ;; ================================================
+      ;; Suffixes
+"↓"
+
+["Monad: Suffixes | Dyad: Drop | Input: \\c"
+
+ "↓ is a function.
+  Its monadic form returns a list of all suffixes of its argument along the
+    first axis.
+  Its dyadic form drops the first 𝕨 elements of 𝕩 and returns the rest.
+  Note: Suffix is defined as (↕1+≠)↓¨<
+        (Drop) when 𝕩 is an atom, or array of any rank, the result will be an array.
+        when 𝕨 is negative, elements are dropped from the end rather than the
+          beginning of the array.
+        if 𝕨 ≥ ≠𝕩, then the result is empty.
+        𝕨 may also have many numbers, corresponding to the leading axes of 𝕩.
+        See related form, ↑ (Take)."
+
+
+ "Examples:
+
+## Monadic form
+↓ \"hello\"                # notice the empty array and input is in the result
+   ⟨ \"hello\" \"ello\" \"llo\" \"lo\" \"o\" ⟨⟩ ⟩
+
+## return the suffix of a range
+↓ 1+↕6
+   ⟨ ⟨ 1 2 3 4 5 6 ⟩ ⟨ 2 3 4 5 6 ⟩ ⟨ 3 4 5 6 ⟩ ⟨ 4 5 6 ⟩ ⟨ 5 6 ⟩ ⟨ 6 ⟩ ⟨⟩ ⟩
+
+## with ↓, we can get all list slices along the first axis by taking suffix of
+## each prefix.
+↓¨↑ \"abc\"
+   ┌─
+   · ⟨ ⟨⟩ ⟩ ⟨ \"a\" ⟨⟩ ⟩ ⟨ \"ab\" \"b\" ⟨⟩ ⟩ ⟨ \"abc\" \"bc\" \"c\" ⟨⟩ ⟩
+                                                             ┘
+
+
+## Dyadic form
+4 ↓ \"take and drop\"
+   \" and drop\"
+
+1 ↓ >\"maj\"‿\"orc\"‿\"ell\"
+   ┌─
+   ╵\"orc
+     ell\"
+         ┘
+
+10 ↓ ↕5
+   ⟨⟩
+
+¯2 ↓ ↕5
+   ⟨ 0 1 2 ⟩
+
+## Multiple axes
+⊢ m ← (10×↕5) +⌜ ↕7
+   ┌─
+   ╵  0  1  2  3  4  5  6
+     10 11 12 13 14 15 16
+     20 21 22 23 24 25 26
+     30 31 32 33 34 35 36
+     40 41 42 43 44 45 46
+                          ┘
+
+¯4‿2 ↓ m  # Drop the last four rows; first two columns
+   ┌─
+   ╵ 2 3 4 5 6
+               ┘
+
+## when =𝕩 < ≠𝕨, if 𝕨 is a list of zeros, ↓ will do nothing but extend the rank
+## of 𝕩
+≢ (3⥊0) ↓ 3         # the pattern (r⥊0)↓a, ensures array a with rank at least r
+   ⟨ 1 1 1 ⟩
+
+≢ (3⥊0) ↓ ↕3
+   ⟨ 1 1 3 ⟩
+
+≢ (3⥊0) ↓ ↕5‿4‿3‿2
+   ⟨ 5 4 3 2 ⟩"]
 ))
 
 
