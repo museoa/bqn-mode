@@ -1666,6 +1666,7 @@ b × ↕≠b                      # now multiply with b
      ⟨ 1 1 0 ⟩ ⟨ 1 1 1 ⟩
                          ┘
 
+
 ## Dyadic form
 5↕\"abcdefg\"                # get contiguous slices of 𝕩 with length 𝕨
    ┌─
@@ -1695,6 +1696,113 @@ b × ↕≠b                      # now multiply with b
 ## Add two zeros to keep the length constant
 (+˝≠↕(2⥊0)⊸∾) ⟨2,6,0,1,4,3⟩
    ⟨ 2 8 8 7 5 8 ⟩"]
+
+      ;; ================================================
+      ;; Nudge
+"»"
+
+["Monad: Nudge | Dyad: Shift Before | Input: \\L"
+
+ "» is a function.
+  Its monadic form returns its input where each element has shifted one major
+    cell to the right, and the new cell is filled with 0s if or \" \".
+  Its dyadic form adds 𝕨 to the beginning of 𝕩.
+  Note: 𝕩 must have rank 1 or more.
+        𝕨 can have rank equal to or less than the rank of 𝕩.
+        𝕨 must be join compatible, i.e., 𝕨∾𝕩 must not error.
+        (Nudge) default argument is a cell of fills: 1↑0↑𝕩
+        Nudge        is defined as (1↑0↑⊢)⊸»
+        Shift Before is defined as {(≠𝕩)↑𝕨∾𝕩}
+        See related form, « (Nudge Back/Shift Back)"
+
+ "Examples:
+
+## Monadic form
+» \"abc\"
+   \" ab\"
+
+»» 1‿2‿3
+   ⟨ 0 0 1 ⟩
+
+»»» \"abc\"
+   \"   \"
+
+## higher rank, Shift Before adds a major cell (row) of fills
+⊢ a ← ⥊⟜(↕×´) 4‿3
+   ┌─
+   ╵ 0  1  2
+     3  4  5
+     6  7  8
+     9 10 11
+             ┘
+
+» a
+   ┌─
+   ╵ 0 0 0    # new major cell of fills
+     0 1 2
+     3 4 5
+     6 7 8
+           ┘
+
+
+## Dyadic form, » and « are useful for sequence processing
+s ← 1‿2‿2‿4‿3‿5‿6
+   ⟨ 1 2 2 4 3 5 6 ⟩
+
+## join s with »s
+s ≍ »s
+   ┌─
+   ╵ 1 2 2 4 3 5 6
+     0 1 2 2 4 3 5
+                   ┘
+
+## now compare each element with the previous with -⟜»
+-⟜»s
+   ⟨ 1 1 0 2 ¯1 2 1 ⟩
+
+## this is equivalent to inverse of plus scan (+)
+ +` -⟜» s
+   ⟨ 1 2 2 4 3 5 6 ⟩
+
+## we can use 𝕨 to fill s instead of the default array's fill
+∞ » s
+   ⟨ ∞ 1 2 2 4 3 5 ⟩
+
+## when a number is in big-endian form, a right shift might be logical, shifting
+## in zeros (the most significant bit). For little endian, this applies to left
+## shifts «
+⊢ i ← \"10011011\"-'0'
+   ⟨ 1 0 0 1 1 0 1 1 ⟩
+
+3 ⥊⟜0⊸» i    # Logical right shift
+   ⟨ 0 0 0 1 0 0 1 1 ⟩
+
+3 (⥊⟜⊏»⊢) i  # Arithmetic right shift
+   ⟨ 1 1 1 1 0 0 1 1 ⟩
+
+## higher rank dyadic shifts
+⊢ a ← ⥊⟜(↕×´) 4‿3
+   ┌─
+   ╵ 0  1  2
+     3  4  5
+     6  7  8
+     9 10 11
+             ┘
+\"one\" » a            # Shift in a cell
+   ┌─
+   ╵ 'o' 'n' 'e'
+     0   1   2
+     3   4   5
+     6   7   8
+                 ┘
+
+(\"two\"≍\"cel\") » a  # Shift in multiple cells
+   ┌─
+   ╵ 't' 'w' 'o'
+     'c' 'e' 'l'
+     0   1   2
+     3   4   5
+                 ┘"]
 ))
 
 
