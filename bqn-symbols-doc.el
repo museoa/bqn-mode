@@ -1559,6 +1559,142 @@ p ≍ q   # p coupled to q
 
 ≢ (3⥊0) ↓ ↕5‿4‿3‿2
    ⟨ 5 4 3 2 ⟩"]
+
+      ;; ================================================
+      ;; Range
+"↕"
+
+["Monad: Range | Dyad: Windows | Input: \\d"
+
+ "↕ is a function.
+  Its monadic form returns an array where each element's value is its own index.
+  Its dyadic form returns ≠𝕩 contiguous slices of 𝕩 that are of length 𝕨.
+  Note: (Range) the result always has depth (≡) one more than the argument.
+        (Window) 𝕨 must be between 0 and 1+≠𝕩
+        (Window) slices always have the same rank as the argument array (𝕩)"
+
+
+ "Examples:
+
+## Monadic form, all results are length 6, but elements differ
+## 𝕩 must be a natural number, notice the result is ≠𝕩, but 𝕩 is not in the result
+↕6
+   ⟨ 0 1 2 3 4 5 ⟩
+
+(↕6) ⊏ \"select\"
+   \"select\"
+
+(↕⟨6⟩) ⊑ \" pick \"
+   \" pick \"
+
+## when 𝕩 is a list of numbers, the result is an array of lists
+## this can also be read as all possible numbers of a mixed based number system
+## in this case, three digit numbers, the lowest digit is base 4
+## the next in base 3, and the highest in base 2
+↕ 2‿3‿4
+   ┌─
+   ╎ ⟨ 0 0 0 ⟩ ⟨ 0 0 1 ⟩ ⟨ 0 0 2 ⟩ ⟨ 0 0 3 ⟩
+     ⟨ 0 1 0 ⟩ ⟨ 0 1 1 ⟩ ⟨ 0 1 2 ⟩ ⟨ 0 1 3 ⟩
+     ⟨ 0 2 0 ⟩ ⟨ 0 2 1 ⟩ ⟨ 0 2 2 ⟩ ⟨ 0 2 3 ⟩
+
+     ⟨ 1 0 0 ⟩ ⟨ 1 0 1 ⟩ ⟨ 1 0 2 ⟩ ⟨ 1 0 3 ⟩
+     ⟨ 1 1 0 ⟩ ⟨ 1 1 1 ⟩ ⟨ 1 1 2 ⟩ ⟨ 1 1 3 ⟩
+     ⟨ 1 2 0 ⟩ ⟨ 1 2 1 ⟩ ⟨ 1 2 2 ⟩ ⟨ 1 2 3 ⟩
+                                             ┘
+
+## ↕≠a returns the indices of the major cells of a
+a ← 4‿2⥊@
+↕≠a
+   ⟨ 0 1 2 3 ⟩
+
+## ↕≢a returns the indices of all elements
+↕≢a
+   ┌─
+   ╵ ⟨ 0 0 ⟩ ⟨ 0 1 ⟩
+     ⟨ 1 0 ⟩ ⟨ 1 1 ⟩
+     ⟨ 2 0 ⟩ ⟨ 2 1 ⟩
+     ⟨ 3 0 ⟩ ⟨ 3 1 ⟩
+                     ┘
+
+## get the first b numbers, starting at a, with a+↕b
+5+↕4
+   ⟨ 5 6 7 8 ⟩
+
+## or get the first b natural numbers, with a↓↕b (swap Plus for Take)
+2↓↕4
+   ⟨ 2 3 ⟩
+
+## add a character to create a range of characters
+'a'+↕26
+   \"abcdefghijklmnopqrstuvwxyz\"
+
+## combine with ↑ to pad with 0's, or combine with »⍟ to pad with empty spaces
+4↑↕3
+   ⟨ 0 1 2 0 ⟩
+
+»⍟3 'b'+↕8
+   \"   bcdef\"
+
+## use ↕ to find, at each position in a Boolean list, the most recent index
+## that has a 1
+⊢ b ← 0‿1‿1‿0‿0‿0‿1‿0
+   ⟨ 0 1 1 0 0 0 1 0 ⟩       # a Boolean list
+
+b ≍ ↕≠b                      # get indices of b (↕≠b) and Couple with b
+   ┌─
+   ╵ 0 1 1 0 0 0 1 0
+     0 1 2 3 4 5 6 7
+                     ┘
+
+b × ↕≠b                      # now multiply with b
+   ⟨ 0 1 2 0 0 0 6 0 ⟩
+
+# now the index of the most recent 1 is given by the maximum of the previous
+# elements, which is the scan: ⌈`
+⌈` b × ↕≠b
+   ⟨ 0 1 2 2 2 2 6 6 ⟩       # the last 1 in the input list was at index 6
+                            # similarly the closest, previous 1 was at index 2
+                            # until it was at index 6, similarly for index 1
+
+# use ↕ with ⥊ to get fixed base numbers, for example all 3 digit binary numbers
+↕ 3⥊2
+   ┌─
+   ╎ ⟨ 0 0 0 ⟩ ⟨ 0 0 1 ⟩
+     ⟨ 0 1 0 ⟩ ⟨ 0 1 1 ⟩
+
+     ⟨ 1 0 0 ⟩ ⟨ 1 0 1 ⟩
+     ⟨ 1 1 0 ⟩ ⟨ 1 1 1 ⟩
+                         ┘
+
+## Dyadic form
+5↕\"abcdefg\"                # get contiguous slices of 𝕩 with length 𝕨
+   ┌─
+   ╵\"abcde
+     bcdef
+     cdefg\"
+           ┘
+
+## Get 2 row slices of a shape 3‿4 array
+<⎉2 2↕\"0123\"∾\"abcd\"≍\"ABCD\"
+   ┌─
+   · ┌─       ┌─
+     ╵\"0123   ╵\"abcd
+       abcd\"    ABCD\"
+            ┘        ┘
+                       ┘
+
+## when 𝕨 has length 0, 𝕩 is not sliced along any dimension
+⟨⟩↕\"abc\"
+   \"abc\"
+
+## Use window with reductions to get windowed reductions.
+## For example sums of 3 values
++˝˘3↕ ⟨2,6,0,1,4,3⟩
+   ⟨ 8 7 5 8 ⟩
+
+## Add two zeros to keep the length constant
+(+˝≠↕(2⥊0)⊸∾) ⟨2,6,0,1,4,3⟩
+   ⟨ 2 8 8 7 5 8 ⟩"]
 ))
 
 
