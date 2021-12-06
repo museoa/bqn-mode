@@ -1929,6 +1929,143 @@ s ≍ «s
      't' 'w' 'o'
      'c' 'e' 'l'
                  ┘"]
+
+      ;; ================================================
+      ;; Reverse
+"⌽"
+
+["Monad: Reverse | Dyad: Rotate | Input: \\q"
+
+ "⌽ is a function.
+  Its monadic form returns an array whose major cells are reverse from the input.
+  Its dyadic form cycles or rotates the major cells in 𝕩, according to 𝕨.
+  Note: Both Reverse and Rotate return an array with the same shape and elements
+          as 𝕩.
+        Avoid Rotate if there is no reason to treat data in 𝕩 as cyclic or
+          periodic."
+
+ "Examples:
+
+## Monadic form
+⌽ \"abcdefg\"
+   \"gfedcba\"
+
+⌽ >\"ab\"‿\"cd\"‿\"ef\"
+   ┌─
+   ╵\"ef
+     cd
+     ab\"
+        ┘
+
+## atoms or rank-0 arrays have no axes to reverse along, or no ordering
+## thus an error
+⌽ 'c'
+   Error: ⌽: Argument cannot be a unit
+at ⌽ 'c'
+   ^
+
+## to Reverse along an axis other than the first axis use ˘ (Cells) or ⎉ (Rank)
+⌽˘ >\"ab\"‿\"cd\"‿\"ef\"
+   ┌─
+   ╵\"ba
+     dc
+     fe\"
+        ┘
+
+2‿4⥊↕8
+   ┌─
+   ╵ 0 1 2 3
+     4 5 6 7
+             ┘
+
+⌽⎉ 2‿4⥊↕8
+   ⟨ 7 6 5 4 3 2 1 0 ⟩
+
+## Reverse is useful for folding from the left rather than the right
+⋈´   \"abcd\"  # Right to left
+   ⟨ 'a' ⟨ 'b' \"cd\" ⟩ ⟩
+
+⋈˜´ ⌽ \"abcd\"  # Left to right
+   ⟨ ⟨ \"ab\" 'c' ⟩ 'd' ⟩
+
+## Similarly for ` (Scan)
+∨`   0‿0‿1‿0‿0‿1‿0
+   ⟨ 0 0 1 1 1 1 1 ⟩    # change all bits after first 1 to 1s
+
+∨`⌾⌽ 0‿0‿1‿0‿0‿1‿0
+   ⟨ 1 1 1 1 1 1 0 ⟩    # change all bits before the last 1 in the bitstring to 1s
+
+
+## Dyadic form, for single axis 𝕨 must be an number, 𝕩 must be an array with
+## at least one axis.
+2 ⌽ \"rotate\"
+   \"tatero\"
+
+## rotation with a negative 𝕨, rotates from right to left
+¯2 ⌽ \"rotate\"
+   \"terota\"
+
+2 (⊢ ⋈ ⌽) 5‿2⥊\"rotateCELL\"
+   ┌─
+   · ┌─     ┌─
+     ╵\"ro  ╵\"te
+       ta     CE
+       te     LL
+       CE     ro
+       LL\"    ta\"
+          ┘       ┘
+                   ┘
+
+2 ⌽ 'c'  # No axes to rotate
+   Error: ⌽: 𝕩 must have rank at least 1 for atom 𝕨
+at 2 ⌽ 'c'  # No axes to rotate
+
+## by default elements are rotated to the left, so entry i of the result is entry
+## 𝕨+i of the argument.
+2 ⌽ ↕6
+   ⟨ 2 3 4 5 0 1 ⟩
+
+## multiple axes
+⊢ tab ← 3‿4⥊\"abcdABCD0123\"
+   ┌─
+   ╵\"abcd
+     ABCD
+     0123\"
+          ┘
+
+1 ⌽˘ tab        # Rotate the second axis
+   ┌─
+   ╵\"bcda
+     BCDA
+     1230\"
+          ┘
+
+## 𝕨 can be a list or unit array of integers, which are matched with the leading
+## axes of 𝕩. This means that 𝕨 cannot be larger than rank of 𝕩.
+3‿4‿2 ⌽ \"just a list\"
+
+   Error: 𝕨⌽𝕩: Length of compound 𝕨 must be at most rank of 𝕩
+at 3‿4‿2 ⌽ \"just a list\"
+         ^
+
+## rotate the first (vertical) axis of tab by 1, then the second axis by 2
+## so the capitalized row rotates two positions up to the top, and the column
+## with 2 rotates from horizontal index 2, to index 0
+1‿2 ⌽ tab
+   ┌─
+   ╵\"CDAB
+     2301
+     cdab\"
+          ┘
+
+## the rotations are independent, thus this is equivalent to a sequence of ⌽s
+## and a ˘
+1 ⌽ 2 ⌽˘ tab     # Note: Rotate in this case should be preferred as it can be
+   ┌─                    evaluated more quickly than multiple independent rotations
+   ╵\"CDAB
+     2301
+     cdab\"
+          ┘"]
 ))
 
 
