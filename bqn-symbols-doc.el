@@ -1705,21 +1705,21 @@ b × ↕≠b                      # now multiply with b
 
  "» is a function.
   Its monadic form returns its input where each element has shifted one major
-    cell to the right, and the new cell is filled with 0s if or \" \".
-  Its dyadic form adds 𝕨 to the beginning of 𝕩.
+    cell to the right, and the new cell is filled with 0s or \" \".
+  Its dyadic form adds 𝕨 to the beginning of 𝕩, while maintiaing the length of 𝕩.
   Note: 𝕩 must have rank 1 or more.
         𝕨 can have rank equal to or less than the rank of 𝕩.
         𝕨 must be join compatible, i.e., 𝕨∾𝕩 must not error.
         (Nudge) default argument is a cell of fills: 1↑0↑𝕩
         Nudge        is defined as (1↑0↑⊢)⊸»
         Shift Before is defined as {(≠𝕩)↑𝕨∾𝕩}
-        See related form, « (Nudge Back/Shift Back)"
+        See related form, « (Nudge Back/Shift After)"
 
  "Examples:
 
 ## Monadic form
 » \"abc\"
-   \" ab\"
+   \" ab\"    # notice that the length of the result equals the length of 𝕩
 
 »» 1‿2‿3
    ⟨ 0 0 1 ⟩
@@ -1774,10 +1774,17 @@ s ≍ »s
 ⊢ i ← \"10011011\"-'0'
    ⟨ 1 0 0 1 1 0 1 1 ⟩
 
-3 ⥊⟜0⊸» i    # Logical right shift
+1 ⥊⟜0⊸» i    # Logical right shift, notice the most sig. bit becomes a 0
+   ⟨ 0 1 0 0 1 1 0 1 ⟩
+
+1 (⥊⟜⊏»⊢) i  # Arithmetic right shift, notice the most sig. bit remains a 1
+   ⟨ 1 1 0 0 1 1 0 1 ⟩
+
+## we can also shift by more than 1
+3 ⥊⟜0⊸» i    # Logical right shift by 3
    ⟨ 0 0 0 1 0 0 1 1 ⟩
 
-3 (⥊⟜⊏»⊢) i  # Arithmetic right shift
+3 (⥊⟜⊏»⊢) i  # Arithmetic right shift by 3
    ⟨ 1 1 1 1 0 0 1 1 ⟩
 
 ## higher rank dyadic shifts
@@ -1802,6 +1809,125 @@ s ≍ »s
      'c' 'e' 'l'
      0   1   2
      3   4   5
+                 ┘"]
+
+      ;; ================================================
+      ;; Nudge Back
+"«"
+
+["Monad: Nudge Back | Dyad: Shift After | Input: \\H"
+
+ "« is a function.
+  Its monadic form returns its input where each element has shifted one major
+    cell to the left, and the new cell is filled with 0s or \" \".
+  Its dyadic form adds 𝕨 to the end of 𝕩, while maintaining the length of 𝕩.
+  Note: 𝕩 must have rank 1 or more.
+        𝕨 can have rank equal to or less than the rank of 𝕩.
+        𝕨 must be join compatible, i.e., 𝕨∾𝕩 must not error.
+        (Nudge Back) default argument is a cell of fills: 1↑0↑𝕩
+        Nudge Back  is defined as (1↑0↑⊢)⊸«
+        Shift After is defined as {(-≠𝕩)↑𝕩∾𝕨}
+        See related form, » (Nudge/Shift Before)"
+
+ "Examples:
+
+## Monadic form
+« \"abc\"
+   \"bc \"    # notice that the length of the result equals the length of 𝕩
+
+«« 1‿2‿3
+   ⟨ 3 0 0 ⟩
+
+««« \"abc\"
+   \"   \"
+
+## higher rank, Shift After adds a major cell (row) of fills to the end
+⊢ a ← ⥊⟜(↕×´) 4‿3
+   ┌─
+   ╵ 0  1  2
+     3  4  5
+     6  7  8
+     9 10 11
+             ┘
+
+« a
+   ┌─
+   ╵ 3  4  5
+     6  7  8
+     9 10 11
+     0  0  0    # new major cell of fills
+             ┘
+
+
+## Dyadic form, » and « are useful for sequence processing
+## in this example we get a difference between pairs of elements
+s ← 1‿2‿2‿4‿3‿5‿6
+   ⟨ 1 2 2 4 3 5 6 ⟩
+
+## join s with «s
+s ≍ «s
+   ┌─
+   ╵ 1 2 2 4 3 5 6
+     2 2 4 3 5 6 0
+                   ┘
+
+## now compare each element with the previous with -⟜»
+«⊸- s
+   ⟨ 1 0 2 ¯1 2 1 ¯6 ⟩     # notice 2-1=1, 2-2=0, 4-2=2
+
+## we can also get a symmetric difference, i.e., subtracting the previous element
+## from the next and dividing by two.
+2÷˜ (»-«) s
+   ⟨ ¯1 ¯0.5 ¯1 ¯0.5 ¯0.5 ¯1.5 2.5 ⟩
+
+# Repeat at the ends instead of using fills, notice the length never changes
+2÷˜ (⊣˝⊸» - ⊢˝⊸«) s
+   ⟨ ¯0.5 ¯0.5 ¯1 ¯0.5 ¯0.5 ¯1.5 ¯0.5 ⟩
+
+## when a number is in big-endian form, a right shift might be logical, shifting
+## in zeros (the most significant bit). For little endian, this applies to left
+## shifts «
+⊢ i ← \"10011011\"-'0'
+   ⟨ 1 0 0 1 1 0 1 1 ⟩
+
+1 ⥊⟜0⊸« i    # Logical left shift, notice the least sig. bit becomes a 0
+   ⟨ 0 0 1 1 0 1 1 0 ⟩
+
+1 (⥊⟜⊏«⊢) i  # Arithmetic left shift, notice the least sig. bit remains a 1
+   ⟨ 0 0 1 1 0 1 1 1 ⟩
+
+## we can also shift by more than 1
+3 ⥊⟜0⊸« i    # 3 Logical left shifts
+   ⟨ 1 1 0 1 1 0 0 0 ⟩
+
+«⍟3 i         # An alternative left shift form, 3 left shifts in this case
+   ⟨ 1 1 0 1 1 0 0 0 ⟩
+
+3 (⥊⟜⊏«⊢) i  # 3 Arithmetic left shifts
+   ⟨ 1 1 0 1 1 1 1 1 ⟩
+
+## higher rank dyadic shifts
+⊢ a ← ⥊⟜(↕×´) 4‿3
+   ┌─
+   ╵ 0  1  2
+     3  4  5
+     6  7  8
+     9 10 11
+             ┘
+\"one\" « a            # Shift in a cell to the back
+   ┌─
+   ╵ 3   4   5
+     6   7   8
+     9   10  11
+     'o' 'n' 'e'
+                 ┘
+
+(\"two\"≍\"cel\") « a  # Shift in multiple cells
+   ┌─
+   ╵ 6   7   8
+     9   10  11
+     't' 'w' 'o'
+     'c' 'e' 'l'
                  ┘"]
 ))
 
