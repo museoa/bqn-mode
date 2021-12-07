@@ -2066,6 +2066,121 @@ at 3‿4‿2 ⌽ \"just a list\"
      2301
      cdab\"
           ┘"]
+
+      ;; ================================================
+      ;; Transpose
+"⍉"
+
+["Monad: Transpose | Dyad: Reorder axes | Input: \\a"
+
+ "⍉ is a function.
+  Its monadic form returns an array whose first axis has been moved to the end.
+  Its dyadic form generalizes the monadic form for arbritrary arrangement of 𝕩,
+    according to 𝕨.
+  Note: ≢⍉⍟k a ←→ k⌽≢a for any whole number k, and any array a
+        Transpose ⍉ is equivalent to Reorder axes, with a default 𝕨: (=-1˙)⊸⍉
+        (Reorder axes) 𝕨 is a number or numeric array of rank 1 or less
+                       the result rank, r, is equal to  r←(=𝕩)-+´¬∊𝕨.
+                       Invariant: ∧´𝕨<r
+        see related function, ⌽ (Rotate)"
+
+ "Examples:
+
+## Monadic form
+## mat is a 2‿3 matrix
+⊢ mat ← 2‿3 ⥊ ↕6
+   ┌─
+   ╵ 0 1 2
+     3 4 5
+           ┘
+
+## we transpose it to a 3‿2 matrix
+⍉ mat
+   ┌─
+   ╵ 0 3
+     1 4
+     2 5
+         ┘
+
+## transpose a rank 3 matrix
+a322 ← 3‿2‿2⥊↕12
+   ┌─
+   ╎  0  1
+      2  3
+
+      4  5
+      6  7
+
+      8  9
+     10 11
+           ┘
+
+⋈⟜⍉ a322
+   ┌─                      
+   · ┌─        ┌─
+     ╎  0  1   ╎ 0 4  8
+        2  3     1 5  9
+
+        4  5     2 6 10
+        6  7     3 7 11
+                        ┘
+        8  9
+       10 11
+             ┘
+                          ┘
+
+## monadic ⍉ takes the first axis and moves it to the end, see how 2 changes here
+≢ a23456 ← ↕2‿3‿4‿5‿6
+   ⟨ 2 3 4 5 6 ⟩
+
+≢ ⍉ a23456
+   ⟨ 3 4 5 6 2 ⟩
+
+## to exchange multiple axes, use ⍟ (Repeat); notice we've moved 3 axes here
+≢ ⍉⍟3 a23456
+   ⟨ 5 6 2 3 4 ⟩
+
+## use a negative number to move axis in the other direction, similar to ⌽
+≢ ⍉⍟¯3 a23456
+   ⟨ 4 5 6 2 3 ⟩
+
+## to move the last axis to the front, use ⁼ (Undo)
+≢ ⍉⁼ a23456
+   ⟨ 6 2 3 4 5 ⟩
+
+## to move axes other than the first, use the rank modifier to leave inital axes
+## untouched. Here k ≡ 3, a k>0 transposes only the last k axes, k<0 ignores the
+## first |k axes.
+≢ ⍉⎉3 a23456
+   ⟨ 2 3 5 6 4 ⟩         # notice 2 (1st axis) and 3 (2nd axis) are untouched
+
+## finally, combine Rank and Repeat for more compilcated transpositions
+## such as move a set of contiguous axes with any starting point and length to
+## the end
+≢ ⍉⁼⎉¯1 a23456
+   ⟨ 2 6 3 4 5 ⟩
+
+## Dyadic form, 𝕨 specifies a permutation over 𝕩's axes. For each index p←i⊑𝕨
+## in 𝕨, axis i of 𝕩 is used for axis p of the result. Mutliple argument axes
+## can be sent to the same result axis, in this case the axis goes along the
+## diagonal of 𝕩, and the result will have a lower rank than 𝕩.
+≢ 1‿3‿2‿0‿4 ⍉ a23456
+   ⟨ 5 2 4 3 6 ⟩
+
+## often times it is easier to use ⍉⁼ when specifying all axes.
+## Note that if we have p≡○≠≢a, then ≢p⍉⁼a ←→ p⊏≢a
+≢ 1‿3‿2‿0‿4 ⍉⁼ a23456
+   ⟨ 3 5 4 2 6 ⟩
+
+## when only some axes are specified in 𝕨, 𝕨 will be matched up to the leading
+## axes of 𝕩. The matched axes are moved according to 𝕨, the unmatched maxes
+## are moved to fill the gaps between the moved axes
+≢ 0‿2‿4 ⍉ a23456
+   ⟨ 2 5 3 6 4 ⟩
+
+≢ 2 ⍉ a23456  # Restrict Transpose to the first three axes
+   ⟨ 3 4 2 5 6 ⟩
+"]
 ))
 
 
