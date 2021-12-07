@@ -2179,8 +2179,172 @@ a322 ← 3‿2‿2⥊↕12
    ⟨ 2 5 3 6 4 ⟩
 
 ≢ 2 ⍉ a23456  # Restrict Transpose to the first three axes
-   ⟨ 3 4 2 5 6 ⟩
-"]
+   ⟨ 3 4 2 5 6 ⟩"]
+
+      ;; ================================================
+      ;; Indices
+"/"
+
+["Monad: Indices | Dyad: Replicate | Input: \/"
+
+ "/ is a function.
+  Its monadic form returns a list of natural numbers that are the indices of 𝕩.
+  Its dyadic form repeats each major cell of 𝕩, the corresponding 𝕨 times.
+  Note: (Replicate) Invariant: (𝕨≠) ≡ (𝕩≠)
+                    Invariant: (≠𝕨) ≤  =𝕩
+                    result inludes i⊑𝕨 copies of each cell i⊏𝕩, in order.
+                    when 𝕨 has rank 1, (𝕨/𝕩) ≡ (𝕨/⊸⊏𝕩)
+
+        (Indices) 𝕩 must be a list of natural numbers, then /𝕩 is 𝕩/↕≠𝕩"
+
+ "Examples:
+
+## Monadic form
+/ 3‿0‿1‿2
+   ⟨ 0 0 0 2 3 3 ⟩
+
+## combine with ⊔ to group 𝕩 according to a list of lengths 𝕨.
+## use (/∾⟜1)⊸⊔ to include trailing empty arrays
+2‿5‿0‿1 /⊸⊔ \"ABCDEFGH\"
+   ⟨ \"AB\" \"CDEFG\" ⟨⟩ \"H\" ⟩
+
+## when 𝕩 is boolean, /𝕩 contains all indices where a 1 appears in 𝕩
+/ 0‿1‿0‿1‿0‿0‿0‿0‿1‿0
+   ⟨ 1 3 8 ⟩
+
+## use -⟜» to get the distance from each 1 to the previous or to the start of
+## the list, notice the first 1 has a distance of 1 (1 element from beginning)
+-⟜» / 0‿1‿0‿1‿0‿0‿0‿0‿1‿0
+   ⟨ 1 2 5 ⟩
+
+## we can use / to analyze groups of 1s (or 0s via flipping values with ¬)
+## first highlight the start and end of each group by comparing with a shifted copy
+## To do this we place a 0 at the front and at the end of the group to detech the shift
+0 (∾≍∾˜) 0‿1‿1‿1‿0‿0‿1‿0‿1‿1‿0
+   ┌─
+   ╵ 0 0 1 1 1 0 0 1 0 1 1 0
+     0 1 1 1 0 0 1 0 1 1 0 0
+                             ┘
+
+## notice the 1s here now correspond to each group's boundaries
+## note you can also do this with a shift: ≠⟜«0∾𝕩
+0 (∾≠∾˜) 0‿1‿1‿1‿0‿0‿1‿0‿1‿1‿0
+   ⟨ 0 1 0 0 1 0 1 1 1 0 1 0 ⟩
+
+## now get the Indices of the transition points
+/ 0(∾≠∾˜) 0‿1‿1‿1‿0‿0‿1‿0‿1‿1‿0
+   ⟨ 1 4 6 7 8 10 ⟩
+
+## we know the first transition must be a 0 to 1, then the next 1 to 0 and so on
+## thus the transitions come in pairs, so we can Reshape with ∘‿2 groups of
+## these pairs, and then scan -˜`˘ to convert the start/end format to start/length
+-˜`˘ ∘‿2⥊/ 0(∾≠∾˜) 0‿1‿1‿1‿0‿0‿1‿0‿1‿1‿0
+   ┌─
+   ╵ 1 3
+     6 1
+     8 2
+         ┘
+
+## Indices returns a list of natural numbers, where the number i appears i⊑𝕩 times
+## Given a list of k numbers, the inverse of indices returns a corresponding 𝕩.
+## one where the value i⊑𝕩 is the number of times i appears in k.
+/ 3‿2‿1
+   ⟨ 0 0 0 1 1 2 ⟩
+
+/⁼ 0‿0‿0‿1‿1‿2
+   ⟨ 3 2 1 ⟩
+
+## there are several ways to find how many times each index appears in a list
+## of indices
++˝˘ (↕5) =⌜ 2‿2‿4‿1‿2‿0  # Inefficient
+   ⟨ 1 1 3 0 1 ⟩
+
+≠¨⊔ 2‿2‿4‿1‿2‿0
+   ⟨ 1 1 3 0 1 ⟩
+
+/⁼∧ 2‿2‿4‿1‿2‿0          # note that for /⁼ to work 𝕩 must be sorted, hence ∧
+   ⟨ 1 1 3 0 1 ⟩          # this is also typically faster than ≠¨⊔
+
+
+## Dyadic form
+2‿1‿0‿2 / \"abcd\"
+   \"aabdd\"
+
+⊢ a ← >\"aa0\"‿\"bb1\"‿\"cc2\"‿\"dd3\"
+   ┌─
+   ╵\"aa0
+     bb1
+     cc2
+     dd3\"
+         ┘
+
+2‿1‿0‿2 / a
+   ┌─
+   ╵\"aa0
+     aa0
+     bb1
+     dd3
+     dd3\"
+         ┘
+
+3 / \"copy\"
+   \"cccooopppyyy\"
+
+## if 𝕨 is a list of booleans, then we have a filter
+1‿1‿0‿0‿1‿0 / \"filter\"
+   \"fie\"
+
+## similarly we can filter by any function which returns a Boolean with the
+## pattern Fn¨⊸/
+≤⟜'i' \"filter\"        # Fn, ≤⟜'i' is pervasive so we don't need ¨ (Each)
+   ⟨ 1 1 0 0 1 0 ⟩       # similarly use Fn˘⊸/ to filter each major cell
+
+≤⟜'i'⊸/ \"filter\"
+   \"fie\"
+
+## when 𝕨 has depth 2, then its elements give the amounts to copy along each
+## leading axis of 𝕩
+⊢ b ← 2‿5 ⥊ ↕10
+   ┌─
+   ╵ 0 1 2 3 4
+     5 6 7 8 9
+               ┘
+
+⟨2‿0, 1‿0‿0‿1‿1⟩ / b       # 2‿0 indicates to copy the first row twice
+   ┌─                     # then elements from the row are selected via 1‿0‿0‿1‿1
+   ╵ 0 3 4
+     0 3 4
+           ┘
+
+2‿0 / 1‿0‿0‿1‿1⊸/˘ b
+   ┌─
+   ╵ 0 3 4
+     0 3 4
+           ┘
+
+## each element has to have the same length as the correspond axis, or is a unit
+⟨<2,<3⟩ / b               # notice that both 2 and 3 are enclosed
+   ┌─
+   ╵ 0 0 0 1 1 1 2 2 2 3 3 3 4 4 4
+     0 0 0 1 1 1 2 2 2 3 3 3 4 4 4
+     5 5 5 6 6 6 7 7 7 8 8 8 9 9 9
+     5 5 5 6 6 6 7 7 7 8 8 8 9 9 9
+                                   ┘
+
+## if none of the elements in 𝕨 are enclosed, then ≡𝕨 is 1, and will be
+## interpreted as relicating along the first axis only
+⟨2,3⟩ / b                # notice (⟨<2,<3⟩ / b) ≢ (⟨2,3⟩ / b)
+   ┌─
+   ╵ 0 1 2 3 4
+     0 1 2 3 4
+     5 6 7 8 9
+     5 6 7 8 9
+     5 6 7 8 9
+               ┘
+
+## when 𝕨 is ⟨⟩ we have the base case b ≡ ⟨⟩ / b
+b ≡ ⟨⟩ / b
+   1"]
 ))
 
 
