@@ -2345,6 +2345,61 @@ a322 ← 3‿2‿2⥊↕12
 ## when 𝕨 is ⟨⟩ we have the base case b ≡ ⟨⟩ / b
 b ≡ ⟨⟩ / b
    1"]
+
+      ;; ================================================
+      ;; Grade Up
+"⍋"
+
+["Monad: Grade Up | Dyad: Bins Up | Input: \\T"
+
+ "⍋ is a function.
+  Its monadic form returns a list of natural numbers that are a sorted ording of
+    the input.
+  Its dyadic form returns a list of natural numbers, where each number indicates
+    the rank of 𝕨 such that every element at higher rank in 𝕨 is ≥ the
+    corresponding number in 𝕩.
+  Note: (Bins Up) Invariant: 𝕨 is already sorted according to some ordering.
+        see related function, ⍒ (Grade Down/Bins Down)"
+
+ "Examples:
+
+## Monadic form
+⊢ l ← \"planet\"‿\"moon\"‿\"star\"‿\"asteroid\"
+   ⟨ \"planet\" \"moon\" \"star\" \"asteroid\" ⟩
+
+∧ l                           # sort alphabetically
+   ⟨ \"asteroid\" \"moon\" \"planet\" \"star\" ⟩
+
+⍋ l                           # ⍋ returns the indices of the elements of 𝕩
+   ⟨ 3 1 0 2 ⟩                 # in the sorted order
+
+## thus
+(⍋l) ⊏ l
+   ⟨ \"asteroid\" \"moon\" \"planet\" \"star\" ⟩  # sorted
+
+## and
+((⍋l) ⊏l) ≡ ∧l
+   1
+
+
+## Dyadic form
+5‿6‿2‿4‿1 ⍋ 3                  # notice 𝕨 is not strictly sorted due to 6‿2‿4
+   Error: ⍋: 𝕨 must be sorted
+at 5‿6‿2‿4‿1 ⍋ 3
+             ^
+
+scores ← 3‿5‿17‿11‿23          # notice this is not sorted
+   ⟨ 3 5 17 11 23 ⟩
+
+other_scores ← 5‿6‿23          # notice this is sorted due to 𝕨 sorted invariant
+   ⟨ 5 6 23 ⟩
+
+# Notice that 3≤5, and so every element is ≥ 3 in 𝕨, and hence any element at
+# rank > 0 in 𝕨 is ≥3. Similarly, 5≥5 but 5<6, so we get a 1 in the result at 5's
+#  position since every element in 𝕨 at rank > 1 is > than 5
+other_scores ⍋ scores
+   ⟨ 0 1 2 2 3 ⟩
+   1"]
 ))
 
 
