@@ -2353,12 +2353,12 @@ b ≡ ⟨⟩ / b
 ["Monad: Grade Up | Dyad: Bins Up | Input: \\T"
 
  "⍋ is a function.
-  Its monadic form returns a list of natural numbers that are a sorted ording of
-    the input.
+  Its monadic form returns a list of natural numbers that are an ascending ording
+    of the input.
   Its dyadic form returns a list of natural numbers, where each number indicates
-    the rank of 𝕨 such that every element at higher rank in 𝕨 is ≥ the
-    corresponding number in 𝕩.
+    the rank of 𝕨 that the corresponding element in 𝕩 is ≥ than.
   Note: (Bins Up) Invariant: 𝕨 is already sorted according to some ordering.
+                  Result is always in ascending sorted order.
         see related function, ⍒ (Grade Down/Bins Down)"
 
  "Examples:
@@ -2371,7 +2371,7 @@ b ≡ ⟨⟩ / b
    ⟨ \"asteroid\" \"moon\" \"planet\" \"star\" ⟩
 
 ⍋ l                           # ⍋ returns the indices of the elements of 𝕩
-   ⟨ 3 1 0 2 ⟩                 # in the sorted order
+   ⟨ 3 1 0 2 ⟩                 # in ascending sorted order
 
 ## thus
 (⍋l) ⊏ l
@@ -2394,12 +2394,71 @@ scores ← 3‿5‿17‿11‿23          # notice this is not sorted
 other_scores ← 5‿6‿23          # notice this is sorted due to 𝕨 sorted invariant
    ⟨ 5 6 23 ⟩
 
-# Notice that 3≤5, and so every element is ≥ 3 in 𝕨, and hence any element at
-# rank > 0 in 𝕨 is ≥3. Similarly, 5≥5 but 5<6, so we get a 1 in the result at 5's
-#  position since every element in 𝕨 at rank > 1 is > than 5
+# Notice that 3 (which is at index 0 in 𝕩) is ≤ 5 (which is at rank 1 in 𝕨),
+# hence if we were to insert 3 into 𝕨, and preserve 𝕨's ordering we would insert
+# 3 at index 0. Thus at index 0 in the result we return a 0. Similarly, 5≥5 but
+# 5<6, so we get a 1 in the result at 5's position since every element in 𝕨 at
+# rank > 1 is ≥ 5 and if we were to insert 5 and preserve ordering we would do
+# so at index 1
 other_scores ⍋ scores
-   ⟨ 0 1 2 2 3 ⟩
-   1"]
+   ⟨ 0 1 2 2 3 ⟩"]
+
+      ;; ================================================
+      ;; Grade Down
+"⍒"
+
+["Monad: Grade Down | Dyad: Bins Down | Input: \\V"
+
+ "⍒ is a function.
+  Its monadic form returns a list of natural numbers that are a descending ording
+    of the input.
+  Its dyadic form returns a list of natural numbers, where each number indicates
+    the rank of 𝕨 that the corresponding element in 𝕩 is ≤ than.
+  Note: (Bins Up) Invariant: 𝕨 is already sorted according to some ordering.
+                  Result is always in descending sorted order.
+        see related function, ⍒ (Grade Down/Bins Down)"
+
+ "Examples:
+
+## Monadic form
+⊢ l ← \"planet\"‿\"moon\"‿\"star\"‿\"asteroid\"
+   ⟨ \"planet\" \"moon\" \"star\" \"asteroid\" ⟩
+
+∨ l                           # sort alphabetically
+   ⟨ \"star\" \"planet\" \"moon\" \"asteroid\" ⟩
+
+⍒ l                           # ⍒ returns the indices of the elements of 𝕩
+   ⟨ 2 0 1 3 ⟩                 # in descending sorted order
+
+## thus
+(⍒l) ⊏ l
+   ⟨ \"star\" \"planet\" \"moon\" \"asteroid\" ⟩
+
+## and
+((⍒l) ⊏l) ≡ ∨l
+   1
+
+
+## Dyadic form
+5‿6‿2‿4‿1 ⍒ 3                  # notice 𝕨 is not strictly sorted due to 6‿2‿4
+   Error: ⍒: 𝕨 must be sorted in descending order
+at 5‿6‿2‿4‿1 ⍒ 3
+             ^
+
+scores ← 3‿5‿17‿11‿23          # notice this is not sorted
+   ⟨ 3 5 17 11 23 ⟩
+
+other_scores ← 23‿6‿5          # notice this is sorted due to 𝕨 sorted invariant
+   ⟨ 23 6 5 ⟩
+
+# Notice that 3 (which is at index 0 in 𝕩) is ≤ 5 (which is at rank 3 in 𝕨),
+# hence if we were to insert 3 into 𝕨, and preserve 𝕨's ordering we would insert
+# 3 at index 3. Thus at index 0 in the result we return a 3. Similarly, 5≥5 but
+# 5<6, so we get a 3 in the result at 5's position since every element in 𝕨 at
+# rank < 3 is ≥ 5 and if we were to insert 5 and preserve ordering we would do
+# so at index 3
+other_scores ⍒ scores
+   ⟨ 3 3 1 1 1 ⟩"]
 ))
 
 
