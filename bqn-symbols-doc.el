@@ -2459,6 +2459,139 @@ other_scores ← 23‿6‿5          # notice this is sorted due to 𝕨 sorted 
 # so at index 3
 other_scores ⍒ scores
    ⟨ 3 3 1 1 1 ⟩"]
+
+      ;; ================================================
+      ;; First Cell
+"⊏"
+
+["Monad: First Cell | Dyad: Select | Input: \\i"
+
+ "⊏ is a function.
+  Its monadic form returns the major cell of 𝕩 at index 0.
+  Its dyadic form reorganizes 𝕩 along one or more axes according to the indices
+    given by 𝕨.
+  Note: (First Cell) is defined using Select: 0⊏𝕩
+        (Select) 𝕨 must be an integer or array of integers (including empty array)
+                 when 𝕨 is an atom, Select returns a major cell whose shape is 1↓≢𝕩
+                 indices of 𝕨 must be < ≠𝕩
+                 indices of 𝕨 can be negative but must be ≥ -≠𝕩
+                 if ≠𝕩 is 0, then no index is valid for selection
+                 the shape of the result is equivalent to (≢𝕨)∾1↓≢𝕩
+        see related function, ⊐ (Classify)
+        see related function, ⊑ (Pick)"
+
+
+ "Examples:
+
+## Monadic form
+⊏ \"abc\"
+   ┌·
+   ·'a'
+       ┘
+
+⊏ \"abc\"≍\"def\"
+   \"abc\"
+
+⊏ ≍ \"abc\"
+   \"abc\"
+
+⊏ 'a'
+   Error: ⊏: Argument cannot be an atom
+at ⊏ 'a'
+   ^
+
+## Dyadic form
+2 ⊏ \"abcdef\"  # An enclosed element
+   ┌·
+   ·'c'
+       ┘
+
+2 ⊑ \"abcdef\"  # Pick (not Select) gets a non-enclosed element
+   'c'
+
+¯2 ⊏ \"abcdef\" # negative indices in 𝕨 select from the end of 𝕩
+   ┌·
+   ·'e'
+       ┘
+
+4‿0‿1‿3‿2 ⊏ \"elolh\"  # a list of number returns a result with same rank
+   \"hello\"
+
+4‿0‿1‿3 ⊏ \"elolh\"  # but the length of the result may differ from 𝕩
+   \"hell\"
+
+
+⟨⟩ ⊏ \"elolh\"  # an empty 𝕨 returns and empty array
+   ⟨⟩
+
+⊢ m ← 3‿5‿7‿11 |⌜ ×˜↕7
+   ┌─
+   ╵ 0 1 1 0 1 1 0
+     0 1 4 4 1 0 1
+     0 1 4 2 2 4 1
+     0 1 4 9 5 3 3
+                   ┘
+
+0‿¯1 ⊏ m
+   ┌─
+   ╵ 0 1 1 0 1 1 0
+     0 1 4 9 5 3 3
+                   ┘
+
+## when 𝕩 is a list the result has the same shape as 𝕨, where elements of 𝕨
+## are replaced one-by-one with elements of 𝕩
+2|m
+   ┌─
+   ╵ 0 1 1 0 1 1 0
+     0 1 0 0 1 0 1
+     0 1 0 0 0 0 1
+     0 1 0 1 1 1 1
+                   ┘
+
+(2|m) ⊏ \" ⋆\"
+   ┌─
+   ╵\" ⋆⋆ ⋆⋆
+      ⋆  ⋆ ⋆
+      ⋆    ⋆
+      ⋆ ⋆⋆⋆⋆\"
+             ┘
+
+## when 𝕨 is a unit, the result shape will be the major cell shape of 𝕩
+## remember that the initial axes come from 𝕨 while later ones come from 𝕩
+\"awA0\" +⌜ ↕4
+   ┌─
+   ╵\"abcd
+     wxyz
+     ABCD
+     0123\"
+          ┘
+
+2 ↕ ↕4
+   ┌─
+   ╵ 0 1
+     1 2
+     2 3
+         ┘
+
+(2 ↕ ↕4) ⊏ \"awA0\" +⌜ ↕4
+   ┌─
+   ╎\"abcd
+     wxyz
+
+    ·wxyz
+     ABCD
+
+    ·ABCD
+     0123\" 
+          ┘
+
+## 𝕨 can apply to mulitple axes of 𝕩 simultaneously, only if 𝕨 is a non-empty
+## list or array
+⟨2‿1, 3‿0‿0⟩ ⊏ ↕3‿4
+   ┌─
+   ╵ ⟨ 2 3 ⟩ ⟨ 2 0 ⟩ ⟨ 2 0 ⟩
+     ⟨ 1 3 ⟩ ⟨ 1 0 ⟩ ⟨ 1 0 ⟩
+                             ┘"]
 ))
 
 
