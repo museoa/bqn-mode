@@ -2592,6 +2592,136 @@ at ⊏ 'a'
    ╵ ⟨ 2 3 ⟩ ⟨ 2 0 ⟩ ⟨ 2 0 ⟩
      ⟨ 1 3 ⟩ ⟨ 1 0 ⟩ ⟨ 1 0 ⟩
                              ┘"]
+
+      ;; ================================================
+      ;; Pick
+"⊑"
+
+["Monad: First | Dyad: Pick | Input: \\I"
+
+ "⊑ is a function.
+  Its monadic form returns the first element of 𝕩 in index order.
+  Its dyadic form returns elements from 𝕩 based on index lists from 𝕨.
+  Note: (First) is Pick where 𝕨 is 0¨≢𝕩
+        (Pick) 𝕨 can be a plain list, a single number, array of index lists,
+                 or have deeper structure.
+               a number in 𝕨 must be an integer, i, where -≠𝕩 < i < ≠𝕩
+               using Pick to repeatedly select multiple elements from 𝕩 is likely
+                 slower than using ⊏. Prefer ⊏ in this case or rearrange your data.
+        see related function, ⊏ (Select)
+        see related function, ⊐ (Classify)"
+
+ "Examples:
+
+## Monadic form
+⊑ 'a'
+   'a'
+
+⊑ \"First\"
+   'F'
+
+⊑ ↕4‿2‿5‿1
+   ⟨ 0 0 0 0 ⟩
+
+⊑ \"\"
+   Error: ⊑: Argument cannot be empty
+at ⊑ \"\"
+   ^
+
+## Dyadic form
+## when 𝕨 is a single number, Pick gets an element from 𝕩
+2 ⊑ 0‿1‿2‿3‿4
+   2
+
+2 ⊑ \"abc\"
+   'c'
+
+2 ⊑ ⟨@, 0‿1‿2‿3, \"abc\"⟩
+   \"abc\"
+
+## when 𝕩 is a unit, the only possible value for 𝕨 is ⟨⟩
+⟨⟩ ⊑ <'a'
+   'a'
+
+⟨⟩ ⊑ 'a'
+   'a'
+
+## negative numbers start from the end of 𝕩, where the last element is at ¯1
+¯2 ⊑ 0‿1‿2‿3‿4
+   3
+
+## In general, 𝕨 can be a list of numbers whose length is 𝕩 rank
+## when =𝕩 is 1, 𝕨 can be a length-1 list
+⟨2,0⟩ ⊑ ↕4‿5      # Picking the result of Range, gives the index
+   ⟨ 2 0 ⟩
+
+⊢ a ← 'a' + ⥊⟜(↕×´) 4‿5
+   ┌─
+   ╵\"abcde
+     fghij
+     klmno
+     pqrst\"
+           ┘
+
+2‿0 ⊑ a
+   'k'
+
+1‿¯1 ⊑ a
+   'j'
+
+## Pick also accepts a list of indices, these must be lists otherwise 𝕨 looks
+## like a single list index
+⟨2‿0, 1‿¯1, 3‿1, ¯1‿¯1⟩ ⊑ a
+   \"kjqt\"
+
+⟨2,1,0,¯1⟩ ⊑ \"abc\"  # 𝕩 doesn't have rank 4!
+   Error: 𝕨⊑𝕩: Index length in 𝕨 must match rank of 𝕩
+at ⟨2,1,0,¯1⟩ ⊑ \"abc\"
+              ^
+
+⟨2,1,0,¯1⟩ ⥊¨⊸⊑ \"abc\"
+   \"cbac\"
+
+⟨2,1,0,¯1⟩ ⊏ \"abc\"  # Better way
+   \"cbac\"
+
+## as long as your indices are in lists, you can arrange them in any array
+## structure with arbritrary nesting
+⟨⟨2,3⟩,1⟩ ⊑ a  # 1 isn't a valid index
+   Error: 𝕨⊑𝕩: Indices in compound 𝕨 must be lists
+at ⟨⟨2,3⟩,1⟩ ⊑ a
+             ^
+
+⟨2‿0, ⟨⟨1‿¯1, 3‿1⟩, ¯1‿¯1⟩⟩ ⊑ a
+   ⟨ 'k' ⟨ \"jq\" 't' ⟩ ⟩
+
+(⟨2‿0, 1‿¯1⟩≍⟨3‿1, ¯1‿¯1⟩) ⊑ a
+   ┌─
+   ╵\"kj
+     qt\"
+        ┘
+
+(⟨2‿0, <1‿¯1⟩≍⟨<3‿1, ¯1‿¯1⟩) ⊑ a
+   ┌─
+   ╵ 'k'   ┌·
+           ·'j'
+               ┘
+     ┌·    't'
+     ·'q'
+         ┘
+                 ┘
+
+## a more convienient way is to use the ⚇ (Depth). Pick applies to Depth-1
+## componenets of 𝕨 and all of 𝕩, which corresponds to a depth operand of 1‿∞
+(⟨2‿0, <1‿¯1⟩≍⟨<3‿1, ¯1‿¯1⟩) ⊑⚇1‿∞ a
+   ┌─
+   ╵ 'k'   ┌·
+           ·'j'
+               ┘
+     ┌·    't'
+     ·'q'
+         ┘
+                 ┘"]
 ))
 
 
