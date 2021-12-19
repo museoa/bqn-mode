@@ -3023,6 +3023,127 @@ at 9 ↕ \"short\"
      0 0 0 0 0 0
      1 0 1 0 1 0
                  ┘"]
+
+      ;; ================================================
+      ;; Group
+"⊔"
+
+["Monad: Group Indices | Dyad: Group | Input: \\u"
+
+ "⊔ is a function.
+  Its monadic form returns a list of lists of indices, where each sublist
+    contains indices of equal elements of 𝕩.
+  Its dyadic form returns a list of groups, each containing cells from 𝕩,
+    according to a list of atomic indices in 𝕨.
+  Note: (Group) 𝕨 and 𝕩 must have the same length"
+
+
+ "Examples:
+
+## Monadic form
+⊔ 0‿2‿5‿3‿2
+   ⟨ ⟨ 0 ⟩ ⟨⟩ ⟨ 1 4 ⟩ ⟨ 3 ⟩ ⟨⟩ ⟨ 2 ⟩ ⟩     # 2 is at index 1 and 4, 3 is unique hence ⟨⟩
+
+⊔ \"abcdab\"
+   Error: ⊔: Grouping argument must consist of integers
+at ⊔ \"abcdab\"
+   ^
+
+
+## Dyadic form
+0‿1‿2‿0‿1 ≍ \"abcde\"  # Corresponding indices and values
+   ┌─
+   ╵ 0   1   2   0   1
+     'a' 'b' 'c' 'd' 'e'
+                         ┘
+
+0‿1‿2‿0‿1 ⊔ \"abcde\"  # Values grouped by index
+   ⟨ \"ad\" \"be\" \"c\" ⟩
+
+## use a ¯1 in 𝕨 to drop cells
+0‿¯1‿2‿2‿¯1 ⊔ \"abcde\"  # Drop c and e
+   ⟨ \"a\" ⟨⟩ \"cd\" ⟩
+
+## add a single extra argument to 𝕨 to set the length of the result
+## in this case we add a 6 to produce a length 6 result filled with empty arrays
+0‿1‿2‿2‿1‿6 ⊔ \"abcde\"
+   ⟨ \"a\" \"be\" \"cd\" ⟨⟩ ⟨⟩ ⟨⟩ ⟩
+
+## in this case an 8 for a length-8 result
+0‿1‿2‿2‿1‿8 ⊔ \"abcde\"
+   ⟨ \"a\" \"be\" \"cd\" ⟨⟩ ⟨⟩ ⟨⟩ ⟨⟩ ⟨⟩ ⟩
+
+## when 𝕨 is not a list, ⊔ groups -=𝕨 cells of 𝕩, rather than ¯1 cells.
+## this is not compatible with the length-extension. One can use this behavior
+## to group diagonals of a table
+⊢ a ← 'a'+⥊⟜(↕×´)3‿5
+   ┌─
+   ╵\"abcde
+     fghij
+     klmno\"
+           ┘
+
+(+⌜´·↕¨≢)⊸⊔ a
+   ⟨ \"a\" \"bf\" \"cgk\" \"dhl\" \"eim\" \"jn\" \"o\" ⟩
+
+## or group a list of words by length
+phrase ← \"BQN\"‿\"uses\"‿\"notation\"‿\"as\"‿\"a\"‿\"tool\"‿\"of\"‿\"thought\"
+   ⟨ \"BQN\" \"uses\" \"notation\" \"as\" \"a\" \"tool\" \"of\" \"thought\" ⟩
+
+≍˘ ≠¨⊸⊔ phrase
+   ┌─
+   ╵ ⟨⟩
+     ⟨ \"a\" ⟩
+     ⟨ \"as\" \"of\" ⟩
+     ⟨ \"BQN\" ⟩
+     ⟨ \"uses\" \"tool\" ⟩
+     ⟨⟩
+     ⟨⟩
+     ⟨ \"thought\" ⟩
+     ⟨ \"notation\" ⟩
+                       ┘
+
+## one can Group according to a computed property, for example with ⊐ (Classify)
+ln ← \"Phelps\"‿\"Latynina\"‿\"Bjørgen\"‿\"Andrianov\"‿\"Bjørndalen\"
+   ⟨ \"Phelps\" \"Latynina\" \"Bjørgen\" \"Andrianov\" \"Bjørndalen\" ⟩
+
+co ← \"US\"    ‿\"SU\"      ‿\"NO\"     ‿\"SU\"       ‿\"NO\"
+   ⟨ \"US\" \"SU\" \"NO\" \"SU\" \"NO\" ⟩
+
+≍˘ co ⊐⊸⊔ ln
+   ┌─
+   ╵ ⟨ \"Phelps\" ⟩
+     ⟨ \"Latynina\" \"Andrianov\" ⟩
+     ⟨ \"Bjørgen\" \"Bjørndalen\" ⟩
+                                ┘
+
+## or change the left argument of Index of to changed to index to key correspondance
+## this will fail if there are trailing keys with no values
+countries ← \"IT\"‿\"JP\"‿\"NO\"‿\"SU\"‿\"US\"
+   ⟨ \"IT\" \"JP\" \"NO\" \"SU\" \"US\" ⟩
+
+countries ≍˘ co countries⊸⊐⊸⊔ ln
+   ┌─
+   ╵ \"IT\" ⟨⟩
+     \"JP\" ⟨⟩
+     \"NO\" ⟨ \"Bjørgen\" \"Bjørndalen\" ⟩
+     \"SU\" ⟨ \"Latynina\" \"Andrianov\" ⟩
+     \"US\" ⟨ \"Phelps\" ⟩
+                                     ┘
+
+## To force the result to have a particular length you can append that length to
+## the left argument
+countries ≍˘ co countries⊸(⊐∾≠∘⊣)⊸⊔ ln
+   ┌─
+   ╵ \"IT\" ⟨⟩
+     \"JP\" ⟨⟩
+     \"NO\" ⟨ \"Bjørgen\" \"Bjørndalen\" ⟩
+     \"SU\" ⟨ \"Latynina\" \"Andrianov\" ⟩
+     \"US\" ⟨ \"Phelps\" ⟩
+                                     ┘
+
+
+"]
 ))
 
 
