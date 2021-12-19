@@ -2790,6 +2790,63 @@ at ⟨⟨2,3⟩,1⟩ ⊑ a
 ## Dyadic form
 \"zero\"‿\"one\"‿\"two\"‿\"three\" ⊐ \"one\"‿\"eight\"‿\"two\"
    ⟨ 1 4 2 ⟩"]
+
+      ;; ================================================
+      ;; Occurrence Count
+"⊒"
+
+["Monad: Occurrence Count | Dyad: Progressive Index of | Input: \\O"
+
+ "⊒ is a function.
+  Its monadic form returns a list of natural numbers, where each number
+    is the number of previous cells that match the current cell.
+  Its dyadic form returns a list of indices, where each index is either the first
+    occurrence of each entry in 𝕨, in 𝕩, or the first unused match if there is one.
+  Note: (Progressive Index of) no index except ≠𝕨 can be repeated.
+                               use ⊒˜<≠∘⊢ for Progressive Membership of
+                               ⊒˜ is the same as ↕∘≠
+        see related function, ⊐ (Classify)"
+
+
+ "Examples:
+
+## Monadic form
+⊒   2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
+   ⟨ 0 0 0 0 1 1 2 1 1 2 0 ⟩    # notice a 1 at the next occurrence of 1 in 𝕩
+
+## or more succinctly, notice at each 8 in 𝕩 the count of previous 8's increases
+≍⟜⊒ 2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
+   ┌─
+   ╵ 2 7 1 8 1 7 1 8 2 8 4
+     0 0 0 0 1 1 2 1 1 2 0
+                           ┘
+
+## use Occurrence Count to return exactly one duplicate form a list of duplicates
+(1=⊒)⊸/ \"aaaabcddcc\"
+   \"adc\"
+
+## an interesting use case is to apply Occurrence Count to / (Indices), this
+## returns a list of numbers, that is a sequence of counting up to each number
+## in 𝕩. Here the result is three sequences counting up to 2, 3, and then 4 in
+## that order. Note
+⊒ / 2‿3‿4
+
+   ⟨ 0 1 0 1 2 0 1 2 3 ⟩
+
+## /(¯1⊸⊑↕⊸-⊏⟜»)+` is identical to ⊒/ but is more efficient and more complicated
+(/(¯1⊸⊑↕⊸-⊏⟜»)+`) 2‿3‿4
+   ⟨ 0 1 0 1 2 0 1 2 3 ⟩
+
+
+## Dyadic form
+\"aaa\" ⊒ \"aaaaa\"      # the first 3 'a's match, but the last two are unused
+   ⟨ 0 1 2 3 3 ⟩
+
+## in this example the first 3 'a's of 𝕩 are matched to indices 0 1 and 2 in 𝕨
+## and the first two 'b's to indices 3 and 4 of 𝕨, then we only have unused
+## matches so ≠𝕨 is used.
+\"aaabb\" ⊒ \"ababababab\"
+   ⟨ 0 3 1 4 2 5 5 5 5 5 ⟩"]
 ))
 
 
