@@ -3140,10 +3140,57 @@ countries ≍˘ co countries⊸(⊐∾≠∘⊣)⊸⊔ ln
      \"NO\" ⟨ \"Bjørgen\" \"Bjørndalen\" ⟩
      \"SU\" ⟨ \"Latynina\" \"Andrianov\" ⟩
      \"US\" ⟨ \"Phelps\" ⟩
-                                     ┘
+                                     ┘"]
+
+      ;; ================================================
+      ;; Assert
+"!"
+
+["Monad: Assert | Dyad: Assert with message | Input: !"
+
+ "! is a function.
+  Its monadic form tests that 𝕩 is 1, if it is then it returns 𝕩, otherwise it
+    throws an Error.
+  Its dyadic form returns returns a message with the error thrown.
+  Note: (Assert) the right argument must be exactly 1, or 0."
 
 
-"]
+ "Examples:
+
+## Monadic form
+! 2=2  # Passed
+   1
+
+! 2=3  # Failed
+   Error: Assertion error
+at ! 2=3
+   ^
+
+## an array or list of booleans is not a valid input
+! 1‿1‿1‿1
+   Error: ⟨1, 1, 1, 1⟩
+at ! 1‿1‿1‿1
+   ^
+
+## use ∧´⥊ to convert a boolean array to a single boolean
+! ∧´⥊ (∧=∨⌾¬)⌜˜ ↕2
+   1
+
+## Dyadic form
+\"Message\" ! 0
+   Error: Message
+at \"Message\" ! 0
+
+## 𝕨 is computed before ! is called, so if 𝕨 is costly then you may want to
+## store it in a function or use a control structure
+MyError ← {𝕨 \"My custom error\"⊸!⍟(1⊸≢) 𝕩}
+
+\"hello\" MyError 0
+   Error: My custom error
+at MyError ← {𝕨 \"My custom error\"⊸!⍟(1⊸≢) 𝕩}
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+at \"hello\" MyError 0
+           ^^^^^^^"]
 ))
 
 
