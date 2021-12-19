@@ -2722,6 +2722,74 @@ at ⟨⟨2,3⟩,1⟩ ⊑ a
      ·'q'
          ┘
                  ┘"]
+
+      ;; ================================================
+      ;; Classify
+"⊐"
+
+["Monad: Classify | Dyad: Index of | Input: \\o"
+
+ "⊐ is a function.
+  Its monadic form returns a list of natural numbers, where each number
+    corresponds to the index of first appearance of the corresponding value in 𝕩.
+  Its dyadic form returns a list of indices, where each index is the first
+    occurrence of each entry in 𝕨, in 𝕩.
+  Note: (Classify) is idempotent.
+        see related function, ⍷ (Deduplicate)
+        see related function, ⊒ (Occurence Count)"
+
+
+ "Examples:
+
+## Monadic form
+# notice that 5 is at index 0, and so 0's are in 5's position in the result
+⊐ 5‿6‿2‿2‿5‿1
+   ⟨ 0 1 2 2 0 3 ⟩
+
+## We can couple the argument to the result to observe this more easily
+≍⟜⊐ 5‿6‿2‿2‿5‿1
+   ┌─
+   ╵ 5 6 2 2 5 1
+     0 1 2 2 0 3
+                 ┘
+
+## Classify is an inverse of ⍷ (Deduplicate)
+⊢ c ← >\"yellow\"‿\"orange\"‿\"yellow\"‿\"purple\"‿\"orange\"‿\"yellow\"
+   ┌─
+   ╵\"yellow
+     orange
+     yellow
+     purple
+     orange
+     yellow\"
+            ┘
+
+⍷ ⊐ c
+   ⟨ 0 1 2 ⟩
+
+⊐ ⍷ c
+   ⟨ 0 1 2 ⟩
+
+## notice the Deduplicate indicates which cells are retained
+⍷ c
+   ┌─
+   ╵\"yellow
+     orange
+     purple\"
+            ┘
+
+## while Classify indicates where the cell is located
+⊐ c
+   ⟨ 0 1 0 2 1 0 ⟩
+
+## Clasify is idempotent: repeated applications return the same result
+⊐ ⊐ ⊐ c
+   ⟨ 0 1 0 2 1 0 ⟩
+
+
+## Dyadic form
+\"zero\"‿\"one\"‿\"two\"‿\"three\" ⊐ \"one\"‿\"eight\"‿\"two\"
+   ⟨ 1 4 2 ⟩"]
 ))
 
 
