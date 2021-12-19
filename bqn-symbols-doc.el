@@ -2855,7 +2855,7 @@ at ⟨⟨2,3⟩,1⟩ ⊑ a
 ["Monad: Mark Firsts | Dyad: Member of | Input: \\e"
 
  "∊ is a function.
-  Its monadic form returns a list of numbers, where each number is either a 0,
+  Its monadic form returns a list of booleans, where each number is either a 0,
     if the major cell of 𝕩 is a duplicate of a previous cell, or 1 otherwise.
   Its dyadic form returns a list of numbers of length ≠𝕨, each number is either
     a 0 or 1. A 1 indicates an entry of 𝕨 matches some entry in 𝕩, a 0 otherwise.
@@ -2906,6 +2906,123 @@ at ⟨⟨2,3⟩,1⟩ ⊑ a
 
 \"initial set\" (¬∘∊/⊣) \"difference\"  # Remove 𝕩
    \"tal st\""]
+
+      ;; ================================================
+      ;; Deduplicate
+"⍷"
+
+["Monad: Deduplicate | Dyad: Find | Input: \\E"
+
+ "⍷ is a function.
+  Its monadic form removes every major cell that matches an earlier cell.
+  Its dyadic form searches for occurrences of an array 𝕨, in 𝕩. The result is a
+    list of booleans for each possible location.
+  Note: (Deduplicate) can be implemented as ∊⊸/
+                      see related function, ⊐ (Classify)
+        (Find)        𝕨 needs to match a contiguous section of 𝕩
+                      there is no guarantee the result maintains the shape of 𝕩
+                      if ≠𝕨 > ≠𝕩 then the result is empty"
+
+
+ "Examples:
+
+## Monadic form
+⍷ >\"take\"‿\"drop\"‿\"drop\"‿\"pick\"‿\"take\"‿\"take\"
+   ┌─
+   ╵\"take
+     drop
+     pick\"
+          ┘
+
+## use ⍷⌾⌽ to reverse the ordering
+⍷⌾⌽ >\"take\"‿\"drop\"‿\"drop\"‿\"pick\"‿\"take\"‿\"take\"
+   ┌─
+   ╵\"drop
+     pick
+     take\"
+          ┘
+
+
+## Dyadic form
+\"xx\" ⍷ \"xxbdxxxcx\"        # a contiguous match for strings is a substring
+   ⟨ 1 0 0 0 1 1 0 0 ⟩
+
+## The subarrays that are searched are the cells in the result of ↕ (Windows)
+## so we can use Windows to see the arrays 𝕨 will be compared against.
+2 ↕ \"xxbdxxxcx\"
+   ┌─
+   ╵\"xx
+     xb
+     bd
+     dx
+     xx
+     xx
+     xc
+     cx\"
+        ┘
+
+\"xx\"⊸≡˘ 2 ↕ \"xxbdxxxcx\"
+   ⟨ 1 0 0 0 1 1 0 0 ⟩
+
+## shape of 𝕩 is not maintained
+\"string\" ⍷ \"substring\"
+   ⟨ 0 0 0 1 ⟩
+
+## shape is maintained in APL style
+\"string\" (≢∘⊢↑⍷) \"substring\"  # APL style
+   ⟨ 0 0 0 1 0 0 0 0 0 ⟩
+
+## when ≠𝕨 > ≠𝕩 then the result is empty
+\"loooooong\" ⍷ \"short\"
+   ⟨⟩
+
+9 ↕ \"short\"
+   Error: 𝕨↕𝕩: Window length 𝕨 must be at most axis length plus one
+at 9 ↕ \"short\"
+     ^
+
+## use ⊑⍷ to test whether 𝕨 is a prefix of 𝕩, and thus isn't longer than 𝕩
+## use a fold if this may be the case to return a 0, rather than an Error
+0 ⊣´ \"loooooong\" ⍷ \"short\"
+   0
+
+## when 𝕩 and 𝕨 are multi-dimensional, Find will do a multi-dimentsional search
+## use 𝕨≢⊸↕𝕩 to view the cells that will be matched to 𝕨
+⊢ a ← 7 (4|⋆˜)⌜○↕ 9   # Array with patterns
+   ┌─
+   ╵ 1 1 1 1 1 1 1 1 1
+     0 1 2 3 0 1 2 3 0
+     0 1 0 1 0 1 0 1 0
+     0 1 0 3 0 1 0 3 0
+     0 1 0 1 0 1 0 1 0
+     0 1 0 3 0 1 0 3 0
+     0 1 0 1 0 1 0 1 0
+                       ┘
+
+## notice the bottom right, 0 1 0 of a (𝕩) matches the 0‿1‿0 of 𝕨, hence the 1
+## in the bottom right corner of the result
+(0‿3‿0≍0‿1‿0) ⍷ a
+   ┌─
+   ╵ 0 0 0 0 0 0 0
+     0 0 0 0 0 0 0
+     0 0 0 0 0 0 0
+     0 0 1 0 0 0 1
+     0 0 0 0 0 0 0
+     0 0 1 0 0 0 1
+                   ┘
+
+## 𝕨 is allowed to be smaller rank than 𝕩, in this case the leading axes of 𝕩
+## are mapped over so that axes of 𝕨 correspond to trailing axes of 𝕩
+0‿1‿0‿1 ⍷ a
+   ┌─
+   ╵ 0 0 0 0 0 0
+     0 0 0 0 0 0
+     1 0 1 0 1 0
+     0 0 0 0 0 0
+     1 0 1 0 1 0
+     0 0 0 0 0 0
+     1 0 1 0 1 0
+                 ┘"]
 ))
 
 
