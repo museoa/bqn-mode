@@ -2847,6 +2847,65 @@ at ⟨⟨2,3⟩,1⟩ ⊑ a
 ## matches so ≠𝕨 is used.
 \"aaabb\" ⊒ \"ababababab\"
    ⟨ 0 3 1 4 2 5 5 5 5 5 ⟩"]
+
+      ;; ================================================
+      ;; Mark Firsts
+"∊"
+
+["Monad: Mark Firsts | Dyad: Member of | Input: \\e"
+
+ "∊ is a function.
+  Its monadic form returns a list of numbers, where each number is either a 0,
+    if the major cell of 𝕩 is a duplicate of a previous cell, or 1 otherwise.
+  Its dyadic form returns a list of numbers of length ≠𝕨, each number is either
+    a 0 or 1. A 1 indicates an entry of 𝕨 matches some entry in 𝕩, a 0 otherwise.
+  Note: see related function, ⍷ (Deduplicate)"
+
+
+ "Examples:
+
+## Monadic form
+∊   3‿1‿4‿1‿5‿9‿2‿6‿5
+   ⟨ 1 1 1 0 1 1 1 1 0 ⟩     # notice the first duplicate 1, corresponds to a 0
+
+## once can implement ⍷ (Deduplicate) in terms of ∊
+∊⊸/ 3‿1‿4‿1‿5‿9‿2‿6‿5
+   ⟨ 3 1 4 5 9 2 6 ⟩
+
+⍷ 3‿1‿4‿1‿5‿9‿2‿6‿5
+   ⟨ 3 1 4 5 9 2 6 ⟩
+
+## use ¬∘∊⊸/ to remove the first of each value, leaving only the duplicates
+¬∘∊⊸/ 3‿1‿4‿1‿5‿9‿2‿6‿5‿5
+   ⟨ 1 5 5 ⟩
+
+## use ∧´∊ to check if an array does not have duplicates
+∧´∊ 3‿1‿4‿1‿5‿9‿2‿6‿5‿5
+   0                         # thus we have duplicates in the input
+
+## use +´∊ to count the number of unique cells
+≠ 3‿1‿4‿1‿5‿9‿2‿6‿5‿5
+   10                        # 10 elements
+
++´∊ 3‿1‿4‿1‿5‿9‿2‿6‿5‿5
+   7                         # with 7 uniques
+
+## use ∊∧∊⌾⌽ to mark the elements that appear exactly once
+(∊∧∊⌾⌽) \"duck\"‿\"duck\"‿\"teal\"‿\"duck\"‿\"goose\"
+   ⟨ 0 0 1 0 1 ⟩
+
+
+## Dyadic form
+## results are independent of the ordering of 𝕩
+\"green\"‿\"bricks\"‿\"cow\"‿\"blue\" ∊ \"red\"‿\"green\"‿\"blue\"
+   ⟨ 1 0 0 1 ⟩
+
+## use ∊ in a train for set difference and intersection
+\"initial set\" (∊/⊣) \"intersect\"     # Keep 𝕩
+   \"initiset\"
+
+\"initial set\" (¬∘∊/⊣) \"difference\"  # Remove 𝕩
+   \"tal st\""]
 ))
 
 
