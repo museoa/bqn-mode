@@ -26,6 +26,7 @@
 
 (require 'bqn-symbols)
 (require 'bqn-symbols-doc)
+(require 'bqn-syntax)       ; for font-lock in doc mode
 (require 'cl-lib)
 
 ;; Eldoc functions
@@ -56,7 +57,9 @@
 (define-derived-mode bqn-help-documentation-mode fundamental-mode
   "BQN Documentation"
   "Major mode for displaying BQN documentation"
-  (use-local-map bqn-help-documentation-mode-map))
+  (use-local-map bqn-help-documentation-mode-map)
+  (setq-local font-lock-defaults bqn--token-syntax-types)
+  (setq-local eldoc-documentation-function 'bqn-help--eldoc))
 
 ;; General interactive help
 ;; TODO: a custom face for documentation
