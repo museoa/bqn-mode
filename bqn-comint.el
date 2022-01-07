@@ -160,7 +160,6 @@ When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was
   (set (make-local-variable 'paragraph-start) bqn-comint-prompt-regexp))
 
 (add-hook 'bqn-inferior-mode-hook 'bqn-inferior--initialize)
-(add-hook 'bqn-inferior-mode-hook 'bqn-init)
 
 (defun bqn-keymap-mode-kill-buffer ()
   "Close the buffer displaying the keymap."
