@@ -9,20 +9,26 @@
 (require 'comint)
 (require 'bqn-syntax)
 
-(defvar bqn-interpreter-path "BQN"
-  "Path to the BQN interpreter used by `run-bqn`.")
+(defcustom bqn-interpreter-path "bqn"
+  "Path to the BQN interpreter used by `run-bqn`."
+  :type 'string
+  :group 'bqn)
 
-(defvar bqn-interpreter-arguments '()
-  "Commandline arguments to pass to the BQN interpreter.")
+(defcustom bqn-interpreter-arguments '()
+  "Commandline arguments to pass to the BQN interpreter."
+  :type 'string
+  :group 'bqn)
 
 (defvar bqn-comint-mode-map
   (let ((map (nconc (make-sparse-keymap) comint-mode-map)))
     ;; add keymaps here
     map)
-  "Basic mode to run BQN.")
+  "Basic keymap for the mode running BQN.")
 
-(defvar bqn-comint-prompt-regexp "^   "
-  "Prompt for BQN.")
+(defcustom bqn-comint-prompt-regexp "^   "
+  "Prompt for BQN."
+  :type 'regexp
+  :group 'bqn)
 
 (defvar bqn-keyboard-map
   "
@@ -101,28 +107,42 @@ If it doesn't exist, create and return it; else, return the existing one."
       (switch-to-buffer-other-window *bqn-process-buffer-name*)
       (bqn-inferior-mode)
       (set-input-method "BQN-Z"))))
-
-(defun bqn-process-execute-region (start end &optional dont-follow)
-  "Send the current region to the bqn-process-session.
-
-When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was called from."
+(defun bqn-process-execute-region (start end &optional dont-follow return-output)
   (interactive "r")
-  (when (= start end)
-    (error
-     (concat "Attempt to send empty region to "
-             *bqn-process-buffer-name*)))
-  (when bqn-flash-on-send
-    (bqn--flash-region start end))
   (let ((region (buffer-substring-no-properties start end))
         (session (bqn-process-ensure-session))
         (buffer (current-buffer)))
-    (pop-to-buffer (process-buffer session))
-    (goto-char (point-max))
-    (insert (format "\n%s\n" region))
-    (comint-send-input)
-    (when (or dont-follow nil)
-      (pop-to-buffer buffer))))
+    (bqn-process-execute-region-setup start end session region)
+    (bqn-process-execute-region-execute buffer)))
+(defun bqn-process-execute-region-setup (start end session region)
+  (when (= start end) (error (concat "Attempt to send empty region to "
+                                     *bqn-process-buffer-name*)))
+  (when bqn-flash-on-send (bqn--flash-region start end))
+  (pop-to-buffer (process-buffer session))
+  (goto-char (point-max))
+  (insert (bqn-format-for-comint region return-output)))
 
+(defun bqn-process-execute-region-execute (buffer)
+  (let ((start-of-output (+ (point) 1)))
+    (comint-send-input)
+    (let ((result (buffer-substring-no-properties start-of-output (point-max))))
+      (when (or dont-follow nil)
+        (pop-to-buffer buffer))
+      result)))
+(defun bqn-format-for-comint (code return-output)
+  (let ((prefix (if return-output ")escaped \")r " ")escaped \""))
+        (suffix "\""))
+    (string-join (list prefix
+                       (bqn-escape-for-comint code)
+                       suffix))))
+(defun bqn-escape-for-comint (code)
+  (replace-in-string "\n" "\\n"
+                     (replace-in-string "\"" "\\\""
+                                        (replace-in-string "\\" "\\\\" code))))
+(defun bqn-process-execute-region-and-follow()
+  "Send the currently active region to the BQN process and focus BQN process buffer."
+  (interactive)
+  (bqn-process-execute-region (region-beginning) (region-end)))
 (defun bqn-process-execute-line-and-follow ()
   "Send the current line to BQN process and focus BQN process buffer."
   (interactive)
