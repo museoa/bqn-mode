@@ -16,6 +16,8 @@
 (require 'bqn-syntax)
 (require 'bqn-comint)
 (require 'bqn-help)
+(require 'bqn-keyboard)
+(require 'bqn-glyphs)
 
 ;;;###autoload
 (defgroup bqn nil
