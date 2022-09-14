@@ -17,6 +17,8 @@
 ;;
 ;;; Code:
 
+(require 'subr-x)
+
 ;; a hash and array is not very emacs-lisp-y but because this will be user
 ;; facing, so we want the lowest latency possible. This hash should be treated
 ;; as read-only.
