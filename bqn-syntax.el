@@ -19,42 +19,50 @@
   :group 'bqn)
 
 (defface bqn-list-face
-  '((t (:inherit font-lock-builtin-face)))
+  '((t (:inherit font-lock-builtin-face
+        :family "BQN386 Unicode")))
   "Face used for BQN list characters: angle brackets and ligature."
   :group 'bqn)
 
 (defface bqn-separator-face
-  '((t (:inherit font-lock-builtin-face)))
+  '((t (:inherit font-lock-builtin-face
+        :family "BQN386 Unicode")))
   "Face used for BQN expression separators."
   :group 'bqn)
 
 (defface bqn-arrow-face
-  '((t (:inherit 'default)))
+  '((t (:inherit 'default
+        :family "BQN386 Unicode")))
   "Face used for BQN assignment and return arrows."
   :group 'bqn)
 
 (defface bqn-function-face
-  '((t (:inherit font-lock-type-face)))
+  '((t (:inherit font-lock-type-face
+        :family "BQN386 Unicode")))
   "Face used for BQN functions."
   :group 'bqn)
 
 (defface bqn-one-modifier-face
-  '((t (:inherit font-lock-preprocessor-face)))
+  '((t (:inherit font-lock-preprocessor-face
+        :family "BQN386 Unicode")))
   "Face used for BQN 1-modifiers."
   :group 'bqn)
 
 (defface bqn-two-modifier-face
-  '((t (:inherit font-lock-keyword-face)))
+  '((t (:inherit font-lock-keyword-face
+        :family "BQN386 Unicode")))
   "Face used for BQN 2-modifiers."
   :group 'bqn)
 
 (defface bqn-subject-face
-  '((t (:inherit font-lock-variable-name-face)))
+  '((t (:inherit font-lock-variable-name-face
+        :family "BQN386 Unicode")))
   "Face used for BQN subjects."
   :group 'bqn)
 
 (defface bqn-nothing-face
-  '((t (:inherit font-lock-constant-face)))
+  '((t (:inherit font-lock-constant-face
+        :family "BQN386 Unicode")))
   "Face used for BQN Nothing (·)."
   :group 'bqn)
 
