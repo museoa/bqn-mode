@@ -9,20 +9,21 @@
 (require 'comint)
 (require 'bqn-syntax)
 
-(defvar bqn-interpreter-path "BQN"
-  "Path to the BQN interpreter used by `run-bqn`.")
+(defcustom bqn-interpreter-path "bqn"
+  "Path to the BQN interpreter used by `run-bqn`."
+  :type 'string
+  :group 'bqn)
 
-(defvar bqn-interpreter-arguments '()
-  "Commandline arguments to pass to the BQN interpreter.")
+(defcustom bqn-interpreter-arguments '()
+  "Commandline arguments to pass to the BQN interpreter."
+  :type 'string
+  :group 'bqn)
 
 (defvar bqn-comint-mode-map
   (let ((map (nconc (make-sparse-keymap) comint-mode-map)))
     ;; add keymaps here
     map)
   "Basic mode to run BQN.")
-
-(defvar bqn-comint-prompt-regexp "^   "
-  "Prompt for BQN.")
 
 (defvar bqn-keyboard-map
   "
@@ -51,6 +52,10 @@
     (define-key map (kbd "q") 'bqn-keymap-mode-kill-buffer)
     map)
   "Keymap for keymap mode buffers.")
+(defcustom bqn-comint-prompt-regexp "^   "
+  "Prompt for BQN."
+  :type 'regexp
+  :group 'bqn)
 
 (defvar bqn--process-name "BQN"
   "Name of BQN comint process")
