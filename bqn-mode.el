@@ -1,6 +1,6 @@
 ;;; bqn-mode.el --- Emacs mode for BQN -*- lexical-binding: t -*-
 
-;; BQN's emacs mode is derived from gnu-apl-mode,
+;; Emacs bqn-mode is derived from gnu-apl-mode,
 ;; which is copyright 2013-2015 Elias Mårtenson <lokedhs@gmail.com>.
 ;; Changes are copyright 2021 Marshall Lochbaum <mwlochbaum@gmail.com>.
 
