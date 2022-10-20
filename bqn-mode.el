@@ -5,7 +5,7 @@
 ;; Changes are copyright 2021 Marshall Lochbaum <mwlochbaum@gmail.com>.
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
-;; Version: 0.1.0
+;; Version: 0.0.0
 ;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
 ;; URL: https://github.com/museoa/bqn-mode
 
