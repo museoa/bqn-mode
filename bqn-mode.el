@@ -1,14 +1,23 @@
-;;; bqn-mode --- Emacs mode for BQN -*- lexical-binding: t -*-
-;;;
+;;; bqn-mode.el --- Emacs mode for BQN -*- lexical-binding: t -*-
+
+;; Emacs bqn-mode is derived from gnu-apl-mode,
+;; which is copyright 2013-2015 Elias Mårtenson <lokedhs@gmail.com>.
+;; Changes are copyright 2021 Marshall Lochbaum <mwlochbaum@gmail.com>.
+
+;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
+;; Version: 0.0.0
+;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
+;; URL: https://github.com/museoa/bqn-mode
+
 ;;; Commentary:
-;;;
-;;; Emacs mode for BQN: currently keymap only
-;;;
-;;; There are two ways to access the BQN keymap:
-;;; - When editing a BQN file, use keys with the super (s-) modifier.
-;;; - Enable backslash prefixes by entering C-\ (‘toggle-input-method’)
-;;;   then BQN-Z. Then enter backslash \ before a key.
-;;;
+
+;; Emacs mode for BQN: currently keymap only
+
+;; There are two ways to access the BQN keymap:
+;; - When editing a BQN file, use keys with the super (s-) modifier.
+;; - Enable backslash prefixes by entering C-\ (‘toggle-input-method’)
+;;   then BQN-Z. Then enter backslash \ before a key.
+
 ;;; Code:
 
 (require 'bqn-input)
@@ -45,3 +54,4 @@
   (speedbar-add-supported-extension ".bqn"))
 
 (provide 'bqn-mode)
+;;; bqn-mode.el ends here
