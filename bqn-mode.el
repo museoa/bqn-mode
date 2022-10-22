@@ -6,7 +6,7 @@
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.0.0
-;; Package-Requires: ((emacs "24") (cl-lib "0.5"))
+;; Package-Requires: ((emacs "24.3"))
 ;; URL: https://github.com/museoa/bqn-mode
 
 ;;; Commentary:
@@ -49,9 +49,6 @@
 
 ;;;###autoload
 (add-to-list 'interpreter-mode-alist '("bqn" . bqn-mode))
-
-(with-eval-after-load 'speedbar
-  (speedbar-add-supported-extension ".bqn"))
 
 (provide 'bqn-mode)
 ;;; bqn-mode.el ends here
