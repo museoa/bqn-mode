@@ -82,7 +82,8 @@ If it doesn't exist, create and return it; else, return the existing one."
 (defun bqn-process-execute-region (start end &optional dont-follow)
   "Send the current region to the bqn-process-session.
 
-When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was called from."
+When DONT-FOLLOW is non-nil, maintain focus on the buffer where
+the function was called from."
   (interactive "r")
   (when (= start end)
     (error
@@ -103,7 +104,7 @@ When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was
 (defun bqn-process-execute-line-and-follow ()
   "Send the current line to BQN process and focus BQN process buffer."
   (interactive)
-  (bqn-process-execute-region (point-at-bol) (point-at-eol)))
+  (bqn-process-execute-region (line-beginning-position) (line-end-position)))
 
 (defun bqn-process-execute-buffer-and-follow ()
   "Send the current buffer to BQN process and focus BQN process buffer"
@@ -113,7 +114,7 @@ When DONT-FOLLOW is non-nil, maintain focus on the buffer where the function was
 (defun bqn-process-execute-line ()
   "Send the line, which contains point, to the BQN process"
   (interactive)
-  (bqn-process-execute-region (point-at-bol) (point-at-eol) t))
+  (bqn-process-execute-region (line-beginning-position) (line-end-position) t))
 
 (defun bqn-process-execute-buffer ()
   "Send the current buffer to BQN process"
