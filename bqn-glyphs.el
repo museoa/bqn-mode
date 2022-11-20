@@ -72,4 +72,9 @@
 
 (provide 'bqn-glyphs)
 
+;; Local Variables:
+;; coding: utf-8-unix
+;; indent-tabs-mode: nil
+;; End:
+
 ;;; bqn-glyphs.el ends here
