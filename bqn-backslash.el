@@ -44,3 +44,10 @@
   :set #'bqn--update-key-prefix)
 
 (provide 'bqn-backslash)
+
+;; Local Variables:
+;; coding: utf-8-unix
+;; indent-tabs-mode: nil
+;; End:
+
+;;; bqn-backslash.el ends here
