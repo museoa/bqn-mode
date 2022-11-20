@@ -104,3 +104,10 @@
   "Syntax table for ‘bqn-mode’.")
 
 (provide 'bqn-syntax)
+
+;; Local Variables:
+;; coding: utf-8-unix
+;; indent-tabs-mode: nil
+;; End:
+
+;;; bqn-syntax.el ends here
