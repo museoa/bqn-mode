@@ -63,4 +63,9 @@
 
 (provide 'bqn-keyboard)
 
+;; Local Variables:
+;; coding: utf-8-unix
+;; indent-tabs-mode: nil
+;; End:
+
 ;;; bqn-keyboard.el ends here
