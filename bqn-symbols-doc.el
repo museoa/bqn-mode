@@ -3225,4 +3225,10 @@ at \"hello\" MyError 0
   (bqn-symbols-doc--get-doc symbol :extra))
 
 (provide 'bqn-symbols-doc)
+
+;; Local Variables:
+;; coding: utf-8-unix
+;; indent-tabs-mode: nil
+;; End:
+
 ;;; bqn-symbols-doc.el ends here
