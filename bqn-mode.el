@@ -51,4 +51,10 @@
 (add-to-list 'interpreter-mode-alist '("bqn" . bqn-mode))
 
 (provide 'bqn-mode)
+
+;; Local Variables:
+;; coding: utf-8-unix
+;; indent-tabs-mode: nil
+;; End:
+
 ;;; bqn-mode.el ends here
