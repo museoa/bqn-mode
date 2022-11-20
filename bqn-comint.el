@@ -140,4 +140,10 @@ the function was called from."
 (add-hook 'bqn-inferior-mode-hook 'bqn-inferior--initialize)
 
 (provide 'bqn-comint)
+
+;; Local Variables:
+;; coding: utf-8-unix
+;; indent-tabs-mode: nil
+;; End:
+
 ;;; bqn-comint.el ends here
