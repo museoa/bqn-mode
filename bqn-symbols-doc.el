@@ -3153,7 +3153,7 @@ countries ≍˘ co countries⊸(⊐∾≠∘⊣)⊸⊔ ln
  "! is a function.
   Its monadic form tests that 𝕩 is 1, if it is then it returns 𝕩, otherwise it
     throws an Error.
-  Its dyadic form returns returns a message with the error thrown.
+  Its dyadic form returns a message with the error thrown.
   Note: (Assert) the right argument must be exactly 1, or 0."
 
 
