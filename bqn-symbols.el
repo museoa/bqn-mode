@@ -1,6 +1,19 @@
+;;; bqn-symbols.el --- BQN symbols
 ;;; -*- lexical-binding: t -*-
 
-(defvar bqn--symbols '(;; Top row
+;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "24.3"))
+;; URL: https://github.com/museoa/bqn-mode
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+;;; Commentary:
+
+;; This package provides a list of all BQN symbols.
+
+;;; Code:
+
+(defvar bqn-symbols--list '(;; Top row
                        ;; `
                        ("high-tilde" "˜" ?`)
                        ("logical-not" "¬" ?~)
@@ -140,8 +153,7 @@
                        ("left-double-arrow" "⇐" ??)
 
                        ;; Space bar
-                       ("ligature" "‿" ? )
-                       ))
+                       ("ligature" "‿" ? )))
 
 (provide 'bqn-symbols)
 
