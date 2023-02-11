@@ -8,7 +8,7 @@
 
 ;;; Commentary:
 
-;; This package provides a major mode for displaying the BQN keyboard reference.
+;; This package provides a major mode for displaying the BQN keymap reference.
 
 ;;; Code:
 
