@@ -1,8 +1,21 @@
+;;; bqn-key-prefix.el --- BQN input key prefix bindings
 ;;; -*- lexical-binding: t -*-
+
+;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "24.3"))
+;; URL: https://github.com/museoa/bqn-mode
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+;;; Commentary:
+;; This package provides functions to get and set the key prefix used to start
+;; BQN symbol input.
 
 (require 'cl-lib)
 (require 'quail)
 (require 'bqn-symbols)
+
+;;; Code:
 
 (quail-define-package "BQN-Z" "UTF-8" "⍉" t
                       "Input mode for BQN"
@@ -19,35 +32,37 @@
                       t                 ; simple
                       )
 
-(defvar bqn--transcription-alist)
-(defun bqn--update-key-prefix (symbol new)
+(defvar bqn-key-prefix--transcription-alist)
+(defun bqn-key-prefix--set (prefix new)
+  "Set a key PREFIX to the NEW one."
   (quail-select-package "BQN-Z")
   (quail-install-map
    (let* ((prefix (string new))
-          (bqn--transcription-alist
-           (cl-loop for command in bqn--symbols
+          (bqn-key-prefix--transcription-alist
+           (cl-loop for command in bqn-symbols--list
                     collect (cons (concat prefix (char-to-string (cl-third command)))
                                   (cl-second command)))))
      (quail-map-from-table
-      '((default bqn--transcription-alist)))))
-  (set-default symbol new))
+      '((default bqn-key-prefix--transcription-alist)))))
+  (set-default prefix new))
 
-(defun bqn--initialize-key-prefix (symbol new)
-  (custom-initialize-default symbol new)
-  (bqn--update-key-prefix symbol (eval new)))
+(defun bqn-key-prefix--initialize (prefix new)
+  "Initialize the key PREFIX with the NEW one."
+  (custom-initialize-default prefix new)
+  (bqn-key-prefix--set prefix (eval new)))
 
 (defcustom bqn-key-prefix ?\\
   "Set a character to serve as prefix key for BQN symbol input."
   :type 'character
   :group 'bqn
-  :initialize #'bqn--initialize-key-prefix
-  :set #'bqn--update-key-prefix)
+  :initialize #'bqn-key-prefix--initialize
+  :set #'bqn-key-prefix--set)
 
-(provide 'bqn-backslash)
+(provide 'bqn-key-prefix)
 
 ;; Local Variables:
 ;; coding: utf-8-unix
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; bqn-backslash.el ends here
+;;; bqn-key-prefix.el ends here

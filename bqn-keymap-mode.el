@@ -1,29 +1,35 @@
-;;; bqn-keyboard --- BQN Keyboard Reference
-;;;
+;;; bqn-keymap-mode.el --- BQN Keyboard Reference
+
+;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "24.3"))
+;; URL: https://github.com/museoa/bqn-mode
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
 ;;; Commentary:
-;;;
+
+;; This package provides a major mode for displaying the BQN keyboard reference.
+
 ;;; Code:
 
-(defvar bqn-keyboard-map
-  "
-┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬─────────┐
+(defvar bqn-keymap-mode-reference
+  "┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬─────────┐
 │~ ¬ │! ⎉ │@ ⚇ │# ⍟ │$ ◶ │% ⊘ │^ ⎊ │& ⍎ │* ⍕ │( ⟨ │) ⟩ │_ √ │+ ⋆ │Backspace│
 │` ˜ │1 ˘ │2 ¨ │3 ⁼ │4 ⌜ │5 ´ │6 ˝ │7   │8 ∞ │9 ¯ │0 • │- ÷ │= × │         │
 ├────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬──────┤
 │Tab    │Q ↙ │W 𝕎 │E ⍷ │R 𝕣 │T ⍋ │Y   │U   │I ⊑ │O ⊒ │P ⍳ │{ ⊣ │} ⊢ │|     │
 │       │q ⌽ │w 𝕨 │e ∊ │r ↑ │t ∧ │y   │u ⊔ │i ⊏ │o ⊐ │p π │[ ← │] → │\\     │
-├───────┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴─┬──┴──────┤
-│Caps    │A ↖ │S 𝕊 │D   │F 𝔽 │G 𝔾 │H « │J   │K ⌾ │L » │: · │\" ˙  │Enter    │
-│Lock    │a ⍉ │s 𝕤 │d ↕ │f 𝕗 │g 𝕘 │h ⊸ │j ∘ │k ○ │l ⟜ │; ⋄ │' ↩  │         │
-├────────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬──┴─────────┤
+├───────┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴──────┤
+│Caps    │A ↖ │S 𝕊 │D   │F 𝔽 │G 𝔾 │H « │J   │K ⌾ │L » │: · │\" ˙ │Enter     │
+│Lock    │a ⍉ │s 𝕤 │d ↕ │f 𝕗 │g 𝕘 │h ⊸ │j ∘ │k ○ │l ⟜ │; ⋄ │' ↩ │          │
+├────────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──────────┤
 │Shift      │Z ⋈ │X 𝕏 │C   │V ⍒ │B ⌈ │N   │M ≢ │< ≤ │> ≥ │? ⇐ │Shift       │
 │           │z ⥊ │x 𝕩 │c ↓ │v ∨ │b ⌊ │n   │m ≡ │, ∾ │. ≍ │/ ≠ │            │
 └───────────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────────────┘
-                             Space: ‿
-"
+                             Space: ‿"
   "Keyboard map for BQN.")
 
-(defvar *bqn-keymap-buffer-name* "*BQN keymap*"
+(defvar bqn-keymap-mode-*buffer-name* "*BQN keymap*"
   "Name of the BQN keymap buffer.")
 
 (defvar bqn-keymap-mode-map
@@ -35,21 +41,21 @@
 (defun bqn-keymap-mode-kill-buffer ()
   "Close the buffer displaying the keymap."
   (interactive)
-  (let ((buffer (get-buffer *bqn-keymap-buffer-name*)))
+  (let ((buffer (get-buffer bqn-keymap-mode-*buffer-name*)))
     (when buffer
       (delete-windows-on buffer)
       (kill-buffer buffer))))
 
-(defun bqn-show-keyboard ()
+(defun bqn-keymap-mode-show-keyboard ()
   "Display the keyboard help."
   (interactive)
-  (let ((keyboard-help (get-buffer *bqn-keymap-buffer-name*)))
+  (let ((keyboard-help (get-buffer bqn-keymap-mode-*buffer-name*)))
     (unless (and keyboard-help (get-buffer-window keyboard-help))
       ;; The buffer is not displayed.
-      (let* ((buffer (get-buffer-create *bqn-keymap-buffer-name*))
+      (let* ((buffer (get-buffer-create bqn-keymap-mode-*buffer-name*))
 	         (window (split-window nil)))
 	    (with-current-buffer buffer
-	      (insert bqn-keyboard-map)
+	      (insert bqn-keymap-mode-reference)
 	      (goto-char (point-min))
 	      (bqn-keymap-mode))
         (set-window-buffer window buffer)
@@ -61,11 +67,11 @@
   (read-only-mode 1)
   (setq truncate-lines t))
 
-(provide 'bqn-keyboard)
+(provide 'bqn-keymap-mode)
 
 ;; Local Variables:
 ;; coding: utf-8-unix
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; bqn-keyboard.el ends here
+;;; bqn-keymap-mode.el ends here

@@ -9,6 +9,8 @@
 ;; Version: 0.0.1
 ;; Keywords: convenience data docs
 ;; Package-Requires: ((emacs "25.1"))
+;; URL: https://github.com/museoa/bqn-mode
+;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
@@ -2118,7 +2120,7 @@ a322 ← 3‿2‿2⥊↕12
            ┘
 
 ⋈⟜⍉ a322
-   ┌─                      
+   ┌─
    · ┌─        ┌─
      ╎  0  1   ╎ 0 4  8
         2  3     1 5  9
@@ -2584,7 +2586,7 @@ at ⊏ 'a'
      ABCD
 
     ·ABCD
-     0123\" 
+     0123\"
           ┘
 
 ## 𝕨 can apply to mulitple axes of 𝕩 simultaneously, only if 𝕨 is a non-empty
@@ -3192,36 +3194,35 @@ MyError ← {𝕨 \"My custom error\"⊸!⍟(1⊸≢) 𝕩}
 at MyError ← {𝕨 \"My custom error\"⊸!⍟(1⊸≢) 𝕩}
                 ^^^^^^^^^^^^^^^^^^^^^^^^^
 at \"hello\" MyError 0
-           ^^^^^^^"]
-))
+           ^^^^^^^"]))
 
 
-  "Table which associates BQN symbols as hash-keys to a 3-vector of docstrings
-  where: position 0 is short description for eldoc, position 1 is a long
-  description, position 2 is any extra description")
+  "This table associates BQN symbols as hash-keys to a 3-vector of docstrings.
+Position 0 is short description for eldoc, position 1 is a long description,
+and position 2 is any extra description.")
 
 (defun bqn-symbols-doc--symbols ()
-  "Return a list of bqn symbols we have docs for"
+  "Return a list of bqn symbols for which we have docs."
   (hash-table-keys bqn-symbols-doc--symbol-doc-table))
 
 (defun bqn-symbols-doc--get-doc (symbol doc)
-  "Given a stringp SYMBOL, and a keywordp DOC, retrieve a docstring for SYMBOL,
-   or nil if no docstring is found"
+  "Retrieve a docstring for SYMBOL, given a stringp SYMBOL and a keywordp DOC.
+Return nil if no docstring is found."
   (when-let (docs (gethash symbol bqn-symbols-doc--symbol-doc-table))
     (cond ((equal doc :short) (aref docs 0))
           ((equal doc :long)  (aref docs 1))
           ((equal doc :extra) (aref docs 2)))))
 
 (defun bqn-symbols-doc-get-short-doc (symbol)
-  "Given SYMBOL as stringp, retrieve a single-line doc string for SYMBOL, or nil"
+  "Given SYMBOL as stringp, retrieve a single-line doc string for SYMBOL, or nil."
   (bqn-symbols-doc--get-doc symbol :short))
 
 (defun bqn-symbols-doc-get-long-doc (symbol)
-  "Given SYMBOL as stringp, retrieve a multi-line doc string for SYMBOL, or nil"
+  "Given SYMBOL as stringp, retrieve a multi-line doc string for SYMBOL, or nil."
   (bqn-symbols-doc--get-doc symbol :long))
 
 (defun bqn-symbols-doc-get-extra-doc (symbol)
-  "Given SYMBOL as stringp, retrieve a extra doc string for SYMBOL, or nil"
+  "Given SYMBOL as stringp, retrieve a extra doc string for SYMBOL, or nil."
   (bqn-symbols-doc--get-doc symbol :extra))
 
 (provide 'bqn-symbols-doc)

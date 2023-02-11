@@ -1,4 +1,4 @@
-;; bqn-help.el --- Help for BQN mode -*- lexical-binding: t; -*-
+;;; bqn-help.el --- Help for BQN mode -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2021 Jeff Young
 ;;
@@ -8,10 +8,13 @@
 ;; Modified: October 29, 2021
 ;; Version: 0.0.1
 ;; Package-Requires: ((emacs "26.1"))
+;; SPDX-License-Identifier: GPL-3.0-or-later
+;; URL: https://github.com/museoa/bqn-mode
 ;;
 ;; This file is not part of GNU Emacs.
-;;
-;;  Description
+
+;;; Commentary:
+
 ;;  This module does two things:
 ;;    1. Ties documentation functions from bqn-symbols-doc to eldoc mode
 ;;    2. Implements simple interactive documentation functions for help-at-point
@@ -22,6 +25,7 @@
 ;;    2. font-face for documentation
 ;;    3. searchable markdown documentation from bqn source repo
 ;;    4. Add glossary
+
 ;;; Code:
 
 (require 'bqn-symbols)
@@ -32,19 +36,19 @@
 ;; Eldoc functions
 (defvar bqn-help--function-regexp
   (regexp-opt
-   (let* ((symbols (mapcar #'cadr bqn--symbols))
+   (let* ((symbols (mapcar #'cadr bqn-symbols--list))
           (others  (bqn-symbols-doc--symbols)))
      (cl-union symbols others)))
-  "Regex to match BQN functions")
+  "Regex to match BQN functions.")
 
 (defun bqn-help--eldoc ()
-  "Returns doc string for thing at point, or nil."
+  "Return the doc string for the thing at point, or nil."
   (when (looking-at bqn-help--function-regexp)
     (bqn-symbols-doc-get-short-doc (match-string 0))))
 
 ;;; Help functions
 (defun bqn-help--close-documentation-buffer ()
-  "Close the active documentation window"
+  "Close the active documentation window."
   (interactive)
   (quit-window))
 
@@ -52,35 +56,35 @@
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "q") 'bqn-help--close-documentation-buffer)
     map)
-  "Keymap for documentation buffers")
+  "Keymap for documentation buffers.")
 
 (define-derived-mode bqn-help-documentation-mode fundamental-mode
   "BQN Documentation"
-  "Major mode for displaying BQN documentation"
+  "Major mode for displaying BQN documentation."
   (use-local-map bqn-help-documentation-mode-map)
-  (setq-local font-lock-defaults bqn--token-syntax-types)
+  (setq-local font-lock-defaults bqn-syntax--token-types)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc))
 
 ;; General interactive help
 ;; TODO: a custom face for documentation
-(defvar *bqn-help-documentation-buffer-name* "*bqn-help*")
+(defvar bqn-help-*documentation-buffer-name* "*bqn-help*")
 
 (defun bqn-help--bqn-symbols-info (test)
-  "Given a functionp, TEST, find entry for THING in BQN--SYMBOLS using TEST."
-  (seq-filter test bqn--symbols))
+  "Find entry in `bqn-symbols--list' using the filter functionp TEST."
+  (seq-filter test bqn-symbols--list))
 
 (defun bqn-help-symbol-at-point-is-called ()
-  "Show the canonical name of the symbol at point in the minibuffer"
+  "Show the canonical name of the symbol at point in the minibuffer."
   (interactive)
-  (when (looking-at bqn-help--function-regexp))
-  (if-let* ((symbol (match-string 0))
-            (result (bqn-help--bqn-symbols-info
-                     (lambda (v) (equal (cadr v) symbol)))))
-      (message (format "We call symbol %s %s" symbol (caar result)))
-    (message (format "No name for %s found" symbol))))
+  (when (looking-at bqn-help--function-regexp)
+    (if-let* ((symbol (match-string 0))
+              (result (bqn-help--bqn-symbols-info
+                       (lambda (v) (equal (cadr v) symbol)))))
+        (message (format "We call symbol %s %s" symbol (caar result)))
+      (message (format "No name for %s found" symbol)))))
 
 (defun bqn-help-symbol-info-at-point ()
-  "Get multi-line documentation for the thing at point, or nil"
+  "Get multi-line documentation for the thing at point, or nil."
   (interactive)
   (when (looking-at bqn-help--function-regexp)
     (if-let* ((symbol (match-string 0))
@@ -88,7 +92,7 @@
               (extra  (bqn-symbols-doc-get-extra-doc symbol))
               (sep    "\n\n========================================\n\n")
               (doc-buffer (get-buffer-create
-                           *bqn-help-documentation-buffer-name*)))
+                           bqn-help-*documentation-buffer-name*)))
         (with-current-buffer doc-buffer ;; we have a hit
           (read-only-mode 0)            ; set read only
           (delete-region (point-min) (point-max))
@@ -109,3 +113,7 @@
 ;; End:
 
 ;; bqn-help.el ends here
+
+(provide 'bqn-help)
+
+;;; bqn-help.el ends here
