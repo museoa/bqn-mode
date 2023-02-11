@@ -5,9 +5,10 @@
 ;; Changes are copyright 2021 Marshall Lochbaum <mwlochbaum@gmail.com>.
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
-;; Version: 0.0.0
+;; Version: 0.1.0
 ;; Package-Requires: ((emacs "24.3"))
 ;; URL: https://github.com/museoa/bqn-mode
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;;; Commentary:
 
@@ -20,13 +21,13 @@
 
 ;;; Code:
 
-(require 'bqn-input)
-(require 'bqn-backslash)
+(require 'bqn-mode-map)
+(require 'bqn-key-prefix)
 (require 'bqn-syntax)
 (require 'bqn-comint)
 (require 'bqn-help)
-(require 'bqn-glyphs)
-(require 'bqn-keyboard)
+(require 'bqn-glyph-mode)
+(require 'bqn-keymap-mode)
 
 ;;;###autoload
 (defgroup bqn nil
@@ -37,10 +38,10 @@
 ;;;###autoload
 (define-derived-mode bqn-mode prog-mode "BQN"
   "Major mode for editing BQN files."
-  :syntax-table bqn--syntax-table
+  :syntax-table bqn-syntax--table
   :group 'bqn
-  (use-local-map bqn--mode-map)
-  (setq-local font-lock-defaults bqn--token-syntax-types)
+  (use-local-map bqn-mode-map--keymap)
+  (setq-local font-lock-defaults bqn-syntax--token-types)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc)
   (setq-local comment-start "# "))
 

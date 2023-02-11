@@ -1,10 +1,19 @@
-;;; bqn-glyphs --- BQN glyph reference
-;;;
+;;; bqn-glyph-mode.el --- BQN glyph reference
+
+;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "24.3"))
+;; URL: https://github.com/museoa/bqn-mode
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
 ;;; Commentary:
-;;;
+
+;; This package provides a major mode to show a BQN glyphs lookup table
+;; reference.
+
 ;;; Code:
 
-(defvar bqn-glyphs
+(defvar bqn-glyph-mode-reference
   "┌───┬────────────────┬──────────────┬───┬──────────────────┬────────────────┐
 │ @ │ Monadic        │ Dyadic       │ @ │ Monadic          │ Dyadic         │
 ├───┼────────────────┼──────────────┼───┼──────────────────┼────────────────┤
@@ -31,9 +40,9 @@
 │ ⊣ │ Identity       │ Left         │ ⊔ │ Group Indices    │ Group          │
 │ ⊢ │ Identity       │ Right        │ ! │ Assert           │ Assert Message │
 └───┴────────────────┴──────────────┴───┴──────────────────┴────────────────┘"
-  "Glyph Lookup Table for BQN." )
+  "Glyph Lookup Table for BQN.")
 
-(defvar *bqn-glyphs-buffer-name* "*BQN Glyphs*")
+(defvar bqn-glyph-mode-*buffer-name* "*BQN Glyphs*")
 
 (defvar bqn-glyph-mode-map
   (let ((map (make-sparse-keymap)))
@@ -44,21 +53,21 @@
 (defun bqn-glyph-mode-kill-buffer ()
   "Close the buffer displaying the keymap."
   (interactive)
-  (let ((buffer (get-buffer *bqn-glyphs-buffer-name*)))
+  (let ((buffer (get-buffer bqn-glyph-mode-*buffer-name*)))
     (when buffer
       (delete-windows-on buffer)
       (kill-buffer buffer))))
 
-(defun bqn-show-glyphs ()
+(defun bqn-glyph-mode-show-glyphs ()
   "Display a table of BQN glyphs."
   (interactive)
-  (let ((glyph-buffer (get-buffer *bqn-glyphs-buffer-name*)))
+  (let ((glyph-buffer (get-buffer bqn-glyph-mode-*buffer-name*)))
     (unless (and glyph-buffer (get-buffer-window glyph-buffer))
       ;; The buffer is not displayed.
-      (let* ((buffer (get-buffer-create *bqn-glyphs-buffer-name*))
+      (let* ((buffer (get-buffer-create bqn-glyph-mode-*buffer-name*))
 	         (window (split-window nil)))
 	    (with-current-buffer buffer
-	      (insert bqn-glyphs)
+	      (insert bqn-glyph-mode-reference)
 	      (goto-char (point-min))
 	      (bqn-glyph-mode))
         (set-window-buffer window buffer)
@@ -70,11 +79,11 @@
   (read-only-mode 1)
   (setq truncate-lines t))
 
-(provide 'bqn-glyphs)
+(provide 'bqn-glyph-mode)
 
 ;; Local Variables:
 ;; coding: utf-8-unix
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; bqn-glyphs.el ends here
+;;; bqn-glyph-mode.el ends here
