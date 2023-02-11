@@ -1,4 +1,4 @@
-;;; bqn-keymap-mode.el --- BQN Keyboard Reference
+;;; bqn-keymap-mode.el --- BQN Keymap Reference
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
