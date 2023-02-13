@@ -1,9 +1,7 @@
-;;; bqn-mode-map.el --- BQN mode keymap input helpers
-;;; -*- lexical-binding: t -*-
+;;; bqn-mode-map.el --- BQN mode keymap input helpers -*- lexical-binding: t -*-
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "24.3"))
 ;; URL: https://github.com/museoa/bqn-mode
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -22,7 +20,7 @@
 
 (cl-macrolet ((make-insert-functions ()
              `(progn
-                ,@(mapcar #'(lambda (command)
+                ,@(mapcar (lambda (command)
                               `(defun ,(bqn-mode-map--make-key-command-sym (car command)) ()
                                  (interactive)
                                  (insert ,(cadr command))))
