@@ -1,4 +1,4 @@
-;;; bqn-syntax.el --- BQN font lock definitions
+;;; bqn-syntax.el --- BQN font lock definitions -*- lexical-binding: t -*-
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
@@ -11,7 +11,6 @@
 ;; This package provides definitions for font lock syntax highlighting BQN code.
 
 ;;; Code:
-;;; -*- lexical-binding: t -*-
 
 (require 'cl-lib)
 (require 'bqn-symbols)

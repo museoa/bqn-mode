@@ -1,5 +1,4 @@
-;;; bqn-key-prefix.el --- BQN input key prefix bindings
-;;; -*- lexical-binding: t -*-
+;;; bqn-key-prefix.el --- BQN input key prefix bindings -*- lexical-binding: t -*-
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0

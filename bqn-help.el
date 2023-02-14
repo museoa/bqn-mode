@@ -80,8 +80,8 @@
     (if-let* ((symbol (match-string 0))
               (result (bqn-help--bqn-symbols-info
                        (lambda (v) (equal (cadr v) symbol)))))
-        (message (format "We call symbol %s %s" symbol (caar result)))
-      (message (format "No name for %s found" symbol)))))
+        (message "We call symbol %s %s" symbol (caar result))
+      (message "No name for %s found" symbol))))
 
 (defun bqn-help-symbol-info-at-point ()
   "Get multi-line documentation for the thing at point, or nil."
@@ -96,13 +96,13 @@
         (with-current-buffer doc-buffer ;; we have a hit
           (read-only-mode 0)            ; set read only
           (delete-region (point-min) (point-max))
-          (insert (concat long sep extra))
+          (insert long sep extra)
           (goto-char (point-min))
           (bqn-help-documentation-mode)
           (read-only-mode 1)            ; unset read only
           (pop-to-buffer doc-buffer))
       ;; a miss
-      (message (format "No help for %s found!" symbol)))))
+      (message "No help for %s found!" symbol))))
 
 
 (provide 'bqn-help)
@@ -113,7 +113,3 @@
 ;; End:
 
 ;; bqn-help.el ends here
-
-(provide 'bqn-help)
-
-;;; bqn-help.el ends here

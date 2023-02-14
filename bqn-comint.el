@@ -77,7 +77,7 @@ If it doesn't exist, create and return it; else, return the existing one."
        (current-buffer)))
     ;; create the comint process unless there is a buffer already
     (unless buffer
-      (apply 'make-comint-in-buffer
+      (apply #'make-comint-in-buffer
              bqn-comint--process-name
              buffer
 	         bqn-program bqn-comint-interpreter-arguments)
@@ -142,8 +142,6 @@ the function was called from."
   ;; this makes it so commands like M-{ and M-} work.
   (set (make-local-variable 'paragraph-separate) "\\'")
   (set (make-local-variable 'paragraph-start) bqn-comint-prompt-regexp))
-
-(add-hook 'bqn-comint-mode-hook 'bqn-comint--initialize)
 
 (provide 'bqn-comint)
 

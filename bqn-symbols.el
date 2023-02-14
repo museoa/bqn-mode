@@ -1,5 +1,4 @@
-;;; bqn-symbols.el --- BQN symbols
-;;; -*- lexical-binding: t -*-
+;;; bqn-symbols.el --- BQN symbols -*- lexical-binding: t -*-
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
