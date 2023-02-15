@@ -2,7 +2,6 @@
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "24.3"))
 ;; URL: https://github.com/museoa/bqn-mode
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -127,16 +126,12 @@ the function was called from."
   (interactive)
   (bqn-comint-process-execute-region (point-min) (point-max) t))
 
-(defun bqn-comint--initialize ()
-  "Helper function to initialize BQN inferior process."
-  (setq comint-process-echoes t)
-  (setq comint-use-prompt-regexp t))
-
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
   :syntax-table bqn-syntax--table
   (setq-local font-lock-defaults bqn-syntax--token-types)
-
+  (setq comint-process-echoes t)
+  (setq comint-use-prompt-regexp t)
   (setq comint-prompt-regexp bqn-comint-prompt-regexp)
   (setq comint-prompt-read-only nil)
   ;; this makes it so commands like M-{ and M-} work.

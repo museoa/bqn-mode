@@ -7,7 +7,6 @@
 ;; Created: October 29, 2021
 ;; Modified: October 29, 2021
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "26.1"))
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; URL: https://github.com/museoa/bqn-mode
 ;;
@@ -112,4 +111,4 @@
 ;; indent-tabs-mode: nil
 ;; End:
 
-;; bqn-help.el ends here
+;;; bqn-help.el ends here
