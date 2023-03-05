@@ -2991,7 +2991,7 @@ at 9 ↕ \"short\"
 
                    ;; ================================================
                    ;; Group
-                   (("⊔" .
+                   ("⊔" .
 
                      ["Monad: Group Indices | Dyad: Group | Input: \\u"
 
