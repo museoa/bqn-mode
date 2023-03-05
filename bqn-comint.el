@@ -12,6 +12,7 @@
 ;;; Code:
 
 (require 'comint)
+(require 'bqn-key-prefix)
 (require 'bqn-syntax)
 
 (defcustom bqn-comint-interpreter-path "bqn"
