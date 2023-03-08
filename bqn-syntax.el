@@ -112,7 +112,7 @@
     (modify-syntax-entry ?π  "_" table)
     (modify-syntax-entry ?∞  "_" table)
     table)
-  "Syntax table for ‘bqn-mode’.")
+  "Syntax table for `bqn-mode'.")
 
 (provide 'bqn-syntax)
 
