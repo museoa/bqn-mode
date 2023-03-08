@@ -36,7 +36,7 @@
 
 ;; value gets updated by initialization of `bqn-mode-map-prefix'
 (defvar bqn-mode-map--keymap nil
-  "The keymap for ‘bqn-mode’.")
+  "The keymap for `bqn-mode'.")
 
 (defun bqn-mode-map--set-prefix (prefix new)
   "Set the BQN mode keymap's PREFIX to NEW and recreate the keymap."
@@ -46,7 +46,7 @@
 (defcustom bqn-mode-map-prefix "s-"
   "This stores the keymap prefix for `bqn-mode-map--keymap'.
 It is used both to store the new value using
-`set-create’ and to update `bqn-mode-map--keymap' using
+`set-create' and to update `bqn-mode-map--keymap' using
 `bqn-mode-map--make-base'. Kill and restart your BQN buffers
 to reflect the change."
   :type 'string
