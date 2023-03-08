@@ -52,11 +52,11 @@
     (unless (and keyboard-help (get-buffer-window keyboard-help))
       ;; The buffer is not displayed.
       (let* ((buffer (get-buffer-create bqn-keymap-mode-*buffer-name*))
-	         (window (split-window nil)))
-	    (with-current-buffer buffer
-	      (insert bqn-keymap-mode-reference)
-	      (goto-char (point-min))
-	      (bqn-keymap-mode))
+             (window (split-window nil)))
+        (with-current-buffer buffer
+          (insert bqn-keymap-mode-reference)
+          (goto-char (point-min))
+          (bqn-keymap-mode))
         (set-window-buffer window buffer)
         (fit-window-to-buffer window)))))
 
