@@ -64,11 +64,11 @@
     (unless (and glyph-buffer (get-buffer-window glyph-buffer))
       ;; The buffer is not displayed.
       (let* ((buffer (get-buffer-create bqn-glyph-mode-*buffer-name*))
-	         (window (split-window nil)))
-	    (with-current-buffer buffer
-	      (insert bqn-glyph-mode-reference)
-	      (goto-char (point-min))
-	      (bqn-glyph-mode))
+             (window (split-window nil)))
+        (with-current-buffer buffer
+          (insert bqn-glyph-mode-reference)
+          (goto-char (point-min))
+          (bqn-glyph-mode))
         (set-window-buffer window buffer)
         (fit-window-to-buffer window)))))
 
