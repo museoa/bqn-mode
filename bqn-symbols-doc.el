@@ -3202,7 +3202,10 @@ and position 2 is any extra description.")
 
 (defun bqn-symbols-doc--symbols ()
   "Return a list of bqn symbols for which we have docs."
-  (hash-table-keys bqn-symbols-doc--symbol-doc-table))
+  (let (symbols)
+    (maphash (lambda (sym _) (push sym symbols))
+             bqn-symbols-doc--symbol-doc-table)
+    symbols))
 
 (defun bqn-symbols-doc--get-doc (symbol doc)
   "Retrieve a docstring for SYMBOL, given a stringp SYMBOL and a keywordp DOC.
