@@ -3207,10 +3207,10 @@ and position 2 is any extra description.")
 (defun bqn-symbols-doc--get-doc (symbol doc)
   "Retrieve a docstring for SYMBOL, given a stringp SYMBOL and a keywordp DOC.
 Return nil if no docstring is found."
-  (when-let (docs (gethash symbol bqn-symbols-doc--symbol-doc-table))
-    (cond ((equal doc :short) (aref docs 0))
-          ((equal doc :long)  (aref docs 1))
-          ((equal doc :extra) (aref docs 2)))))
+  (let ((docs (gethash symbol bqn-symbols-doc--symbol-doc-table)))
+    (and docs (aref docs (cond ((eq doc :short) 0)
+                               ((eq doc :long)  1)
+                               ((eq doc :extra) 2))))))
 
 (defun bqn-symbols-doc-get-short-doc (symbol)
   "Given SYMBOL as stringp, retrieve a single-line doc string for SYMBOL, or nil."
