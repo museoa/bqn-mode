@@ -68,19 +68,19 @@ If it doesn't exist, create and return it; else, return the existing one."
   "Run an inferior BQN process inside Emacs."
   (interactive)
   (let* ((bqn-program bqn-comint-interpreter-path)
-	     (buffer (comint-check-proc bqn-comint--process-name)))
+         (buffer (comint-check-proc bqn-comint--process-name)))
     ;; pop to the "*BQN*" buffer when the process is dead, the buffer
     ;; is missing or it's got the wrong mode.
     (pop-to-buffer-same-window
      (if (or buffer (comint-check-proc (current-buffer)))
-	     (get-buffer-create (or buffer bqn-comint-*process-buffer-name*))
+         (get-buffer-create (or buffer bqn-comint-*process-buffer-name*))
        (current-buffer)))
     ;; create the comint process unless there is a buffer already
     (unless buffer
       (apply #'make-comint-in-buffer
              bqn-comint--process-name
              buffer
-	         bqn-program bqn-comint-interpreter-arguments)
+             bqn-program bqn-comint-interpreter-arguments)
       (switch-to-buffer-other-window bqn-comint-*process-buffer-name*)
       (bqn-comint-mode)
       (set-input-method "BQN-Z"))))
