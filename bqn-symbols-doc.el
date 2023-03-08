@@ -20,9 +20,10 @@
 
 (require 'subr-x)
 
-;; a hash and array is not very emacs-lisp-y but because this will be user
-;; facing, so we want the lowest latency possible. This hash should be treated
-;; as read-only.
+;; Arrays and hashes are not very Lispy, however they will be employed here
+;; because we want the lowest latency latency possible for a user-facing
+;; structure. For all intents and purposes, this table should be regarded as
+;; read-only.
 (defconst bqn-symbols-doc--symbol-doc-table
   #s(hash-table
      size 85 ;; set to number of symbols in bqn-symbols.el
