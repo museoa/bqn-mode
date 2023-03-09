@@ -18,8 +18,6 @@
 ;;
 ;;; Code:
 
-(require 'subr-x)
-
 ;; Arrays and hashes are not very Lispy, however they will be employed here
 ;; because we want the lowest latency latency possible for a user-facing
 ;; structure. For all intents and purposes, this table should be regarded as
