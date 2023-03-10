@@ -23,7 +23,8 @@
 ;; structure. For all intents and purposes, this table should be regarded as
 ;; read-only; indeed, it is "cached" at byte-compile time via eval-when-compile
 (defconst bqn-symbols-doc--symbol-doc-table
-  (let ((table '(
+  (eval-when-compile
+    (let ((table '(
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; The format of each entry follows the model below
 ;;; (<symb> . [short-description long-description extra-examples])
@@ -33,16 +34,16 @@
 ;;; - long-description should state what symbol is and what forms symbol has
 ;;; - extra-examples should provide minimal examples
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                 ("+" .
-                  ["Monad: Conjugate | Dyad: Addition | Input: +"
-                   "+ is a function.
+                   ("+" .
+                    ["Monad: Conjugate | Dyad: Addition | Input: +"
+                     "+ is a function.
 - Its monadic form conjugates.
 - Its dyadic form is addition.
 - Can be applied to numbers, arrays and characters. For characters, uses an
 affine space relative to the linear space of numbers. Thus, 'a' + 2 is valid but
 'a' + 'b' is not.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 NOTE: Not implemented yet.
 
@@ -61,14 +62,14 @@ NOTE: Not implemented yet.
    at 'a' + 'b'
           ^
 "])
-                 ("-" .
-                  ["Monad: Negation | Dyad: Subtraction | Input: -"
-                   "- is a function.
+                   ("-" .
+                    ["Monad: Negation | Dyad: Subtraction | Input: -"
+                     "- is a function.
 - Its monadic form negates.
 - Its dyadic form subtracts.
 Can be applied to characters.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 -0
    ¯0
@@ -98,16 +99,16 @@ Can be applied to characters.
 'c' - \"abc\"
    ⟨ 2 1 0 ⟩
 "])
-                 ("×" .
-                  ["Monad: Sign | Dyad: Multiplication | Input: \\="
-                   "× is a function.
+                   ("×" .
+                    ["Monad: Sign | Dyad: Multiplication | Input: \\="
+                     "× is a function.
 - Its monadic form returns the sign of its argument:
   -  no sign (zero) =>  0
   -  positive sign  =>  1
   -  negative sign  =>  ¯1
 -Its dyadic form multiplies.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 × 0
   0
@@ -144,14 +145,14 @@ Note:
     2 ⋆⁼ 1024 => 10
     10 ⋆⁼ 100 => 2
 "])
-                 ("÷" .
-                  ["Monad: Reciprocal | Dyad: Divide | Input: \\-"
-                   "÷ is a function.
+                   ("÷" .
+                    ["Monad: Reciprocal | Dyad: Divide | Input: \\-"
+                     "÷ is a function.
 - Its monadic form computes 1÷x, where x is ÷'s argument.
 - Its dyadic form is division.
 "
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ÷ 0
   ∞
@@ -176,13 +177,13 @@ Note:
    1‿2‿3 ÷ 1‿2
          ^
 "])
-                 ("⋆" .
-                  ["Monad: Exponential | Dyad: Power | Input: \\+"
-                   "⋆ is a function.
+                   ("⋆" .
+                    ["Monad: Exponential | Dyad: Power | Input: \\+"
+                     "⋆ is a function.
 - Its monadic form raises its argument to euler's number.
 - Its dyadic form raises 𝕨 to 𝕩.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⋆ 0
    1
@@ -210,13 +211,13 @@ Note:
    0‿1‿2 ⋆ 2‿3‿4‿5
          ^
 "])
-                 ("√" .
-                  ["Monad: Square Root | Dyad: Root | Input: \\_"
-                   "√ is a function.
+                   ("√" .
+                    ["Monad: Square Root | Dyad: Root | Input: \\_"
+                     "√ is a function.
 - Its monadic form computes the square root of its argument.
 - Its dyadic form computes the root of 𝕩 with the degree 𝕨.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 √4
    2
@@ -232,13 +233,13 @@ Note:
 ¯0‿0‿¯2‿2‿¯2 √ 1‿¯1‿¯1‿4‿4
    ⟨ 1 1 NaN 2 0.5 ⟩
 "])
-                 ("⌊" .
-                  ["Monad: Floor | Dyad: Minimum | Input: \\b"
-                   "⌊ is a function.
+                   ("⌊" .
+                    ["Monad: Floor | Dyad: Minimum | Input: \\b"
+                     "⌊ is a function.
 - Its monadic form returns the floor of its argument.
 - Its dyadic form returns the minimum of its arguments.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⌊ π
    3
@@ -256,13 +257,13 @@ Note:
 Note:
   To take a minimum of an entire list, use the fold: ⌊´ (\\b\\5)
 "])
-                 ("⌈" .
-                  ["Monad: Ceiling | Dyad: Maximum | Input: \\B"
-                   "⌈ is a function.
+                   ("⌈" .
+                    ["Monad: Ceiling | Dyad: Maximum | Input: \\B"
+                     "⌈ is a function.
 - Its monadic form returns the ceiling of its argument.
 - Its dyadic form returns the maximum of its arguments.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
  ⌈ π
    4
@@ -280,13 +281,13 @@ Note:
 Note:
   To take a maximum of an entire list, use the fold: ⌈´ (\\B\\5)
 "])
-                 ("|" .
-                  ["Monad: Absolute Value | Dyad: Modulus | Input: |"
-                   "| is a function.
+                   ("|" .
+                    ["Monad: Absolute Value | Dyad: Modulus | Input: |"
+                     "| is a function.
 - Its monadic form returns the absolute value of its argument.
 - Its dyadic form returns the remainder resulting from division of 𝕩 by 𝕨.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 | ¯1
    1
@@ -308,9 +309,9 @@ Note:
 0 | ∞
    NaN
 "])
-                 ("=" .
-                  ["Monad: Rank | Dyad: Equals | Input: ="
-                   "= is a function.
+                   ("=" .
+                    ["Monad: Rank | Dyad: Equals | Input: ="
+                     "= is a function.
 - Its monadic form returns the rank of its input.
 - Its dyadic form tests for atomic equality of its arguments:
   - Found to be equal     => 1
@@ -320,7 +321,7 @@ Note:
 - characters are equal if they have the same code point (i.e c - @, where c is
   the char).
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 = 'a'
    0
@@ -343,16 +344,16 @@ Even ← 0=2|⊣
 Even ↕10
    ⟨ 1 0 1 0 1 0 1 0 1 0 ⟩
 "])
-                 ("≠" .
-                  ["Monad: Length | Dyad: Not Equals | Input: \\\/"
-                   "≠ is a function.
+                   ("≠" .
+                    ["Monad: Length | Dyad: Not Equals | Input: \\\/"
+                     "≠ is a function.
 - Its monadic form returns the length of its input.
 - Its dyadic form tests for atomic inequality of its arguments:
   - Found to be not equal     => 1
   - Not found to be not equal => 0
 Note: values of different types can never be equal.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ≠ 'a'
    1
@@ -368,30 +369,30 @@ Note: values of different types can never be equal.
 'b' ≠ \"abacba\"
    ⟨ 1 0 1 1 0 1 ⟩
 "])
-                 ("≤" .
-                  ["Dyad: Less than or equal | Input: \\<"
-                   "≤ is a function.
+                   ("≤" .
+                    ["Dyad: Less than or equal | Input: \\<"
+                     "≤ is a function.
 - It has no monadic form.
 - Its dyadic form tests for less than or equal to:
 "
-                   "Examples:
+                     "Examples:
 "])
-                 ("≥" .
-                  ["Dyad: Greater than or equal | Input: \\>"
-                   "≥ is a function.
+                   ("≥" .
+                    ["Dyad: Greater than or equal | Input: \\>"
+                     "≥ is a function.
 - It has no monadic form.
 - Its dyadic form tests for greater than or equal to.
 "
-                   "Examples
+                     "Examples
 "])
-                 ("<" .
-                  ["Monad: Enclose | Dyad: Less than | Input: <"
-                   "< is a function.
+                   ("<" .
+                    ["Monad: Enclose | Dyad: Less than | Input: <"
+                     "< is a function.
 - Its monadic form returns its argument in a unit array.
 - Its dyadic form returns the result comparing 𝕨 with 𝕩.
 Note: characters are always considered greater than numbers, even ∞.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 < \"singleton\"
    ┌·
@@ -424,15 +425,15 @@ Note: characters are always considered greater than numbers, even ∞.
 'a' < ∞
    0
 "])
-                 (">" .
-                  ["Monad: Merge | Dyad: Greater than | Input: >"
-                   "> is a function.
+                   (">" .
+                    ["Monad: Merge | Dyad: Greater than | Input: >"
+                     "> is a function.
 - It monadic form ensures that any inner arrays, in its argument, can fit
   together in an array (i.e. flatten ragged inner arrays).
 - Its dyadic form returns the result comparing 𝕨 with 𝕩.
 Note: characters are always considered greater than numbers, even ∞.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
    ┌─
@@ -468,14 +469,14 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
 ∞ > 'z'
    0
 "])
-                 ("∧" .
-                  ["Monad: Sort Up | Dyad: Logical And | Input: \\t"
-                   "∧ is a function.
+                   ("∧" .
+                    ["Monad: Sort Up | Dyad: Logical And | Input: \\t"
+                     "∧ is a function.
 - Its monadic form reorders the major cells of its argument to place them in
   ascending order.
 - Its dyadic form returns the result of a logical And on the input arguments.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ∧ \"delta\"‿\"alpha\"‿\"beta\"‿\"gamma\"
    ⟨ \"alpha\" \"beta\" \"delta\" \"gamma\" ⟩
@@ -508,14 +509,14 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
 ∧´ 'a'≤ \"purple\"
    1
 "])
-                 ("∨" .
-                  ["Monad: Sort Down | Dyad: Logical Or | Input: \\v"
-                   "∨ is a function.
+                   ("∨" .
+                    ["Monad: Sort Down | Dyad: Logical Or | Input: \\v"
+                     "∨ is a function.
 - Its monadic form reorders the major cells of its argument to place them in
   descending order.
 - Its dyadic form returns the result of a logical Or on the input arguments.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ∨ \"delta\"‿\"alpha\"‿\"beta\"‿\"gamma\"
    ⟨ \"gamma\" \"delta\" \"beta\" \"alpha\" ⟩
@@ -548,9 +549,9 @@ a ← \"AB\"‿\"CD\" ∾⌜ \"rst\"‿\"uvw\"‿\"xyz\"
 ∨´ 'z'≤ \"purple\"
    0
 "])
-                 ("¬" .
-                  ["Monad: Not | Dyad: Span | Input: \\~"
-                   "¬ is a function.
+                   ("¬" .
+                    ["Monad: Not | Dyad: Span | Input: \\~"
+                     "¬ is a function.
 - Its monadic form returns the Boolean negation of its input.
 - Its dyadic form returns the number of integers separating 𝕨 from 𝕩, inclusive,
   only when 𝕩≤𝕨 and both are integers.
@@ -558,7 +559,7 @@ Note: defined as the fork, 1+-
       - considered an arithmetic function.
       - considered pervasive.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ¬ 0
    1
@@ -589,16 +590,16 @@ Note: defined as the fork, 1+-
 'a' ¬ @
    98
 "])
-                 ("≡" .
-                  ["Monad: Depth | Dyad: Match | Input: \\m"
-                   "≡ is a function.
+                   ("≡" .
+                    ["Monad: Depth | Dyad: Match | Input: \\m"
+                     "≡ is a function.
 - Its monadic form returns the depth (i.e. the level of nesting) of its input.
 - Its dyadic form tests equivalency between 𝕩 and 𝕨, returns 1 if equivalent
   and 0 otherwise.
 Note: see related function ≢ (Not Match)
       always returns the same result as = (Equals) when 𝕩 and 𝕨 are atoms.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ≡ 'a'
    0
@@ -628,9 +629,9 @@ Note: see related function ≢ (Not Match)
 at \"abc\" = \"ab\"
          ^
 "])
-                 ("≢" .
-                  ["Monad: Shape | Dyad: Not Match | Input: \\M"
-                   "≢ is a function.
+                   ("≢" .
+                    ["Monad: Shape | Dyad: Not Match | Input: \\M"
+                     "≢ is a function.
 - Its monadic form returns the shape of its input. The shape is a list of
   natural numbers.
 - Its dyadic form tests in-equivalency between 𝕩 and 𝕨, returns 0 if equivalent
@@ -640,7 +641,7 @@ Note: = (Rank) and ≠ (Length) can be derived from ≢ (Shape).
       Length can be defined as a fold: 1⊣´≢
       See related function ⥊ (Reshape)
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ## Make a 4-dimensional array of length 1, rank 4
 ## The only element is an array of shape 3‿2‿6, i.e., an array with 3-elements
@@ -682,13 +683,13 @@ Note: = (Rank) and ≠ (Length) can be derived from ≢ (Shape).
 at \"abc\" = \"ab\"
          ^
 "])
-                 ("⊣" .
-                  ["Monad: Identity | Dyad: Left | Input: \\{"
-                   "⊣ is a function.
+                   ("⊣" .
+                    ["Monad: Identity | Dyad: Left | Input: \\{"
+                     "⊣ is a function.
 - Its monadic form returns its input.
 - Its dyadic form returns 𝕨.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⊣ 1
    1
@@ -741,13 +742,13 @@ a ← \"hello I'm a\"
 a ⌽∘⊣↩ @
    \"a m'I olleh\"
 "])
-                 ("⊢" .
-                  ["Monad: Identity | Dyad: Right | Input: \\}"
-                   "⊢ is a function.
+                   ("⊢" .
+                    ["Monad: Identity | Dyad: Right | Input: \\}"
+                     "⊢ is a function.
 - Its monadic form returns its input.
 - Its dyadic form returns 𝕩 (its right argument).
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⊢ 1
    1
@@ -779,9 +780,9 @@ a ⌽∘⊣↩ @
 ÷⟜2⍟3 24
    3
 "])
-                 ("⥊" .
-                  ["Monad: Deshape | Dyad: Reshape | Input: \\z"
-                   "⥊ is a function.
+                   ("⥊" .
+                    ["Monad: Deshape | Dyad: Reshape | Input: \\z"
+                     "⥊ is a function.
 - Its monadic form removes all shape information from its input. Returning a
   list of all elements from the array in reading order.
 - Its dyadic form ignores the shape information of 𝕩 and adds shape information
@@ -795,7 +796,7 @@ Note: in its dyadic form, one entry of 𝕨 may be left for BQN to fill in.
         reused cyclically.
       see related function ≍ (Solo).
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ## Deshape returns a list in reading order: left to right, top to bottom.
 ⊢ a ← +⌜´ ⟨100‿200, 30‿40, 5‿6‿7⟩
@@ -902,14 +903,14 @@ at 2‿∘ ⥊ \"abcde\"
      de \"
          ┘
 "])
-                 ("∾" .
-                  ["Monad: Join | Dyad: Join to | Input: \,"
-                   "∾ is a function.
+                   ("∾" .
+                    ["Monad: Join | Dyad: Join to | Input: \,"
+                     "∾ is a function.
 - Its monadic form concatenates the elements of its input.
 - Its dyadic form returns an array whose major cells are the major cells from
   𝕨 followed by the major cells of 𝕩.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ∾ \"time\"‿\"to\"‿\"join\"‿\"some\"‿\"words\"
    \"timetojoinsomewords\"
@@ -1023,13 +1024,13 @@ at a ∾ 2‿5⥊b  # Shapes don't fit
      2 3 4 5
              ┘
 "])
-                 ("𝕩" .
-                  ["Right argument of a block or function | Input: \\x or \\X"
-                   "𝕩 and 𝕏 are reserved names.
+                   ("𝕩" .
+                    ["Right argument of a block or function | Input: \\x or \\X"
+                     "𝕩 and 𝕏 are reserved names.
 - It always refers to the right argument of a function.
 - See related form, 𝕨 (left argument).
 "
-                   "Examples:
+                     "Examples:
 ## Use in a block
 {𝕩+1} 2
    3
@@ -1044,13 +1045,13 @@ F ← {𝕩 × 𝕩}
 F 2
    4
 "])
-                 ("𝕏" .
-                  ["Right argument of a block or function | Input: \\x or \\X"
-                   "𝕩 and 𝕏 are reserved names.
+                   ("𝕏" .
+                    ["Right argument of a block or function | Input: \\x or \\X"
+                     "𝕩 and 𝕏 are reserved names.
 - It always refers to the right argument of a function.
 - See related form, 𝕨 (left argument).
 "
-                   "Examples:
+                     "Examples:
 ## Use in a block
 {𝕩+1} 2
    3
@@ -1070,15 +1071,15 @@ F 2
 
 
 
-                 ("𝕨" .
-                  ["Left argument of a block or function | Input: \\w or \\W"
-                   "𝕨 and 𝕎 are reserved names.
+                   ("𝕨" .
+                    ["Left argument of a block or function | Input: \\w or \\W"
+                     "𝕨 and 𝕎 are reserved names.
 It always refers to the left argument of a function.
 See related form, 𝕩 (right argument).
 "
 
 
-                   "Examples:
+                     "Examples:
 ## Use in a block
 'c' {𝕨=𝕩} \"abcd\"
    ⟨ 0 0 1 0 ⟩
@@ -1100,15 +1101,15 @@ See related form, 𝕩 (right argument).
 
 
 
-                 ("𝕎" .
-                  ["Left argument of a block or function | Input: \\w or \\W"
+                   ("𝕎" .
+                    ["Left argument of a block or function | Input: \\w or \\W"
 
-                   "𝕨 and 𝕎 is a reserved name.
+                     "𝕨 and 𝕎 is a reserved name.
   It always refers to the left argument of a function.
   See related form, 𝕩 (right argument)."
 
 
-                   "Examples:
+                     "Examples:
 ## Use in a block
 'c' {𝕨=𝕩} \"abcd\"
    ⟨ 0 0 1 0 ⟩
@@ -1130,10 +1131,10 @@ See related form, 𝕩 (right argument).
 
 
 
-                 ("≍" .
-                  ["Monad: Solo | Dyad: Couple | Input: \\."
+                   ("≍" .
+                    ["Monad: Solo | Dyad: Couple | Input: \\."
 
-                   "≍ is a function.
+                     "≍ is a function.
   Its monadic form returns an array with its input as the only major cell.
   Its dyadic form returns an array with elements 𝕩 and 𝕨, and outer axis of
     length-2
@@ -1142,7 +1143,7 @@ See related form, 𝕩 (right argument).
   Note: ≍ ←→ >{⟨𝕩⟩;⟨𝕨,𝕩⟩} or in other words: Solo is {>⟨𝕩⟩}, Couple is {>⟨𝕨,𝕩⟩}"
 
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ## Notice that ≍ always adds an axis, thus applied to unit values returns a list
 ≍ 2
@@ -1187,10 +1188,10 @@ p ≍ q   # p coupled to q
 
 
 
-                 ("⋈" .
-                  ["Monad: Enlist | Dyad: Pair | Input: \\Z"
+                   ("⋈" .
+                    ["Monad: Enlist | Dyad: Pair | Input: \\Z"
 
-                   "⋈ is a function.
+                     "⋈ is a function.
   Its monadic form returns a singleton list containing its input.
   Its dyadic form a list containing both 𝕨 and 𝕩.
   See related form, > (Merge).
@@ -1198,7 +1199,7 @@ p ≍ q   # p coupled to q
   Note: ⋈ ←→ ≍○<, and ≍ ←→ >∘⋈"
 
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⋈ \"enlist\"    # ⟨𝕩⟩
    ⟨ \"enlist\" ⟩
@@ -1235,10 +1236,10 @@ p ≍ q   # p coupled to q
 
 
 
-                 ("↑" .
-                  ["Monad: Prefixes | Dyad: Take | Input: \\r"
+                   ("↑" .
+                    ["Monad: Prefixes | Dyad: Take | Input: \\r"
 
-                   "↑ is a function.
+                     "↑ is a function.
   Its monadic form returns a list of all prefixes of its argument along the
     first axis.
   Its dyadic form returns the first 𝕨 elements of 𝕩.
@@ -1252,7 +1253,7 @@ p ≍ q   # p coupled to q
         See related form, ↓ (Drop)."
 
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ↑ \"hello\"              # notice the empty array and input is in the result
    ⟨ ⟨⟩ \"h\" \"he\" \"hel\" \"hell\" \"hello\" ⟩
@@ -1321,10 +1322,10 @@ p ≍ q   # p coupled to q
 
 
 
-                 ("↓" .
-                  ["Monad: Suffixes | Dyad: Drop | Input: \\c"
+                   ("↓" .
+                    ["Monad: Suffixes | Dyad: Drop | Input: \\c"
 
-                   "↓ is a function.
+                     "↓ is a function.
   Its monadic form returns a list of all suffixes of its argument along the
     first axis.
   Its dyadic form drops the first 𝕨 elements of 𝕩 and returns the rest.
@@ -1337,7 +1338,7 @@ p ≍ q   # p coupled to q
         See related form, ↑ (Take)."
 
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ↓ \"hello\"                # notice the empty array and input is in the result
    ⟨ \"hello\" \"ello\" \"llo\" \"lo\" \"o\" ⟨⟩ ⟩
@@ -1397,10 +1398,10 @@ p ≍ q   # p coupled to q
 
 
 
-                 ("↕" .
-                  ["Monad: Range | Dyad: Windows | Input: \\d"
+                   ("↕" .
+                    ["Monad: Range | Dyad: Windows | Input: \\d"
 
-                   "↕ is a function.
+                     "↕ is a function.
   Its monadic form returns an array where each element's value is its own index.
   Its dyadic form returns ≠𝕩 contiguous slices of 𝕩 that are of length 𝕨.
   Note: (Range) the result always has depth (≡) one more than the argument.
@@ -1408,7 +1409,7 @@ p ≍ q   # p coupled to q
         (Window) slices always have the same rank as the argument array (𝕩)"
 
 
-                   "Examples:
+                     "Examples:
 ## Monadic form, all results are length 6, but elements differ
 ## 𝕩 must be a natural number, notice the result is ≠𝕩, but 𝕩 is not in the result
 ↕6
@@ -1531,10 +1532,10 @@ b × ↕≠b                      # now multiply with b
 
 
 
-                 ("»" .
-                  ["Monad: Nudge | Dyad: Shift Before | Input: \\L"
+                   ("»" .
+                    ["Monad: Nudge | Dyad: Shift Before | Input: \\L"
 
-                   "» is a function.
+                     "» is a function.
   Its monadic form returns its input where each element has shifted one major
     cell to the right, and the new cell is filled with 0s or \" \".
   Its dyadic form adds 𝕨 to the beginning of 𝕩, while maintiaing the length of 𝕩.
@@ -1546,7 +1547,7 @@ b × ↕≠b                      # now multiply with b
         Shift Before is defined as {(≠𝕩)↑𝕨∾𝕩}
         See related form, « (Nudge Back/Shift After)"
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 » \"abc\"
    \" ab\"    # notice that the length of the result equals the length of 𝕩
@@ -1642,10 +1643,10 @@ s ≍ »s
 
 
 
-                 ("«" .
-                  ["Monad: Nudge Back | Dyad: Shift After | Input: \\H"
+                   ("«" .
+                    ["Monad: Nudge Back | Dyad: Shift After | Input: \\H"
 
-                   "« is a function.
+                     "« is a function.
   Its monadic form returns its input where each element has shifted one major
     cell to the left, and the new cell is filled with 0s or \" \".
   Its dyadic form adds 𝕨 to the end of 𝕩, while maintaining the length of 𝕩.
@@ -1657,7 +1658,7 @@ s ≍ »s
         Shift After is defined as {(-≠𝕩)↑𝕩∾𝕨}
         See related form, » (Nudge/Shift Before)"
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 « \"abc\"
    \"bc \"    # notice that the length of the result equals the length of 𝕩
@@ -1758,10 +1759,10 @@ s ≍ «s
 
 
 
-                 ("⌽" .
-                  ["Monad: Reverse | Dyad: Rotate | Input: \\q"
+                   ("⌽" .
+                    ["Monad: Reverse | Dyad: Rotate | Input: \\q"
 
-                   "⌽ is a function.
+                     "⌽ is a function.
   Its monadic form returns an array whose major cells are reverse from the input.
   Its dyadic form cycles or rotates the major cells in 𝕩, according to 𝕨.
   Note: Both Reverse and Rotate return an array with the same shape and elements
@@ -1769,7 +1770,7 @@ s ≍ «s
         Avoid Rotate if there is no reason to treat data in 𝕩 as cyclic or
           periodic."
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⌽ \"abcdefg\"
    \"gfedcba\"
@@ -1892,10 +1893,10 @@ at 3‿4‿2 ⌽ \"just a list\"
 
 
 
-                 ("⍉" .
-                  ["Monad: Transpose | Dyad: Reorder axes | Input: \\a"
+                   ("⍉" .
+                    ["Monad: Transpose | Dyad: Reorder axes | Input: \\a"
 
-                   "⍉ is a function.
+                     "⍉ is a function.
   Its monadic form returns an array whose first axis has been moved to the end.
   Its dyadic form generalizes the monadic form for arbritrary arrangement of 𝕩,
     according to 𝕨.
@@ -1906,7 +1907,7 @@ at 3‿4‿2 ⌽ \"just a list\"
                        Invariant: ∧´𝕨<r
         see related function, ⌽ (Rotate)"
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ## mat is a 2‿3 matrix
 ⊢ mat ← 2‿3 ⥊ ↕6
@@ -2004,10 +2005,10 @@ a322 ← 3‿2‿2⥊↕12
 
 
 
-                 ("/" .
-                  ["Monad: Indices | Dyad: Replicate | Input: \/"
+                   ("/" .
+                    ["Monad: Indices | Dyad: Replicate | Input: \/"
 
-                   "/ is a function.
+                     "/ is a function.
   Its monadic form returns a list of natural numbers that are the indices of 𝕩.
   Its dyadic form repeats each major cell of 𝕩, the corresponding 𝕨 times.
   Note: (Replicate) Invariant: (𝕨≠) ≡ (𝕩≠)
@@ -2017,7 +2018,7 @@ a322 ← 3‿2‿2⥊↕12
 
         (Indices) 𝕩 must be a list of natural numbers, then /𝕩 is 𝕩/↕≠𝕩"
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 / 3‿0‿1‿2
    ⟨ 0 0 0 2 3 3 ⟩
@@ -2166,10 +2167,10 @@ b ≡ ⟨⟩ / b
 
 
 
-                 ("⍋" .
-                  ["Monad: Grade Up | Dyad: Bins Up | Input: \\T"
+                   ("⍋" .
+                    ["Monad: Grade Up | Dyad: Bins Up | Input: \\T"
 
-                   "⍋ is a function.
+                     "⍋ is a function.
   Its monadic form returns a list of natural numbers that are an ascending ording
     of the input.
   Its dyadic form returns a list of natural numbers, where each number indicates
@@ -2178,7 +2179,7 @@ b ≡ ⟨⟩ / b
                   Result is always in ascending sorted order.
         see related function, ⍒ (Grade Down/Bins Down)"
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⊢ l ← \"planet\"‿\"moon\"‿\"star\"‿\"asteroid\"
    ⟨ \"planet\" \"moon\" \"star\" \"asteroid\" ⟩
@@ -2220,10 +2221,10 @@ other_scores ⍋ scores
 
 
 
-                 ("⍒" .
-                  ["Monad: Grade Down | Dyad: Bins Down | Input: \\V"
+                   ("⍒" .
+                    ["Monad: Grade Down | Dyad: Bins Down | Input: \\V"
 
-                   "⍒ is a function.
+                     "⍒ is a function.
   Its monadic form returns a list of natural numbers that are a descending ording
     of the input.
   Its dyadic form returns a list of natural numbers, where each number indicates
@@ -2232,7 +2233,7 @@ other_scores ⍋ scores
                   Result is always in descending sorted order.
         see related function, ⍒ (Grade Down/Bins Down)"
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⊢ l ← \"planet\"‿\"moon\"‿\"star\"‿\"asteroid\"
    ⟨ \"planet\" \"moon\" \"star\" \"asteroid\" ⟩
@@ -2274,10 +2275,10 @@ other_scores ⍒ scores
 
 
 
-                 ("⊏" .
-                  ["Monad: First Cell | Dyad: Select | Input: \\i"
+                   ("⊏" .
+                    ["Monad: First Cell | Dyad: Select | Input: \\i"
 
-                   "⊏ is a function.
+                     "⊏ is a function.
   Its monadic form returns the major cell of 𝕩 at index 0.
   Its dyadic form reorganizes 𝕩 along one or more axes according to the indices
     given by 𝕨.
@@ -2292,7 +2293,7 @@ other_scores ⍒ scores
         see related function, ⊑ (Pick)"
 
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⊏ \"abc\"
    ┌·
@@ -2407,9 +2408,9 @@ at ⊏ 'a'
 
 
 
-                 ("⊑" .
-                  ["Monad: First | Dyad: Pick | Input: \\I"
-                   "⊑ is a function.
+                   ("⊑" .
+                    ["Monad: First | Dyad: Pick | Input: \\I"
+                     "⊑ is a function.
 - Its monadic form returns the first element of 𝕩 in index order.
 - Its dyadic form returns elements from 𝕩 based on index lists from 𝕨.
 Note: (First) is Pick where 𝕨 is 0¨≢𝕩
@@ -2422,7 +2423,7 @@ Note: (First) is Pick where 𝕨 is 0¨≢𝕩
       see related function, ⊐ (Classify)
 "
 
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⊑ 'a'
    'a'
@@ -2533,9 +2534,9 @@ at ⟨⟨2,3⟩,1⟩ ⊑ a
          ┘
                  ┘
 "])
-                 ("⊐" .
-                  ["Monad: Classify | Dyad: Index of | Input: \\o"
-                   "⊐ is a function.
+                   ("⊐" .
+                    ["Monad: Classify | Dyad: Index of | Input: \\o"
+                     "⊐ is a function.
 - Its monadic form returns a list of natural numbers, where each number
   corresponds to the index of first appearance of the corresponding value in 𝕩.
 - Its dyadic form returns a list of indices, where each index is the first
@@ -2544,7 +2545,7 @@ Note: (Classify) is idempotent.
         see related function, ⍷ (Deduplicate)
         see related function, ⊒ (Occurence Count)
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 # notice that 5 is at index 0, and so 0's are in 5's position in the result
 ⊐ 5‿6‿2‿2‿5‿1
@@ -2594,9 +2595,9 @@ Note: (Classify) is idempotent.
 \"zero\"‿\"one\"‿\"two\"‿\"three\" ⊐ \"one\"‿\"eight\"‿\"two\"
    ⟨ 1 4 2 ⟩
 "])
-                 ("⊒" .
-                  ["Monad: Occurrence Count | Dyad: Progressive Index of | Input: \\O"
-                   "⊒ is a function.
+                   ("⊒" .
+                    ["Monad: Occurrence Count | Dyad: Progressive Index of | Input: \\O"
+                     "⊒ is a function.
 - Its monadic form returns a list of natural numbers, where each number is the
   number of previous cells that match the current cell.
 - Its dyadic form returns a list of indices, where each index is either the
@@ -2607,7 +2608,7 @@ Note: (Progressive Index of)
          use ⊒˜<≠∘⊢ for Progressive Membership of
          ⊒˜ is the same as ↕∘≠
       see related function, ⊐ (Classify)"
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⊒   2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
    ⟨ 0 0 0 0 1 1 2 1 1 2 0 ⟩    # notice a 1 at the next occurrence of 1 in 𝕩
@@ -2645,16 +2646,16 @@ Note: (Progressive Index of)
 \"aaabb\" ⊒ \"ababababab\"
    ⟨ 0 3 1 4 2 5 5 5 5 5 ⟩
 "])
-                 ("∊" .
-                  ["Monad: Mark Firsts | Dyad: Member of | Input: \\e"
-                   "∊ is a function.
+                   ("∊" .
+                    ["Monad: Mark Firsts | Dyad: Member of | Input: \\e"
+                     "∊ is a function.
 - Its monadic form returns a list of booleans, where each number is either a 0,
   if the major cell of 𝕩 is a duplicate of a previous cell, or 1 otherwise.
 - Its dyadic form returns a list of numbers of length ≠𝕨, each number is either
   a 0 or 1. A 1 indicates an entry of 𝕨 matches some entry in 𝕩, a 0 otherwise.
 Note: see related function, ⍷ (Deduplicate)
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ∊   3‿1‿4‿1‿5‿9‿2‿6‿5
    ⟨ 1 1 1 0 1 1 1 1 0 ⟩     # notice the first duplicate 1, corresponds to a 0
@@ -2697,9 +2698,9 @@ Note: see related function, ⍷ (Deduplicate)
 \"initial set\" (¬∘∊/⊣) \"difference\"  # Remove 𝕩
    \"tal st\"
 "])
-                 ("⍷" .
-                  ["Monad: Deduplicate | Dyad: Find | Input: \\E"
-                   "⍷ is a function.
+                   ("⍷" .
+                    ["Monad: Deduplicate | Dyad: Find | Input: \\E"
+                     "⍷ is a function.
 - Its monadic form removes every major cell that matches an earlier cell.
 - Its dyadic form searches for occurrences of an array 𝕨, in 𝕩. The result is a
   list of booleans for each possible location.
@@ -2711,7 +2712,7 @@ Note: (Deduplicate)
          there is no guarantee the result maintains the shape of 𝕩
          if ≠𝕨 > ≠𝕩 then the result is empty
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⍷ >\"take\"‿\"drop\"‿\"drop\"‿\"pick\"‿\"take\"‿\"take\"
    ┌─
@@ -2809,15 +2810,15 @@ at 9 ↕ \"short\"
      1 0 1 0 1 0
                  ┘
 "])
-                 ("⊔" .
-                  ["Monad: Group Indices | Dyad: Group | Input: \\u"
-                   "⊔ is a function.
+                   ("⊔" .
+                    ["Monad: Group Indices | Dyad: Group | Input: \\u"
+                     "⊔ is a function.
 - Its monadic form returns a list of lists of indices, where each sublist
   contains indices of equal elements of 𝕩.
 - Its dyadic form returns a list of groups, each containing cells from 𝕩,
   according to a list of atomic indices in 𝕨.
 Note: (Group) 𝕨 and 𝕩 must have the same length"
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ⊔ 0‿2‿5‿3‿2
    ⟨ ⟨ 0 ⟩ ⟨⟩ ⟨ 1 4 ⟩ ⟨ 3 ⟩ ⟨⟩ ⟨ 2 ⟩ ⟩     # 2 is at index 1 and 4, 3 is unique hence ⟨⟩
@@ -2919,16 +2920,16 @@ countries ≍˘ co countries⊸(⊐∾≠∘⊣)⊸⊔ ln
      \"US\" ⟨ \"Phelps\" ⟩
                                      ┘
 "])
-                 ("!" .
-                  ["Monad: Assert | Dyad: Assert with message | Input: !"
-                   "! is a function.
+                   ("!" .
+                    ["Monad: Assert | Dyad: Assert with message | Input: !"
+                     "! is a function.
 - Its monadic form tests that 𝕩 is 1,
   - if it is then it returns 𝕩
   - otherwise it throws an Error.
 - Its dyadic form returns a message with the error thrown.
 - Note: (Assert) the right argument must be exactly 1, or 0.
 "
-                   "Examples:
+                     "Examples:
 ## Monadic form
 ! 2=2  # Passed
    1
@@ -2964,10 +2965,10 @@ at MyError ← {𝕨 \"My custom error\"⊸!⍟(1⊸≢) 𝕩}
 at \"hello\" MyError 0
            ^^^^^^^
 "])))
-        (ht (make-hash-table :test 'equal)))
-    (dolist (entry table)
-      (puthash (car entry) (cdr entry) ht))
-    ht)
+          (ht (make-hash-table :test 'equal)))
+      (dolist (entry table)
+        (puthash (car entry) (cdr entry) ht))
+      ht))
   "This table associates BQN symbols as hash-keys to a 3-vector of docstrings.
 Position 0 is short description for eldoc, position 1 is a long description,
 and position 2 is any extra description.")
