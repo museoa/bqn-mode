@@ -111,4 +111,4 @@
 ;; indent-tabs-mode: nil
 ;; End:
 
-;;; bqn-help.el ends here
+;; bqn-help.el ends here
