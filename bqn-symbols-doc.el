@@ -19,9 +19,9 @@
 ;;; Code:
 
 ;; Arrays and hashes are not very Lispy, however they will be employed here
-;; because we want the lowest latency latency possible for a user-facing
+;; because we want the lowest latency latency possible for an end-user-facing
 ;; structure. For all intents and purposes, this table should be regarded as
-;; read-only.
+;; read-only; indeed, it is "cached" at byte-compile time via eval-when-compile
 (defconst bqn-symbols-doc--symbol-doc-table
   #s(hash-table
      size 85 ;; set to number of symbols in bqn-symbols.el
