@@ -141,9 +141,4 @@ the function was called from."
 
 (provide 'bqn-comint)
 
-;; Local Variables:
-;; coding: utf-8-unix
-;; indent-tabs-mode: nil
-;; End:
-
 ;;; bqn-comint.el ends here

@@ -3002,9 +3002,4 @@ Return nil if no docstring is found."
 
 (provide 'bqn-symbols-doc)
 
-;; Local Variables:
-;; coding: utf-8-unix
-;; indent-tabs-mode: nil
-;; End:
-
 ;;; bqn-symbols-doc.el ends here
