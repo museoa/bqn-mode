@@ -58,9 +58,4 @@
 
 (provide 'bqn-key-prefix)
 
-;; Local Variables:
-;; coding: utf-8-unix
-;; indent-tabs-mode: nil
-;; End:
-
 ;;; bqn-key-prefix.el ends here

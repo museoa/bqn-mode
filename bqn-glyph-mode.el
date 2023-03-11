@@ -80,9 +80,4 @@
 
 (provide 'bqn-glyph-mode)
 
-;; Local Variables:
-;; coding: utf-8-unix
-;; indent-tabs-mode: nil
-;; End:
-
 ;;; bqn-glyph-mode.el ends here

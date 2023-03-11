@@ -56,9 +56,4 @@ to reflect the change."
 
 (provide 'bqn-mode-map)
 
-;; Local Variables:
-;; coding: utf-8-unix
-;; indent-tabs-mode: nil
-;; End:
-
 ;;; bqn-mode-map.el ends here

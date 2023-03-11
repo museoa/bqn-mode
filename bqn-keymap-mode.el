@@ -68,9 +68,4 @@
 
 (provide 'bqn-keymap-mode)
 
-;; Local Variables:
-;; coding: utf-8-unix
-;; indent-tabs-mode: nil
-;; End:
-
 ;;; bqn-keymap-mode.el ends here

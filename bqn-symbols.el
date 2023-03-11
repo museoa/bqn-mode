@@ -155,9 +155,4 @@
 
 (provide 'bqn-symbols)
 
-;; Local Variables:
-;; coding: utf-8-unix
-;; indent-tabs-mode: nil
-;; End:
-
 ;;; bqn-symbols.el ends here
