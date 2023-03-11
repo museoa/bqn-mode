@@ -6,7 +6,7 @@
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "24.3"))
+;; Package-Requires: ((emacs "26.1"))
 ;; URL: https://github.com/museoa/bqn-mode
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 

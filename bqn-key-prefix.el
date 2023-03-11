@@ -1,9 +1,7 @@
-;;; bqn-key-prefix.el --- BQN input key prefix bindings
-;;; -*- lexical-binding: t -*-
+;;; bqn-key-prefix.el --- BQN input key prefix bindings -*- lexical-binding: t -*-
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "24.3"))
 ;; URL: https://github.com/museoa/bqn-mode
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 

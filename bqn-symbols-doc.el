@@ -8,7 +8,6 @@
 ;; Modified: October 29, 2021
 ;; Version: 0.0.1
 ;; Keywords: convenience data docs
-;; Package-Requires: ((emacs "25.1"))
 ;; URL: https://github.com/museoa/bqn-mode
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 ;;

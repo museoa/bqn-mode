@@ -1,8 +1,7 @@
-;;; bqn-syntax.el --- BQN font lock definitions
+;;; bqn-syntax.el --- BQN font lock definitions -*- lexical-binding: t -*-
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "24.3"))
 ;; URL: https://github.com/museoa/bqn-mode
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -11,7 +10,6 @@
 ;; This package provides definitions for font lock syntax highlighting BQN code.
 
 ;;; Code:
-;;; -*- lexical-binding: t -*-
 
 (require 'cl-lib)
 (require 'bqn-symbols)
