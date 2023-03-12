@@ -27,12 +27,12 @@
     (let ((table '(
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; The format of each entry follows the model below
-;;; (<symb> . [short-description long-description extra-examples])
+;;; (<symb> . [short-description long-description extra-description])
 ;;; where:
 ;;; - <symb> is the symbol to be described
 ;;; - short-description should be no more than 80 characters (to fit modeline)
 ;;; - long-description should state what symbol is and what forms symbol has
-;;; - extra-examples should provide minimal examples
+;;; - extra-description should provide examples, preferably REPL-like
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                    ("+" .
                     ["Monad: Conjugate | Dyad: Addition | Input: +"
