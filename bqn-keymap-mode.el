@@ -11,6 +11,7 @@
 
 ;;; Code:
 
+;; Keyboard ASCII Art taken from https://mlochbaum.github.io/BQN/keymap.html
 (defvar bqn-keymap-mode-reference
   "┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬─────────┐
 │~ ¬ │! ⎉ │@ ⚇ │# ⍟ │$ ◶ │% ⊘ │^ ⎊ │& ⍎ │* ⍕ │( ⟨ │) ⟩ │_ √ │+ ⋆ │Backspace│
