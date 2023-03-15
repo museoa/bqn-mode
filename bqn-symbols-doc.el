@@ -34,6 +34,30 @@
 ;;; - long-description should state what symbol is and what forms symbol has
 ;;; - extra-description should provide examples, preferably REPL-like
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                   ("¬" . ["Monadic (¬ 𝕩): Logical Not | Dyadic (𝕨 ¬ 𝕩): Span | Input: \\~"
+                           "\
+`¬ 𝕩`: Logical Not
+- Logical Not of `𝕩`.
+- Pervasive.
+
+`𝕨 ¬ 𝕩`: Span
+- Count of numbers in the inclusive range from `𝕩` to `𝕨`.
+- Pervasive."
+                           "\
+Examples:
+# Monadic
+    ¬ 0
+1
+
+    ¬ 1‿0
+⟨ 0 1 ⟩
+
+# Dyadic
+    3 ¬ 1
+3
+
+    3‿4 ¬ 0‿2
+⟨ 4 3 ⟩"])
                    ("" . [""
                           ""
                           ""])))
