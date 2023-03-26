@@ -1,11 +1,12 @@
 ;;; bqn-symbols-doc.el --- Documentation table for BQN symbols -*- lexical-binding: t; -*-
 ;;
-;; Copyright (C) 2021 Jeff Young
+;; Copyright (C) 2021-2023 Jeff Young
+;; Copyright (C) 2023 bqn-mode project
 ;;
 ;; Author: Jeff Young <https://github.com/doyougnu>
-;; Maintainer: Jeff Young <jeff@doyougnu.xyz>
-;; Created: October 29, 2021
-;; Modified: October 29, 2021
+;; Maintainer: bqn-mode project
+;; Created: 2021-10-29
+;; Modified: 2023-03-26
 ;; Version: 0.0.1
 ;; Keywords: convenience data docs
 ;; URL: https://github.com/museoa/bqn-mode
