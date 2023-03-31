@@ -101,16 +101,16 @@
 (defvar bqn-syntax--table
   (let ((table (make-syntax-table)))
     (cl-loop for s in bqn-symbols--list
-          do (modify-syntax-entry (aref (cl-second s) 0) "." table))
+             do (modify-syntax-entry (aref (cl-second s) 0) "." table))
     (cl-loop for s in (append "$%&*+-/<=>|" nil)
-          do (modify-syntax-entry s "." table))
+             do (modify-syntax-entry s "." table))
     (modify-syntax-entry ?#  "<" table)
     (modify-syntax-entry ?\n ">" table)
-    (modify-syntax-entry ?⟨  "(⟩" table)
-    (modify-syntax-entry ?⟩  ")⟨" table)
     (modify-syntax-entry ?¯  "_" table)
     (modify-syntax-entry ?π  "_" table)
     (modify-syntax-entry ?∞  "_" table)
+    (modify-syntax-entry ?⟩  ")⟨" table)
+    (modify-syntax-entry ?⟨  "(⟩" table)
     table)
   "Syntax table for `bqn-mode'.")
 
