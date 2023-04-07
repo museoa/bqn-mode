@@ -15,17 +15,20 @@
 (require 'bqn-symbols)
 
 (defface bqn-syntax-block-face
-  '((t (:inherit font-lock-function-name-face)))
+  '((t (:inherit font-lock-function-name-face
+        :family "BQN386 Unicode")))
   "Face used for BQN curly braces."
   :group 'bqn)
 
 (defface bqn-syntax-paren-face
-  '((t (:inherit default)))
+  '((t (:inherit default
+        :family "BQN386 Unicode")))
   "Face used for BQN parentheses."
   :group 'bqn)
 
 (defface bqn-syntax-header-face
-  '((t (:inherit default)))
+  '((t (:inherit default
+        :family "BQN386 Unicode")))
   "Face used for BQN header delimiters : and ; ."
   :group 'bqn)
 
