@@ -218,69 +218,63 @@
 
 ;;;; core functionality
 
+(defface bqn-default
+  '((t (:family "BQN386 Unicode")))
+  "Default face for BQN source and inferior-process buffers."
+  :group 'bqn)
+
 (defface bqn-syntax-block-face
-  '((t (:inherit font-lock-function-name-face
-        :family "BQN386 Unicode")))
+  '((t (:inherit font-lock-function-name-face)))
   "Face used for BQN curly braces."
   :group 'bqn)
 
 (defface bqn-syntax-paren-face
-  '((t (:inherit default
-        :family "BQN386 Unicode")))
+  '((t (:inherit default)))
   "Face used for BQN parentheses."
   :group 'bqn)
 
 (defface bqn-syntax-header-face
-  '((t (:inherit default
-        :family "BQN386 Unicode")))
+  '((t (:inherit default)))
   "Face used for BQN header delimiters : and ; ."
   :group 'bqn)
 
 (defface bqn-syntax-list-face
-  '((t (:inherit font-lock-builtin-face
-        :family "BQN386 Unicode")))
+  '((t (:inherit font-lock-builtin-face)))
   "Face used for BQN list characters: angle brackets and ligature."
   :group 'bqn)
 
 (defface bqn-syntax-separator-face
-  '((t (:inherit font-lock-builtin-face
-        :family "BQN386 Unicode")))
+  '((t (:inherit font-lock-builtin-face)))
   "Face used for BQN expression separators."
   :group 'bqn)
 
 (defface bqn-syntax-arrow-face
-  '((t (:inherit 'default
-        :family "BQN386 Unicode")))
+  '((t (:inherit 'default)))
   "Face used for BQN assignment and return arrows."
   :group 'bqn)
 
 (defface bqn-syntax-function-face
-  '((t (:inherit font-lock-type-face
-        :family "BQN386 Unicode")))
+  '((t (:inherit font-lock-type-face)))
   "Face used for BQN functions."
   :group 'bqn)
 
 (defface bqn-syntax-one-modifier-face
-  '((t (:inherit font-lock-preprocessor-face
-        :family "BQN386 Unicode")))
+  '((t (:inherit font-lock-preprocessor-face)))
   "Face used for BQN 1-modifiers."
   :group 'bqn)
 
 (defface bqn-syntax-two-modifier-face
-  '((t (:inherit font-lock-keyword-face
-        :family "BQN386 Unicode")))
+  '((t (:inherit font-lock-keyword-face)))
   "Face used for BQN 2-modifiers."
   :group 'bqn)
 
 (defface bqn-syntax-subject-face
-  '((t (:inherit font-lock-variable-name-face
-        :family "BQN386 Unicode")))
+  '((t (:inherit font-lock-variable-name-face)))
   "Face used for BQN subjects."
   :group 'bqn)
 
 (defface bqn-syntax-nothing-face
-  '((t (:inherit font-lock-constant-face
-        :family "BQN386 Unicode")))
+  '((t (:inherit font-lock-constant-face)))
   "Face used for BQN Nothing (·)."
   :group 'bqn)
 
@@ -349,7 +343,9 @@
 
 (define-derived-mode bqn-help-documentation-mode fundamental-mode
   "BQN Documentation"
-  "Major mode for displaying BQN documentation."
+  "Major mode for displaying BQN documentation.
+
+TODO: use bqn-default?"
   (use-local-map bqn-help-documentation-mode-map)
   (setq-local font-lock-defaults bqn-syntax--token-types)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc))
@@ -439,7 +435,8 @@ to reflect the change."
   (use-local-map bqn-mode-map--keymap)
   (setq-local font-lock-defaults bqn-syntax--token-types)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc)
-  (setq-local comment-start "# "))
+  (setq-local comment-start "# ")
+  (buffer-face-set 'bqn-default))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.bqn\\'" . bqn-mode))
@@ -571,7 +568,8 @@ the function was called from."
   (setq comint-prompt-read-only nil)
   ;; this makes it so commands like M-{ and M-} work.
   (set (make-local-variable 'paragraph-separate) "\\'")
-  (set (make-local-variable 'paragraph-start) bqn-comint-prompt-regexp))
+  (set (make-local-variable 'paragraph-start) bqn-comint-prompt-regexp)
+  (buffer-face-set 'bqn-default))
 
 (provide 'bqn-mode)
 
