@@ -15,7 +15,7 @@
 ;; This file is not part of GNU Emacs.
 ;;
 ;;; Commentary:
-;; - used in bqn-help.el to implement eldoc for bqn-mode
+;; - implements eldoc for bqn-mode
 ;;
 ;;; Code:
 
