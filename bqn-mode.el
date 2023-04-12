@@ -223,80 +223,80 @@
   "Default face for BQN source and inferior-process buffers."
   :group 'bqn)
 
-(defface bqn-syntax-block-face
+(defface bqn-block
   '((t (:inherit font-lock-function-name-face)))
   "Face used for BQN curly braces."
   :group 'bqn)
 
-(defface bqn-syntax-paren-face
+(defface bqn-paren
   '((t (:inherit default)))
   "Face used for BQN parentheses."
   :group 'bqn)
 
-(defface bqn-syntax-header-face
+(defface bqn-header
   '((t (:inherit default)))
   "Face used for BQN header delimiters : and ; ."
   :group 'bqn)
 
-(defface bqn-syntax-list-face
+(defface bqn-list
   '((t (:inherit font-lock-builtin-face)))
   "Face used for BQN list characters: angle brackets and ligature."
   :group 'bqn)
 
-(defface bqn-syntax-separator-face
+(defface bqn-separator
   '((t (:inherit font-lock-builtin-face)))
   "Face used for BQN expression separators."
   :group 'bqn)
 
-(defface bqn-syntax-arrow-face
+(defface bqn-arrow
   '((t (:inherit 'default)))
   "Face used for BQN assignment and return arrows."
   :group 'bqn)
 
-(defface bqn-syntax-function-face
+(defface bqn-function
   '((t (:inherit font-lock-type-face)))
   "Face used for BQN functions."
   :group 'bqn)
 
-(defface bqn-syntax-one-modifier-face
+(defface bqn-one-modifier
   '((t (:inherit font-lock-preprocessor-face)))
   "Face used for BQN 1-modifiers."
   :group 'bqn)
 
-(defface bqn-syntax-two-modifier-face
+(defface bqn-two-modifier
   '((t (:inherit font-lock-keyword-face)))
   "Face used for BQN 2-modifiers."
   :group 'bqn)
 
-(defface bqn-syntax-subject-face
+(defface bqn-subject
   '((t (:inherit font-lock-variable-name-face)))
   "Face used for BQN subjects."
   :group 'bqn)
 
-(defface bqn-syntax-nothing-face
+(defface bqn-nothing
   '((t (:inherit font-lock-constant-face)))
   "Face used for BQN Nothing (·)."
   :group 'bqn)
 
-(defface bqn-syntax-number-face
+(defface bqn-number
   '((t (:inherit font-lock-constant-face)))
   "Face used for BQN numeric literals."
   :group 'bqn)
 
 (defvar bqn-syntax--token-types
   '((("'.'\\|@" . font-lock-string-face)
-     ("[{}]" . 'bqn-syntax-block-face)
-     ("[()]" . 'bqn-syntax-paren-face)
-     ("[:;?]" . 'bqn-syntax-header-face)
-     ("[⟨⟩‿]" . 'bqn-syntax-list-face)
-     ("[⋄,]" . 'bqn-syntax-separator-face)
-     ("[←⇐↩→]" . 'bqn-syntax-arrow-face)
-     ("·" . 'bqn-syntax-nothing-face)
-     ("[𝔽𝔾𝕎𝕏𝕊+×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍⋈↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!⍕⍎-]\\|•?\\_<[A-Z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-syntax-function-face)
-     ("[˙˜˘¨⌜⁼´˝`]\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*\\|_𝕣\\_>" . 'bqn-syntax-one-modifier-face)
-     ("[∘○⊸⟜⌾⊘◶⎉⚇⍟⎊]\\|_𝕣_\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*_\\_>" . 'bqn-syntax-two-modifier-face)
-     ("[𝕗𝕘𝕨𝕩𝕤𝕣]\\|•\\|•?\\_<[a-z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-syntax-subject-face)
-     ("\\_<¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\(i¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\)?\\_>" . 'bqn-syntax-number-face)
+     ("[{}]" . 'bqn-block)
+     ("[()]" . 'bqn-paren)
+     ("[:;?]" . 'bqn-header)
+     ("[⟨⟩‿]" . 'bqn-list)
+     ("[⋄,]" . 'bqn-separator)
+     ("[←⇐↩→]" . 'bqn-arrow)
+     ("·" . 'bqn-nothing)
+     ("[𝔽𝔾𝕎𝕏𝕊+×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍⋈↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!⍕⍎-]\\|•?\\_<[A-Z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-function)
+     ("[˙˜˘¨⌜⁼´˝`]\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*\\|_𝕣\\_>" . 'bqn-one-modifier)
+     ("[∘○⊸⟜⌾⊘◶⎉⚇⍟⎊]\\|_𝕣_\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*_\\_>" . 'bqn-two-modifier)
+     ("[𝕗𝕘𝕨𝕩𝕤𝕣]\\|•\\|•?\\_<[a-z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-subject)
+     ("\\_<¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\(i¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\)?\\_>" . 'bqn-number)
      ("[^ \r\n]" . 'error))
     nil nil nil))
 
