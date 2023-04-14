@@ -485,17 +485,18 @@ to reflect the change."
     (overlay-put overlay 'face 'secondary-selection)
     (run-with-timer (or timeout 0.2) nil 'delete-overlay overlay)))
 
-(defun bqn-comint-process-ensure-session ()
-  "Check for a running `bqn-comint-*process-buffer-name*'.
-If it doesn't exist, create and return it; else, return the existing one."
-  (or (get-process bqn-comint--process-name)
-      (progn
-        (bqn-comint-run-process)
-        (get-process bqn-comint--process-name))))
+(defun bqn-comint--ensure-process ()
+  "Check for a running BQN process and return its buffer.
+If the process does not exist, create it.
+
+FIXME: we do not actually check that the process is alive."
+  (if-let ((proc (get-process bqn-comint--process-name)))
+      (process-buffer proc)
+    (bqn-comint-run-process)))
 
 ;;;###autoload
 (defun bqn-comint-run-process ()
-  "Run an inferior BQN process inside Emacs."
+  "Run an inferior BQN process inside Emacs and return its buffer."
   (interactive)
   (let ((buffer (comint-check-proc bqn-comint--process-name)))
     ;; pop to the "*BQN*" buffer when the process is dead, the buffer
@@ -506,12 +507,14 @@ If it doesn't exist, create and return it; else, return the existing one."
        (current-buffer)))
     ;; create the comint process unless there is a buffer already
     (unless buffer
-      (apply #'make-comint-in-buffer
-             bqn-comint--process-name
-             buffer
-             bqn-interpreter bqn-interpreter-arguments)
+      (setq buffer
+            (apply #'make-comint-in-buffer
+                   bqn-comint--process-name
+                   buffer
+                   bqn-interpreter bqn-interpreter-arguments))
       (switch-to-buffer-other-window bqn-comint-*process-buffer-name*)
-      (bqn-comint-mode))))
+      (bqn-comint-mode))
+    buffer))
 
 (defun bqn-comint--escape (str)
   ;; At least for CBQN, newlines in the string trigger immediate evaluation, so
@@ -541,7 +544,7 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   (when bqn-comint-flash-on-send
     (bqn-comint--flash-region start end))
   (let ((region (buffer-substring-no-properties start end))
-        (pbuf (process-buffer (bqn-comint-process-ensure-session))))
+        (pbuf (bqn-comint--ensure-process)))
     (with-current-buffer pbuf
       ;; get rid of prompt for output alignment
       (goto-char (point-max))
