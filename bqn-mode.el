@@ -468,11 +468,6 @@ to reflect the change."
 (defvar bqn-comint--process-name "BQN"
   "Name of BQN comint process.")
 
-(defcustom bqn-comint-*process-buffer-name* "*BQN*"
-  "Name of buffer which holds BQN process."
-  :type 'string
-  :group 'bqn)
-
 (defcustom bqn-comint-flash-on-send t
   "When non-nil flash the region sent to BQN process."
   :type 'boolean
@@ -497,17 +492,19 @@ FIXME: we do not actually check that the process is alive."
 (defun bqn-comint-run-process ()
   "Run an inferior BQN process inside Emacs and return its buffer."
   (interactive)
-  (if-let ((buf (get-buffer bqn-comint-*process-buffer-name*)))
-      (if (comint-check-proc buf)
-          buf
-        (error "Buffer '%s' exists but has no live process" bqn-comint-*process-buffer-name*))
-    (let ((buf
-           (apply #'make-comint-in-buffer
-                  bqn-comint--process-name bqn-comint-*process-buffer-name*
-                  bqn-interpreter nil bqn-interpreter-arguments)))
-      (with-current-buffer buf
-        (bqn-comint-mode))
-      buf)))
+  (let ((buf-name (concat "*" bqn-comint--process-name "*")))
+    ;; same buffer name as auto-created when passing nil below
+    (if-let ((buf (get-buffer buf-name)))
+        (if (comint-check-proc buf)
+            buf
+          (error "Buffer '%s' exists but has no live process" buf-name))
+      (let ((buf
+             (apply #'make-comint-in-buffer
+                    bqn-comint--process-name buf-name
+                    bqn-interpreter nil bqn-interpreter-arguments)))
+        (with-current-buffer buf
+          (bqn-comint-mode))
+        buf))))
 
 (defun bqn-comint--escape (str)
   ;; At least for CBQN, newlines in the string trigger immediate evaluation, so
