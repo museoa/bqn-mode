@@ -343,12 +343,11 @@
 
 (define-derived-mode bqn-help-documentation-mode fundamental-mode
   "BQN Documentation"
-  "Major mode for displaying BQN documentation.
-
-TODO: use bqn-default?"
+  "Major mode for displaying BQN documentation."
   (use-local-map bqn-help-documentation-mode-map)
   (setq-local font-lock-defaults bqn-syntax--token-types)
-  (setq-local eldoc-documentation-function 'bqn-help--eldoc))
+  (setq-local eldoc-documentation-function 'bqn-help--eldoc)
+  (buffer-face-set 'bqn-default))
 
 ;; General interactive help
 (defvar bqn-help-*documentation-buffer-name* "*bqn-help*")
