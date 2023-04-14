@@ -497,23 +497,17 @@ FIXME: we do not actually check that the process is alive."
 (defun bqn-comint-run-process ()
   "Run an inferior BQN process inside Emacs and return its buffer."
   (interactive)
-  (let ((buffer (comint-check-proc bqn-comint--process-name)))
-    ;; pop to the "*BQN*" buffer when the process is dead, the buffer
-    ;; is missing or it's got the wrong mode.
-    (pop-to-buffer-same-window
-     (if (or buffer (comint-check-proc (current-buffer)))
-         (get-buffer-create (or buffer bqn-comint-*process-buffer-name*))
-       (current-buffer)))
-    ;; create the comint process unless there is a buffer already
-    (unless buffer
-      (setq buffer
-            (apply #'make-comint-in-buffer
-                   bqn-comint--process-name
-                   buffer
-                   bqn-interpreter bqn-interpreter-arguments))
-      (switch-to-buffer-other-window bqn-comint-*process-buffer-name*)
-      (bqn-comint-mode))
-    buffer))
+  (if-let ((buf (get-buffer bqn-comint-*process-buffer-name*)))
+      (if (comint-check-proc buf)
+          buf
+        (error "Buffer '%s' exists but has no live process" bqn-comint-*process-buffer-name*))
+    (let ((buf
+           (apply #'make-comint-in-buffer
+                  bqn-comint--process-name bqn-comint-*process-buffer-name*
+                  bqn-interpreter nil bqn-interpreter-arguments)))
+      (with-current-buffer buf
+        (bqn-comint-mode))
+      buf)))
 
 (defun bqn-comint--escape (str)
   ;; At least for CBQN, newlines in the string trigger immediate evaluation, so
