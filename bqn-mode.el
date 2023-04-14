@@ -575,9 +575,6 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   (set (make-local-variable 'comint-use-prompt-regexp) t)
   (set (make-local-variable 'comint-prompt-regexp) bqn-comint-prompt-regexp)
   (set (make-local-variable 'comint-prompt-read-only) nil)
-  ;; this makes it so commands like M-{ and M-} work.
-  (set (make-local-variable 'paragraph-separate) "\\'")
-  (set (make-local-variable 'paragraph-start) bqn-comint-prompt-regexp)
   (buffer-face-set 'bqn-default))
 
 (provide 'bqn-mode)
