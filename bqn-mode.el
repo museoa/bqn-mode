@@ -516,47 +516,55 @@ If it doesn't exist, create and return it; else, return the existing one."
       (bqn-comint-mode)
       (set-input-method "BQN-Z"))))
 
-(defun bqn-comint-process-execute-region (start end &optional dont-follow)
+(defun bqn-comint--escape (str)
+  ;; At least for CBQN, newlines in the string trigger immediate evaluation, so
+  ;; use its escape mechanism.
+  (concat
+   ")escaped \""
+   (with-temp-buffer
+     (insert str)
+     (goto-char (point-min))
+     (while (search-forward-regexp "[\\\"\r\n]" nil 'noerror)
+       (let ((m (match-string 0)))
+         (cond
+          ((string= m "\\") (replace-match "\\\\" t t))
+          ((string= m "\"") (replace-match "\\\"" t t))
+          ((string= m (char-to-string ?\n)) (replace-match "\\n" t t))
+          ((string= m (char-to-string ?\r)) (replace-match "\\r" t t)))))
+     (buffer-string))
+   "\""))
+
+(defun bqn-comint-process-execute-region (start end &optional follow)
   "Send the region bounded by START and END to the bqn-comint-process-session.
 
-When DONT-FOLLOW is non-nil, maintain focus on the buffer where
-the function was called from."
+When FOLLOW is non-nil, switch to the inferior process buffer."
   (interactive "r")
   (when (= start end)
-    (error
-     (concat "Attempt to send empty region to "
-             bqn-comint-*process-buffer-name*)))
+    (error "Attempt to send empty region to %s" bqn-comint--process-name))
   (when bqn-comint-flash-on-send
     (bqn-comint--flash-region start end))
   (let ((region (buffer-substring-no-properties start end))
-        (session (bqn-comint-process-ensure-session))
-        (buffer (current-buffer)))
-    (pop-to-buffer (process-buffer session))
-    (goto-char (point-max))
-    (insert (format "\n%s\n" region))
-    (comint-send-input)
-    (when (or dont-follow nil)
-      (pop-to-buffer buffer))))
+        (pbuf (process-buffer (bqn-comint-process-ensure-session))))
+    (with-current-buffer pbuf
+      (goto-char (point-max))
+      (insert (format "\n%s\n" (bqn-comint--escape region)))
+      (comint-send-input))
+    (when follow
+      (select-window (display-buffer pbuf)))))
 
-(defun bqn-comint-process-execute-line-and-follow ()
-  "Send the current line to BQN process and focus BQN process buffer."
-  (interactive)
-  (bqn-comint-process-execute-region (line-beginning-position) (line-end-position)))
+(defun bqn-comint-process-execute-line (&optional arg)
+  "Send the active region, else the current line to the BQN process."
+  (interactive "P")
+  (cond
+   ((use-region-p)
+    (bqn-comint-process-execute-region (region-beginning) (region-end) arg))
+   (t
+    (bqn-comint-process-execute-region (line-beginning-position) (line-end-position) arg))))
 
-(defun bqn-comint-process-execute-buffer-and-follow ()
-  "Send the current buffer to BQN process and focus BQN process buffer."
-  (interactive)
-  (bqn-comint-process-execute-region (point-min) (point-max)))
-
-(defun bqn-comint-process-execute-line ()
-  "Send the line containing the point to the BQN process."
-  (interactive)
-  (bqn-comint-process-execute-region (line-beginning-position) (line-end-position) t))
-
-(defun bqn-comint-process-execute-buffer ()
+(defun bqn-comint-process-execute-buffer (&optional arg)
   "Send the current buffer to BQN process."
-  (interactive)
-  (bqn-comint-process-execute-region (point-min) (point-max) t))
+  (interactive "P")
+  (bqn-comint-process-execute-region (point-min) (point-max) arg))
 
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
