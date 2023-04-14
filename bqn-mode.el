@@ -519,6 +519,16 @@ If it doesn't exist, create and return it; else, return the existing one."
       (bqn-comint-mode)
       (set-input-method "BQN-Z"))))
 
+(defun bqn-comint--escape (str)
+  "Crude version for the time being...  Targeting CBQN."
+  (concat
+   ")escaped \""
+   (string-replace
+    "\r" "\\r" (string-replace
+                "\n" "\\n" (string-replace
+                            "\"" "\\\"" (string-replace "\\" "\\\\" str))))
+   "\""))
+
 (defun bqn-comint-process-execute-region (start end &optional dont-follow)
   "Send the region bounded by START and END to the bqn-comint-process-session.
 
@@ -536,7 +546,7 @@ the function was called from."
         (buffer (current-buffer)))
     (pop-to-buffer (process-buffer session))
     (goto-char (point-max))
-    (insert (format "\n%s\n" region))
+    (insert (format "\n%s\n" (bqn-comint--escape region)))
     (comint-send-input)
     (when (or dont-follow nil)
       (pop-to-buffer buffer))))
