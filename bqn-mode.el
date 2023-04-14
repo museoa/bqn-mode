@@ -461,11 +461,6 @@ to reflect the change."
     map)
   "Basic mode to run BQN.")
 
-(defcustom bqn-comint-prompt-regexp "^   "
-  "Prompt for BQN."
-  :type 'regexp
-  :group 'bqn)
-
 (defvar bqn-comint--process-name "BQN"
   "Name of BQN comint process.")
 
@@ -571,10 +566,6 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   "Major mode for inferior BQN processes."
   :syntax-table bqn-syntax--table
   (setq-local font-lock-defaults bqn-syntax--token-types)
-  (setq comint-process-echoes t)
-  (set (make-local-variable 'comint-use-prompt-regexp) t)
-  (set (make-local-variable 'comint-prompt-regexp) bqn-comint-prompt-regexp)
-  (set (make-local-variable 'comint-prompt-read-only) nil)
   (buffer-face-set 'bqn-default))
 
 (provide 'bqn-mode)
