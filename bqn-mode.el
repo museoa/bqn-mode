@@ -545,9 +545,11 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   (let ((region (buffer-substring-no-properties start end))
         (pbuf (process-buffer (bqn-comint-process-ensure-session))))
     (with-current-buffer pbuf
+      ;; get rid of prompt for output alignment
       (goto-char (point-max))
-      (insert (format "\n%s\n" (bqn-comint--escape region)))
-      (comint-send-input))
+      (comint-kill-whole-line 0))
+    (comint-send-string (get-buffer-process pbuf)
+                        (concat (bqn-comint--escape region) "\n"))
     (when follow
       (select-window (display-buffer pbuf)))))
 
