@@ -508,8 +508,7 @@ If it doesn't exist, create and return it; else, return the existing one."
              buffer
              bqn-program bqn-comint-interpreter-arguments)
       (switch-to-buffer-other-window bqn-comint-*process-buffer-name*)
-      (bqn-comint-mode)
-      (set-input-method "BQN-Z"))))
+      (bqn-comint-mode))))
 
 (defun bqn-comint--escape (str)
   ;; At least for CBQN, newlines in the string trigger immediate evaluation, so
