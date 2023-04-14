@@ -445,12 +445,16 @@ to reflect the change."
 
 ;;;; inferior BQN process
 
-(defcustom bqn-comint-interpreter-path "bqn"
-  "Path to the BQN interpreter used by `bqn-comint-run-process`."
+(define-obsolete-variable-alias 'bqn-comint-interpreter-path
+  'bqn-interpreter "2023-04-14")
+(defcustom bqn-interpreter "bqn"
+  "Executable of the BQN interpreter for interactive use."
   :type 'string
   :group 'bqn)
 
-(defcustom bqn-comint-interpreter-arguments '()
+(define-obsolete-variable-alias 'bqn-comint-interpreter-arguments
+  'bqn-interpreter-arguments "2023-04-14")
+(defcustom bqn-interpreter-arguments '()
   "Commandline arguments to pass to the BQN interpreter."
   :type 'string
   :group 'bqn)
@@ -492,8 +496,7 @@ If it doesn't exist, create and return it; else, return the existing one."
 (defun bqn-comint-run-process ()
   "Run an inferior BQN process inside Emacs."
   (interactive)
-  (let* ((bqn-program bqn-comint-interpreter-path)
-         (buffer (comint-check-proc bqn-comint--process-name)))
+  (let ((buffer (comint-check-proc bqn-comint--process-name)))
     ;; pop to the "*BQN*" buffer when the process is dead, the buffer
     ;; is missing or it's got the wrong mode.
     (pop-to-buffer-same-window
@@ -505,7 +508,7 @@ If it doesn't exist, create and return it; else, return the existing one."
       (apply #'make-comint-in-buffer
              bqn-comint--process-name
              buffer
-             bqn-program bqn-comint-interpreter-arguments)
+             bqn-interpreter bqn-interpreter-arguments)
       (switch-to-buffer-other-window bqn-comint-*process-buffer-name*)
       (bqn-comint-mode))))
 
