@@ -542,6 +542,7 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
   :syntax-table bqn-syntax--table
+  :group 'bqn
   (setq-local font-lock-defaults bqn-syntax--token-types)
   (buffer-face-set 'bqn-default))
 
