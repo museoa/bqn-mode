@@ -468,17 +468,8 @@ to reflect the change."
   :type 'boolean
   :group 'bqn)
 
-(defun bqn-comint--ensure-process ()
-  "Check for a running BQN process and return its buffer.
-If the process does not exist, create it.
-
-FIXME: we do not actually check that the process is alive."
-  (if-let ((proc (get-process bqn-comint--process-name)))
-      (process-buffer proc)
-    (bqn-comint-run-process)))
-
 ;;;###autoload
-(defun bqn-comint-run-process ()
+(defun bqn-comint-buffer ()
   "Run an inferior BQN process inside Emacs and return its buffer."
   (interactive)
   (let ((buf-name (concat "*" bqn-comint--process-name "*")))
@@ -523,7 +514,7 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   (when (and bqn-comint-flash-on-send (pulse-available-p))
     (pulse-momentary-highlight-region start end))
   (let ((region (buffer-substring-no-properties start end))
-        (pbuf (bqn-comint--ensure-process)))
+        (pbuf (bqn-comint-buffer)))
     (with-current-buffer pbuf
       ;; get rid of prompt for output alignment
       (goto-char (point-max))
