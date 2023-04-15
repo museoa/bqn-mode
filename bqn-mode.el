@@ -22,6 +22,7 @@
 (require 'cl-lib)
 (require 'comint)
 (require 'quail)
+(require 'pulse)
 (require 'bqn-symbols-doc)
 
 ;;;###autoload
@@ -446,129 +447,103 @@ to reflect the change."
 
 ;;;; inferior BQN process
 
-(defcustom bqn-comint-interpreter-path "bqn"
-  "Path to the BQN interpreter used by `bqn-comint-run-process`."
+(define-obsolete-variable-alias 'bqn-comint-interpreter-path
+  'bqn-interpreter "2023-04-14")
+(defcustom bqn-interpreter "bqn"
+  "Executable of the BQN interpreter for interactive use."
   :type 'string
   :group 'bqn)
 
-(defcustom bqn-comint-interpreter-arguments '()
+(define-obsolete-variable-alias 'bqn-comint-interpreter-arguments
+  'bqn-interpreter-arguments "2023-04-14")
+(defcustom bqn-interpreter-arguments '()
   "Commandline arguments to pass to the BQN interpreter."
   :type 'string
   :group 'bqn)
 
-(defvar bqn-comint-mode-map
-  (let ((map (nconc (make-sparse-keymap) comint-mode-map)))
-    ;; add keymaps here
-    map)
-  "Basic mode to run BQN.")
-
-(defcustom bqn-comint-prompt-regexp "^   "
-  "Prompt for BQN."
-  :type 'regexp
-  :group 'bqn)
-
 (defvar bqn-comint--process-name "BQN"
   "Name of BQN comint process.")
-
-(defcustom bqn-comint-*process-buffer-name* "*BQN*"
-  "Name of buffer which holds BQN process."
-  :type 'string
-  :group 'bqn)
 
 (defcustom bqn-comint-flash-on-send t
   "When non-nil flash the region sent to BQN process."
   :type 'boolean
   :group 'bqn)
 
-(defun bqn-comint--flash-region (start end &optional timeout)
-  "Temporarily highlight region from START to END for TIMEOUT seconds."
-  (let ((overlay (make-overlay start end)))
-    (overlay-put overlay 'face 'secondary-selection)
-    (run-with-timer (or timeout 0.2) nil 'delete-overlay overlay)))
-
-(defun bqn-comint-process-ensure-session ()
-  "Check for a running `bqn-comint-*process-buffer-name*'.
-If it doesn't exist, create and return it; else, return the existing one."
-  (or (get-process bqn-comint--process-name)
-      (progn
-        (bqn-comint-run-process)
-        (get-process bqn-comint--process-name))))
-
 ;;;###autoload
-(defun bqn-comint-run-process ()
-  "Run an inferior BQN process inside Emacs."
+(defun bqn-comint-buffer ()
+  "Run an inferior BQN process inside Emacs and return its buffer."
   (interactive)
-  (let* ((bqn-program bqn-comint-interpreter-path)
-         (buffer (comint-check-proc bqn-comint--process-name)))
-    ;; pop to the "*BQN*" buffer when the process is dead, the buffer
-    ;; is missing or it's got the wrong mode.
-    (pop-to-buffer-same-window
-     (if (or buffer (comint-check-proc (current-buffer)))
-         (get-buffer-create (or buffer bqn-comint-*process-buffer-name*))
-       (current-buffer)))
-    ;; create the comint process unless there is a buffer already
-    (unless buffer
-      (apply #'make-comint-in-buffer
-             bqn-comint--process-name
-             buffer
-             bqn-program bqn-comint-interpreter-arguments)
-      (switch-to-buffer-other-window bqn-comint-*process-buffer-name*)
-      (bqn-comint-mode)
-      (set-input-method "BQN-Z"))))
+  (let ((buf-name (concat "*" bqn-comint--process-name "*")))
+    ;; same buffer name as auto-created when passing nil below
+    (if-let ((buf (get-buffer buf-name)))
+        (if (comint-check-proc buf)
+            buf
+          (error "Buffer '%s' exists but has no live process" buf-name))
+      (let ((buf
+             (apply #'make-comint-in-buffer
+                    bqn-comint--process-name buf-name
+                    bqn-interpreter nil bqn-interpreter-arguments)))
+        (with-current-buffer buf
+          (bqn-comint-mode))
+        buf))))
 
-(defun bqn-comint-process-execute-region (start end &optional dont-follow)
+(defun bqn-comint--escape (str)
+  ;; At least for CBQN, newlines in the string trigger immediate evaluation, so
+  ;; use its escape mechanism.
+  (concat
+   ")escaped \""
+   (with-temp-buffer
+     (insert str)
+     (goto-char (point-min))
+     (while (search-forward-regexp "[\\\"\r\n]" nil 'noerror)
+       (let ((m (match-string 0)))
+         (cond
+          ((string= m "\\") (replace-match "\\\\" t t))
+          ((string= m "\"") (replace-match "\\\"" t t))
+          ((string= m (char-to-string ?\n)) (replace-match "\\n" t t))
+          ((string= m (char-to-string ?\r)) (replace-match "\\r" t t)))))
+     (buffer-string))
+   "\""))
+
+(defun bqn-comint-send-region (start end &optional follow)
   "Send the region bounded by START and END to the bqn-comint-process-session.
 
-When DONT-FOLLOW is non-nil, maintain focus on the buffer where
-the function was called from."
+When FOLLOW is non-nil, switch to the inferior process buffer."
   (interactive "r")
   (when (= start end)
-    (error
-     (concat "Attempt to send empty region to "
-             bqn-comint-*process-buffer-name*)))
-  (when bqn-comint-flash-on-send
-    (bqn-comint--flash-region start end))
+    (error "Attempt to send empty region to %s" bqn-comint--process-name))
+  (when (and bqn-comint-flash-on-send (pulse-available-p))
+    (pulse-momentary-highlight-region start end))
   (let ((region (buffer-substring-no-properties start end))
-        (session (bqn-comint-process-ensure-session))
-        (buffer (current-buffer)))
-    (pop-to-buffer (process-buffer session))
-    (goto-char (point-max))
-    (insert (format "\n%s\n" region))
-    (comint-send-input)
-    (when (or dont-follow nil)
-      (pop-to-buffer buffer))))
+        (pbuf (bqn-comint-buffer)))
+    (with-current-buffer pbuf
+      ;; get rid of prompt for output alignment
+      (goto-char (point-max))
+      (comint-kill-whole-line 0))
+    (comint-send-string (get-buffer-process pbuf)
+                        (concat (bqn-comint--escape region) "\n"))
+    (when follow
+      (select-window (display-buffer pbuf)))))
 
-(defun bqn-comint-process-execute-line-and-follow ()
-  "Send the current line to BQN process and focus BQN process buffer."
-  (interactive)
-  (bqn-comint-process-execute-region (line-beginning-position) (line-end-position)))
+(defun bqn-comint-send-dwim (&optional arg)
+  "Send the active region, else the current line to the BQN process."
+  (interactive "P")
+  (cond
+   ((use-region-p)
+    (bqn-comint-send-region (region-beginning) (region-end) arg))
+   (t
+    (bqn-comint-send-region (line-beginning-position) (line-end-position) arg))))
 
-(defun bqn-comint-process-execute-buffer-and-follow ()
-  "Send the current buffer to BQN process and focus BQN process buffer."
-  (interactive)
-  (bqn-comint-process-execute-region (point-min) (point-max)))
-
-(defun bqn-comint-process-execute-line ()
-  "Send the line containing the point to the BQN process."
-  (interactive)
-  (bqn-comint-process-execute-region (line-beginning-position) (line-end-position) t))
-
-(defun bqn-comint-process-execute-buffer ()
+(defun bqn-comint-send-buffer (&optional arg)
   "Send the current buffer to BQN process."
-  (interactive)
-  (bqn-comint-process-execute-region (point-min) (point-max) t))
+  (interactive "P")
+  (bqn-comint-send-region (point-min) (point-max) arg))
 
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
   :syntax-table bqn-syntax--table
+  :group 'bqn
   (setq-local font-lock-defaults bqn--font-lock-defaults)
-  (setq comint-process-echoes t)
-  (setq comint-use-prompt-regexp t)
-  (setq comint-prompt-regexp bqn-comint-prompt-regexp)
-  (setq comint-prompt-read-only nil)
-  ;; this makes it so commands like M-{ and M-} work.
-  (set (make-local-variable 'paragraph-separate) "\\'")
-  (set (make-local-variable 'paragraph-start) bqn-comint-prompt-regexp)
   (buffer-face-set 'bqn-default))
 
 (provide 'bqn-mode)
