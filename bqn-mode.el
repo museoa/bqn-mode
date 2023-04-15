@@ -514,7 +514,7 @@ FIXME: we do not actually check that the process is alive."
      (buffer-string))
    "\""))
 
-(defun bqn-comint-process-execute-region (start end &optional follow)
+(defun bqn-comint-send-region (start end &optional follow)
   "Send the region bounded by START and END to the bqn-comint-process-session.
 
 When FOLLOW is non-nil, switch to the inferior process buffer."
@@ -534,19 +534,19 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
     (when follow
       (select-window (display-buffer pbuf)))))
 
-(defun bqn-comint-process-execute-line (&optional arg)
+(defun bqn-comint-send-dwim (&optional arg)
   "Send the active region, else the current line to the BQN process."
   (interactive "P")
   (cond
    ((use-region-p)
-    (bqn-comint-process-execute-region (region-beginning) (region-end) arg))
+    (bqn-comint-send-region (region-beginning) (region-end) arg))
    (t
-    (bqn-comint-process-execute-region (line-beginning-position) (line-end-position) arg))))
+    (bqn-comint-send-region (line-beginning-position) (line-end-position) arg))))
 
-(defun bqn-comint-process-execute-buffer (&optional arg)
+(defun bqn-comint-send-buffer (&optional arg)
   "Send the current buffer to BQN process."
   (interactive "P")
-  (bqn-comint-process-execute-region (point-min) (point-max) arg))
+  (bqn-comint-send-region (point-min) (point-max) arg))
 
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
