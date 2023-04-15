@@ -330,21 +330,9 @@
     (bqn-symbols-doc-get-short-doc (match-string 0))))
 
 ;; Help functions
-(defun bqn-help--close-documentation-buffer ()
-  "Close the active documentation window."
-  (interactive)
-  (quit-window))
-
-(defvar bqn-help-documentation-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "q") 'bqn-help--close-documentation-buffer)
-    map)
-  "Keymap for documentation buffers.")
-
-(define-derived-mode bqn-help-documentation-mode fundamental-mode
+(define-derived-mode bqn-help-documentation-mode special-mode
   "BQN Documentation"
   "Major mode for displaying BQN documentation."
-  (use-local-map bqn-help-documentation-mode-map)
   (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc)
   (buffer-face-set 'bqn-default))
