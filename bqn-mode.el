@@ -22,6 +22,7 @@
 (require 'cl-lib)
 (require 'comint)
 (require 'quail)
+(require 'pulse)
 (require 'bqn-symbols-doc)
 
 ;;;###autoload
@@ -474,12 +475,6 @@ to reflect the change."
   :type 'boolean
   :group 'bqn)
 
-(defun bqn-comint--flash-region (start end &optional timeout)
-  "Temporarily highlight region from START to END for TIMEOUT seconds."
-  (let ((overlay (make-overlay start end)))
-    (overlay-put overlay 'face 'secondary-selection)
-    (run-with-timer (or timeout 0.2) nil 'delete-overlay overlay)))
-
 (defun bqn-comint--ensure-process ()
   "Check for a running BQN process and return its buffer.
 If the process does not exist, create it.
@@ -532,8 +527,8 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   (interactive "r")
   (when (= start end)
     (error "Attempt to send empty region to %s" bqn-comint--process-name))
-  (when bqn-comint-flash-on-send
-    (bqn-comint--flash-region start end))
+  (when (and bqn-comint-flash-on-send (pulse-available-p))
+    (pulse-momentary-highlight-region start end))
   (let ((region (buffer-substring-no-properties start end))
         (pbuf (bqn-comint--ensure-process)))
     (with-current-buffer pbuf
