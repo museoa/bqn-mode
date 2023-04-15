@@ -19,7 +19,6 @@
 
 ;;; Code:
 
-(require 'cl-lib)
 (require 'comint)
 (require 'quail)
 (require 'pulse)
@@ -198,9 +197,10 @@
   (quail-install-map
    (let* ((prefix (string new))
           (bqn-key-prefix--transcription-alist
-           (cl-loop for command in bqn-symbols--list
-                    collect (cons (concat prefix (char-to-string (cl-third command)))
-                                  (cl-second command)))))
+           (mapcar
+            (lambda (s)
+              (cons (concat prefix (char-to-string (caddr s))) (cadr s)))
+            bqn-symbols--list)))
      (quail-map-from-table
       '((default bqn-key-prefix--transcription-alist)))))
   (set-default prefix new))
@@ -304,10 +304,10 @@
 
 (defvar bqn-syntax--table
   (let ((table (make-syntax-table)))
-    (cl-loop for s in bqn-symbols--list
-             do (modify-syntax-entry (aref (cl-second s) 0) "." table))
-    (cl-loop for s in (append "$%&*+-/<=>|" nil)
-             do (modify-syntax-entry s "." table))
+    (dolist (s bqn-symbols--list)
+      (modify-syntax-entry (aref (cadr s) 0) "." table))
+    (dolist (s (string-to-list "$%&*+-/<=>|"))
+      (modify-syntax-entry s "." table))
     (modify-syntax-entry ?#  "<" table)
     (modify-syntax-entry ?\n ">" table)
     (modify-syntax-entry ?¯  "_" table)
@@ -320,10 +320,8 @@
 
 ;; Eldoc functions
 (defvar bqn-help--function-regexp
-  (regexp-opt
-   (let* ((symbols (mapcar #'cadr bqn-symbols--list))
-          (others  (bqn-symbols-doc--symbols)))
-     (cl-union symbols others)))
+  (regexp-opt (append (mapcar #'cadr bqn-symbols--list)
+                      (bqn-symbols-doc--symbols)))
   "Regex to match BQN functions.")
 
 (defun bqn-help--eldoc ()
