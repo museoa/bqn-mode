@@ -223,80 +223,81 @@
   "Default face for BQN source and inferior-process buffers."
   :group 'bqn)
 
-(defface bqn-syntax-block-face
-  '((t (:inherit font-lock-function-name-face)))
-  "Face used for BQN curly braces."
-  :group 'bqn)
-
-(defface bqn-syntax-paren-face
+(defface bqn-arrow
   '((t (:inherit default)))
-  "Face used for BQN parentheses."
-  :group 'bqn)
-
-(defface bqn-syntax-header-face
-  '((t (:inherit default)))
-  "Face used for BQN header delimiters : and ; ."
-  :group 'bqn)
-
-(defface bqn-syntax-list-face
-  '((t (:inherit font-lock-builtin-face)))
-  "Face used for BQN list characters: angle brackets and ligature."
-  :group 'bqn)
-
-(defface bqn-syntax-separator-face
-  '((t (:inherit font-lock-builtin-face)))
-  "Face used for BQN expression separators."
-  :group 'bqn)
-
-(defface bqn-syntax-arrow-face
-  '((t (:inherit 'default)))
   "Face used for BQN assignment and return arrows."
   :group 'bqn)
 
-(defface bqn-syntax-function-face
-  '((t (:inherit font-lock-type-face)))
-  "Face used for BQN functions."
-  :group 'bqn)
-
-(defface bqn-syntax-one-modifier-face
-  '((t (:inherit font-lock-preprocessor-face)))
-  "Face used for BQN 1-modifiers."
-  :group 'bqn)
-
-(defface bqn-syntax-two-modifier-face
-  '((t (:inherit font-lock-keyword-face)))
-  "Face used for BQN 2-modifiers."
-  :group 'bqn)
-
-(defface bqn-syntax-subject-face
-  '((t (:inherit font-lock-variable-name-face)))
-  "Face used for BQN subjects."
-  :group 'bqn)
-
-(defface bqn-syntax-nothing-face
+(defface bqn-nothing
   '((t (:inherit font-lock-constant-face)))
   "Face used for BQN Nothing (·)."
   :group 'bqn)
 
-(defface bqn-syntax-number-face
-  '((t (:inherit font-lock-constant-face)))
-  "Face used for BQN numeric literals."
+(defface bqn-subject
+  '((t (:inherit font-lock-variable-name-face)))
+  "Face used for BQN subjects."
   :group 'bqn)
 
-(defvar bqn-syntax--token-types
-  '((("'.'\\|@" . font-lock-string-face)
-     ("[{}]" . 'bqn-syntax-block-face)
-     ("[()]" . 'bqn-syntax-paren-face)
-     ("[:;?]" . 'bqn-syntax-header-face)
-     ("[⟨⟩‿]" . 'bqn-syntax-list-face)
-     ("[⋄,]" . 'bqn-syntax-separator-face)
-     ("[←⇐↩→]" . 'bqn-syntax-arrow-face)
-     ("·" . 'bqn-syntax-nothing-face)
-     ("[𝔽𝔾𝕎𝕏𝕊+×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍⋈↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!⍕⍎-]\\|•?\\_<[A-Z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-syntax-function-face)
-     ("[˙˜˘¨⌜⁼´˝`]\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*\\|_𝕣\\_>" . 'bqn-syntax-one-modifier-face)
-     ("[∘○⊸⟜⌾⊘◶⎉⚇⍟⎊]\\|_𝕣_\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*_\\_>" . 'bqn-syntax-two-modifier-face)
-     ("[𝕗𝕘𝕨𝕩𝕤𝕣]\\|•\\|•?\\_<[a-z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-syntax-subject-face)
-     ("\\_<¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\(i¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\)?\\_>" . 'bqn-syntax-number-face)
+(defface bqn-function
+  '((t (:inherit font-lock-function-name-face)))
+  "Face used for BQN functions."
+  :group 'bqn)
+
+(defface bqn-one-modifier
+  '((t (:inherit font-lock-preprocessor-face)))
+  "Face used for BQN 1-modifiers."
+  :group 'bqn)
+
+(defface bqn-two-modifier
+  '((t (:inherit font-lock-keyword-face)))
+  "Face used for BQN 2-modifiers."
+  :group 'bqn)
+
+(defface bqn-primitive-function
+  '((t (:inherit font-lock-builtin-face)))
+  "Face used for BQN functions."
+  :group 'bqn)
+
+(defface bqn-primitive-one-modifier
+  '((t (:inherit font-lock-preprocessor-face)))
+  "Face used for BQN 1-modifiers."
+  :group 'bqn)
+
+(defface bqn-primitive-two-modifier
+  '((t (:inherit font-lock-keyword-face)))
+  "Face used for BQN 2-modifiers."
+  :group 'bqn)
+
+(defface bqn-box
+  '((t (:inherit shadow)))
+  "Face used for BQN output boxes."
+  :group 'bqn)
+
+(defvar bqn--font-lock-defaults
+  `((("'.'\\|@" . 'font-lock-string-face)
+     ("^\\s *\\(Error\\)\\(: .*\\)" (1 'error) (2 'default)) ;for REPL output
+     ("[{}]" . ,(if (facep 'font-lock-bracket-face) ''font-lock-bracket-face ''default))
+     ("[()]" . ,(if (facep 'font-lock-bracket-face) ''font-lock-bracket-face ''default))
+     ("[][⟨⟩]" . ,(if (facep 'font-lock-bracket-face) ''font-lock-bracket-face ''default))
+     ("[←⇐↩→]" . 'bqn-arrow)
+     ("·" . 'bqn-nothing)
+     ("[:;?]" . 'font-lock-type-face)
+     ("[‿,⋄]" . ,(if (facep 'font-lock-delimiter-face) ''font-lock-delimiter-face ''default))
+     ;; built-ins
+     ("[∘○⊸⟜⌾⊘◶⎉⚇⍟⎊]" . 'bqn-primitive-two-modifier)
+     ("[˙˜˘¨⌜⁼´˝`]" . 'bqn-primitive-one-modifier)
+     ("[+×÷⋆√⌊⌈|¬∧∨<>≠=≤≥≡≢⊣⊢⥊∾≍⋈↑↓↕«»⌽⍉/⍋⍒⊏⊑⊐⊒∊⍷⊔!⍕⍎-]" . 'bqn-primitive-function)
+     ;; note: π∞¯ may, in fact, be part of identifier names; order of clauses matters
+     ("_𝕣_\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*_\\_>" . 'bqn-two-modifier)
+     ("_𝕣\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-one-modifier)
+     ("[𝔽𝔾𝕎𝕏𝕊]\\|•?\\_<[A-Z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-function)
+     ("[𝕗𝕘𝕨𝕩𝕤𝕣]\\|•?\\_<[a-z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-subject) ;TODO had single • --- why?
+     ("\\_<¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\(i¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\)?\\_>"
+      . ,(if (facep 'font-lock-number-face) ''font-lock-number-face ''font-lock-constant-face))
+     ;; *after* numbers have been parsed:
+     ("\\." . ,(if (facep 'font-lock-punctuation-face) ''font-lock-punctuation-face ''default))
+     ("[┌─╵╎┆┊┘]" . 'bqn-box)
+     ;; anything else:
      ("[^ \r\n]" . 'error))
     nil nil nil))
 
@@ -345,7 +346,7 @@
   "BQN Documentation"
   "Major mode for displaying BQN documentation."
   (use-local-map bqn-help-documentation-mode-map)
-  (setq-local font-lock-defaults bqn-syntax--token-types)
+  (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc)
   (buffer-face-set 'bqn-default))
 
@@ -432,7 +433,7 @@ to reflect the change."
   :syntax-table bqn-syntax--table
   :group 'bqn
   (use-local-map bqn-mode-map--keymap)
-  (setq-local font-lock-defaults bqn-syntax--token-types)
+  (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc)
   (setq-local comment-start "# ")
   (buffer-face-set 'bqn-default))
@@ -560,7 +561,7 @@ the function was called from."
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
   :syntax-table bqn-syntax--table
-  (setq-local font-lock-defaults bqn-syntax--token-types)
+  (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq comint-process-echoes t)
   (setq comint-use-prompt-regexp t)
   (setq comint-prompt-regexp bqn-comint-prompt-regexp)
