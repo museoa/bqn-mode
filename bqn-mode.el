@@ -273,7 +273,7 @@
   "Face used for BQN output boxes."
   :group 'bqn)
 
-(defvar bqn-syntax--token-types
+(defvar bqn--font-lock-defaults
   `((("'.'\\|@" . 'font-lock-string-face)
      ("^\\s *\\(Error\\)\\(: .*\\)" (1 'error) (2 'default)) ;for REPL output
      ("[{}]" . ,(if (facep 'font-lock-bracket-face) ''font-lock-bracket-face ''default))
@@ -346,7 +346,7 @@
   "BQN Documentation"
   "Major mode for displaying BQN documentation."
   (use-local-map bqn-help-documentation-mode-map)
-  (setq-local font-lock-defaults bqn-syntax--token-types)
+  (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc)
   (buffer-face-set 'bqn-default))
 
@@ -433,7 +433,7 @@ to reflect the change."
   :syntax-table bqn-syntax--table
   :group 'bqn
   (use-local-map bqn-mode-map--keymap)
-  (setq-local font-lock-defaults bqn-syntax--token-types)
+  (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc)
   (setq-local comment-start "# ")
   (buffer-face-set 'bqn-default))
@@ -561,7 +561,7 @@ the function was called from."
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
   :syntax-table bqn-syntax--table
-  (setq-local font-lock-defaults bqn-syntax--token-types)
+  (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq comint-process-echoes t)
   (setq comint-use-prompt-regexp t)
   (setq comint-prompt-regexp bqn-comint-prompt-regexp)
