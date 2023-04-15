@@ -461,12 +461,6 @@ to reflect the change."
   :type 'string
   :group 'bqn)
 
-(defvar bqn-comint-mode-map
-  (let ((map (nconc (make-sparse-keymap) comint-mode-map)))
-    ;; add keymaps here
-    map)
-  "Basic mode to run BQN.")
-
 (defvar bqn-comint--process-name "BQN"
   "Name of BQN comint process.")
 
