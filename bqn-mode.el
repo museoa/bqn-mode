@@ -529,14 +529,7 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   "Major mode for inferior BQN processes."
   :syntax-table bqn-syntax--table
   :group 'bqn
-  (setq-local font-lock-defaults bqn--font-lock-defaults)
-  (setq comint-process-echoes t)
-  (set (make-local-variable 'comint-use-prompt-regexp) t)
-  (set (make-local-variable 'comint-prompt-regexp) bqn-comint-prompt-regexp)
-  (set (make-local-variable 'comint-prompt-read-only) nil)
-  ;; this makes it so commands like M-{ and M-} work.
-  (set (make-local-variable 'paragraph-separate) "\\'")
-  (set (make-local-variable 'paragraph-start) bqn-comint-prompt-regexp)
+  (setq-local font-lock-defaults bqn-syntax--token-types)
   (buffer-face-set 'bqn-default))
 
 (provide 'bqn-mode)
