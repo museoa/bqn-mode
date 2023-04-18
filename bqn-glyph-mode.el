@@ -12,6 +12,8 @@
 
 ;;; Code:
 
+(require 'bqn-mode)
+
 (defvar bqn-glyph-mode-reference
   "┌───┬────────────────┬──────────────┬───┬──────────────────┬────────────────┐
 │ @ │ Monadic        │ Dyadic       │ @ │ Monadic          │ Dyadic         │
@@ -75,6 +77,7 @@
 (define-derived-mode bqn-glyph-mode fundamental-mode "BQN-Glyphs"
   "Major mode for displaying the BQN Glyph help."
   (use-local-map bqn-glyph-mode-map)
+  (buffer-face-set 'bqn-default)
   (read-only-mode 1)
   (setq truncate-lines t))
 
