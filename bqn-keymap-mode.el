@@ -11,6 +11,8 @@
 
 ;;; Code:
 
+(require 'bqn-mode)
+
 ;; Keyboard ASCII Art taken from https://mlochbaum.github.io/BQN/keymap.html
 (defvar bqn-keymap-mode-reference
   "┌────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬─────────┐
@@ -64,6 +66,7 @@
 (define-derived-mode bqn-keymap-mode fundamental-mode "BQN-Keymap"
   "Major mode for displaying the keymap help."
   (use-local-map bqn-keymap-mode-map)
+  (buffer-face-set 'bqn-default)
   (read-only-mode 1)
   (setq truncate-lines t))
 
