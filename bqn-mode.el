@@ -516,7 +516,8 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   (interactive "P")
   (cond
    ((use-region-p)
-    (bqn-comint-send-region (region-beginning) (region-end) arg))
+    (bqn-comint-send-region (region-beginning) (region-end) arg)
+    (deactivate-mark))
    (t
     (bqn-comint-send-region (line-beginning-position) (line-end-position) arg))))
 
