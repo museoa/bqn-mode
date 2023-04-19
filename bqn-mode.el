@@ -375,52 +375,47 @@
           (pop-to-buffer doc-buffer))
       (message "No help for %s found!" symbol))))
 
-(defun bqn-mode-map--command-name (name)
-  "Return a symbol for the command NAME."
-  (intern (concat "bqn-insert-sym-" name)))
-
-(pcase-dolist (`(,name ,symbol ,_) bqn-symbols--list)
-  (defalias (bqn-mode-map--command-name name)
-    (lambda ()
-      (interactive)
-      (insert symbol))))
-
-(defun bqn-mode-map--make-base (prefix)
-  "Create a new keymap using the key PREFIX."
+(defun bqn--make-glyph-map (modifier)
+  "Create a new keymap using the string prefix MODIFIER."
   (let ((map (make-sparse-keymap)))
-    (pcase-dolist (`(,name ,_ ,key) bqn-symbols--list)
-      (let ((cmd (bqn-mode-map--command-name name))
+    (pcase-dolist (`(,_ ,symbol ,key) bqn-symbols--list)
+      (let ((cmd (lambda () (interactive) (insert symbol)))
             (key (single-key-description key)))
-        (define-key map (kbd (concat prefix key)) cmd)))
-    (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN")))
+        (define-key map (kbd (concat modifier key)) cmd)))
+    ;; (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN"))) ;has not been used so far
     map))
 
-;; value gets updated by initialization of `bqn-mode-map-prefix'
-(defvar bqn-mode-map--keymap nil
-  "The keymap for `bqn-mode'.")
+(defvar bqn--glyph-map nil
+  "Keymap for BQN special-glyph entry.")
 
-(defun bqn-mode-map--set-prefix (prefix new)
-  "Set the BQN mode keymap's PREFIX to NEW and recreate the keymap."
-  (set-default prefix new)
-  (setq bqn-mode-map--keymap (bqn-mode-map--make-base new)))
+(defun bqn--glyph-map-modifier-set (symbol new)
+  "Set the BQN mode glyph keymap modifier to NEW and recreate the keymap."
+  (set-default symbol new)
+  (setq bqn--glyph-map (bqn--make-glyph-map new)))
 
-(defcustom bqn-mode-map-prefix "s-"
-  "This stores the keymap prefix for `bqn-mode-map--keymap'.
-It is used both to store the new value using
-`set-create' and to update `bqn-mode-map--keymap' using
-`bqn-mode-map--make-base'. Kill and restart your BQN buffers
-to reflect the change."
-  :type 'string
+(define-obsolete-variable-alias 'bqn-mode-map-prefix
+  'bqn-glyph-map-modifier "2023-04-19")
+(defcustom bqn-glyph-map-modifier "s-"
+  "Keymap modifier for the special-glyph entry `bqn--glyph-map'.
+
+If nil, `bqn-mode-map' and `bqn-comint-mode-map' will not be
+changed at all.
+
+For a change to be effective, rerun the mode function in existing
+BQN buffers (or recreate them)."
+  :type '(choice (const :tag "Off" nil)
+                 (string :tag "Modifier prefix"))
   :group 'bqn
-  :set #'bqn-mode-map--set-prefix
-  :initialize #'custom-initialize-set)
+  :set #'bqn--glyph-map-modifier-set)
 
 ;;;###autoload
 (define-derived-mode bqn-mode prog-mode "BQN"
   "Major mode for editing BQN files."
   :syntax-table bqn-syntax--table
   :group 'bqn
-  (use-local-map bqn-mode-map--keymap)
+  (when bqn-glyph-map-modifier
+    (set-keymap-parent bqn-mode-map
+                       (make-composed-keymap prog-mode-map bqn--glyph-map)))
   (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function 'bqn-help--eldoc)
   (setq-local comment-start "# ")
@@ -531,6 +526,9 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
   "Major mode for inferior BQN processes."
   :syntax-table bqn-syntax--table
   :group 'bqn
+  (when bqn-glyph-map-modifier
+    (set-keymap-parent bqn-comint-mode-map
+                       (make-composed-keymap comint-mode-map bqn--glyph-map)))
   (setq-local font-lock-defaults bqn--font-lock-defaults)
   (buffer-face-set 'bqn-default))
 
