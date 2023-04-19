@@ -34,20 +34,6 @@
 (defvar bqn-keymap-mode-*buffer-name* "*BQN keymap*"
   "Name of the BQN keymap buffer.")
 
-(defvar bqn-keymap-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "q") 'bqn-keymap-mode-kill-buffer)
-    map)
-  "Keymap for keymap mode buffers.")
-
-(defun bqn-keymap-mode-kill-buffer ()
-  "Close the buffer displaying the keymap."
-  (interactive)
-  (let ((buffer (get-buffer bqn-keymap-mode-*buffer-name*)))
-    (when buffer
-      (delete-windows-on buffer)
-      (kill-buffer buffer))))
-
 (defun bqn-keymap-mode-show-keyboard ()
   "Display the keyboard help."
   (interactive)
@@ -63,9 +49,8 @@
         (set-window-buffer window buffer)
         (fit-window-to-buffer window)))))
 
-(define-derived-mode bqn-keymap-mode fundamental-mode "BQN-Keymap"
+(define-derived-mode bqn-keymap-mode special-mode "BQN-Keymap"
   "Major mode for displaying the keymap help."
-  (use-local-map bqn-keymap-mode-map)
   (buffer-face-set 'bqn-default)
   (read-only-mode 1)
   (setq truncate-lines t))

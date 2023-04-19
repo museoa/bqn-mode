@@ -45,20 +45,6 @@
 
 (defvar bqn-glyph-mode-*buffer-name* "*BQN Glyphs*")
 
-(defvar bqn-glyph-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "q") 'bqn-glyph-mode-kill-buffer)
-    map)
-  "Keymap for keymap mode buffers.")
-
-(defun bqn-glyph-mode-kill-buffer ()
-  "Close the buffer displaying the keymap."
-  (interactive)
-  (let ((buffer (get-buffer bqn-glyph-mode-*buffer-name*)))
-    (when buffer
-      (delete-windows-on buffer)
-      (kill-buffer buffer))))
-
 (defun bqn-glyph-mode-show-glyphs ()
   "Display a table of BQN glyphs."
   (interactive)
@@ -74,9 +60,8 @@
         (set-window-buffer window buffer)
         (fit-window-to-buffer window)))))
 
-(define-derived-mode bqn-glyph-mode fundamental-mode "BQN-Glyphs"
+(define-derived-mode bqn-glyph-mode special-mode "BQN-Glyphs"
   "Major mode for displaying the BQN Glyph help."
-  (use-local-map bqn-glyph-mode-map)
   (buffer-face-set 'bqn-default)
   (read-only-mode 1)
   (setq truncate-lines t))
