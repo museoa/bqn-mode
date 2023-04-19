@@ -308,6 +308,7 @@
       (modify-syntax-entry (aref (cadr s) 0) "." table))
     (dolist (s (string-to-list "$%&*+-/<=>|"))
       (modify-syntax-entry s "." table))
+    (modify-syntax-entry ?'  "\"" table)
     (modify-syntax-entry ?#  "<" table)
     (modify-syntax-entry ?\n ">" table)
     (modify-syntax-entry ?¯  "_" table)
