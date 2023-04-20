@@ -326,7 +326,6 @@
   "Regex to match BQN functions.")
 
 (defun bqn-help--eldoc ()
-  "Return the doc string for the thing at point, or nil."
   (when (looking-at bqn-help--function-regexp)
     (bqn-symbols-doc-get-short-doc (match-string 0))))
 
@@ -335,7 +334,7 @@
   "BQN Documentation"
   "Major mode for displaying BQN documentation."
   (setq-local font-lock-defaults bqn--font-lock-defaults)
-  (setq-local eldoc-documentation-function 'bqn-help--eldoc)
+  (setq-local eldoc-documentation-function #'bqn-help--eldoc)
   (buffer-face-set 'bqn-default))
 
 ;; General interactive help
@@ -399,7 +398,7 @@ BQN buffers (or recreate them)."
     (set-keymap-parent bqn-mode-map
                        (make-composed-keymap prog-mode-map bqn--glyph-map)))
   (setq-local font-lock-defaults bqn--font-lock-defaults)
-  (setq-local eldoc-documentation-function 'bqn-help--eldoc)
+  (setq-local eldoc-documentation-function #'bqn-help--eldoc)
   (setq-local comment-start "# ")
   (buffer-face-set 'bqn-default))
 
