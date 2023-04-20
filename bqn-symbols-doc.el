@@ -2311,9 +2311,8 @@ Examples:
       (dolist (entry table)
         (puthash (car entry) (cdr entry) ht))
       ht))
-  "This table associates BQN symbols as hash-keys to a 3-vector of docstrings.
-Position 0 is short description for eldoc, position 1 is a long description,
-and position 2 is any extra description.")
+  "Hash map from BQN symbols as keys to 3-vector of documentation strings:
+A short description for eldoc, a long description, and examples.")
 
 (defun bqn-help--symbols ()
   (let (symbols)
