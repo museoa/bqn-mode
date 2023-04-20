@@ -23,7 +23,7 @@
 ;; because we want the lowest latency possible for an end-user-facing structure.
 ;; For all intents and purposes, this table should be regarded as read-only;
 ;; indeed, it is "cached" at byte-compile time via eval-when-compile
-(defconst bqn-symbols-doc--symbol-doc-table
+(defconst bqn-help--symbol-docs
   (eval-when-compile
     (let ((table '(
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -2315,30 +2315,23 @@ Examples:
 Position 0 is short description for eldoc, position 1 is a long description,
 and position 2 is any extra description.")
 
-(defun bqn-symbols-doc--symbols ()
-  "Return a list of bqn symbols for which we have docs."
+(defun bqn-help--symbols ()
   (let (symbols)
-    (maphash (lambda (sym _) (push sym symbols))
-             bqn-symbols-doc--symbol-doc-table)
+    (maphash (lambda (sym _) (push sym symbols)) bqn-help--symbol-docs)
     symbols))
 
-(defun bqn-symbols-doc--get-doc (symbol slot)
-  "Retrieve a docstring for SYMBOL, given a stringp SYMBOL and a keywordp DOC.
-Return nil if no docstring is found."
-  (when-let ((docs (gethash symbol bqn-symbols-doc--symbol-doc-table)))
+(defun bqn-help--symbol-doc (symbol slot)
+  (when-let ((docs (gethash symbol bqn-help--symbol-docs)))
     (aref docs slot)))
 
-(defun bqn-symbols-doc-get-short-doc (symbol)
-  "Given SYMBOL as stringp, retrieve a single-line doc string for SYMBOL, or nil."
-  (bqn-symbols-doc--get-doc symbol 0))
+(defun bqn-help--symbol-doc-short (symbol)
+  (bqn-help--symbol-doc symbol 0))
 
-(defun bqn-symbols-doc-get-long-doc (symbol)
-  "Given SYMBOL as stringp, retrieve a multi-line doc string for SYMBOL, or nil."
-  (bqn-symbols-doc--get-doc symbol 1))
+(defun bqn-help--symbol-doc-long (symbol)
+  (bqn-help--symbol-doc symbol 1))
 
-(defun bqn-symbols-doc-get-extra-doc (symbol)
-  "Given SYMBOL as stringp, retrieve a extra doc string for SYMBOL, or nil."
-  (bqn-symbols-doc--get-doc symbol 2))
+(defun bqn-help--symbol-doc-extra (symbol)
+  (bqn-help--symbol-doc symbol 2))
 
 (provide 'bqn-symbols-doc)
 

@@ -321,12 +321,12 @@
 
 (defvar bqn-help--regexp
   (regexp-opt (append (mapcar #'cadr bqn-symbols--list)
-                      (bqn-symbols-doc--symbols)))
+                      (bqn-help--symbols)))
   "Regex to match BQN functions.")
 
 (defun bqn-help--eldoc ()
   (when (looking-at bqn-help--regexp)
-    (bqn-symbols-doc-get-short-doc (match-string 0))))
+    (bqn-help--symbol-doc-short (match-string 0))))
 
 (define-derived-mode bqn-help--mode special-mode
   "BQN Documentation"
@@ -341,8 +341,8 @@
   (unless (looking-at bqn-help--regexp)
     (user-error "No BQN primitive at point"))
   (if-let* ((symbol (match-string 0))
-            (long   (bqn-symbols-doc-get-long-doc symbol))
-            (extra  (bqn-symbols-doc-get-extra-doc symbol))
+            (long   (bqn-help--symbol-doc-long symbol))
+            (extra  (bqn-help--symbol-doc-extra symbol))
             (sep    "\n\n========================================\n\n")
             (doc-buffer (get-buffer-create "*bqn-help*")))
       (with-current-buffer doc-buffer
