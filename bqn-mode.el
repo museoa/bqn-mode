@@ -161,10 +161,10 @@
     ("identical-to" ?≡ ?m)
     ("not-identical-to" ?≢ ?M)
     ;; ,
-    ("join" ?∾ ?,)
+    ("join" ?∾ ?\,)
     ("less-than-or-equal-to" ?≤ ?<)
     ;; .
-    ("couple" ?≍ ?.)
+    ("couple" ?≍ ?\.)
     ("greater-than-or-equal-to" ?≥ ?>)
     ;; /
     ("not-equal-to" ?≠ ?/)
@@ -320,14 +320,20 @@
     table)
   "Syntax table for `bqn-mode'.")
 
-(defvar bqn-help--regexp
-  (regexp-opt (append (mapcar (lambda (x) (char-to-string (cadr x))) bqn--symbols)
-                      (bqn-help--symbols)))
-  "Regex to match BQN functions.")
+(defvar bqn-help--chars
+  (let ((lst (mapcar #'cadr bqn--symbols))
+        (todo (bqn-help--symbols)))
+    (while todo
+      (let ((c (pop todo)))
+        (unless (memql c lst)
+          (push c lst))))
+    lst)
+  "List of characters for which to look up help.")
 
 (defun bqn-help--eldoc ()
-  (when (looking-at bqn-help--regexp)
-    (bqn-help--symbol-doc-short (match-string 0))))
+  (let ((c (char-after (point))))
+    (when (memql c bqn-help--chars)
+      (bqn-help--symbol-doc-short c))))
 
 (define-derived-mode bqn-help--mode special-mode
   "BQN Documentation"
@@ -339,21 +345,21 @@
 (defun bqn-help-symbol-info-at-point ()
   "Show full documentation for the primitve at point in a separate buffer."
   (interactive)
-  (unless (looking-at bqn-help--regexp)
-    (user-error "No BQN primitive at point"))
-  (if-let* ((symbol (match-string 0))
-            (long   (bqn-help--symbol-doc-long symbol))
-            (extra  (bqn-help--symbol-doc-extra symbol))
-            (sep    "\n\n========================================\n\n")
-            (doc-buffer (get-buffer-create "*bqn-help*")))
-      (with-current-buffer doc-buffer
-        (let ((inhibit-read-only t))
-          (erase-buffer)
-          (insert long sep extra))
-        (goto-char (point-min))
-        (bqn-help--mode)
-        (display-buffer doc-buffer))
-    (message "No help for %s found!" symbol))) ;should never happen
+  (let ((c (char-after (point))))
+    (unless (memql c bqn-help--chars)
+      (user-error "No BQN primitive at point"))
+    (if-let* ((long   (bqn-help--symbol-doc-long c))
+              (extra  (bqn-help--symbol-doc-extra c))
+              (sep    "\n\n========================================\n\n")
+              (doc-buffer (get-buffer-create "*bqn-help*")))
+        (with-current-buffer doc-buffer
+          (let ((inhibit-read-only t))
+            (erase-buffer)
+            (insert long sep extra))
+          (goto-char (point-min))
+          (bqn-help--mode)
+          (display-buffer doc-buffer))
+      (message "No help for %s found!" c)))) ;should never happen
 
 (defun bqn--make-glyph-map (modifier)
   "Create a new keymap using the string prefix MODIFIER."
