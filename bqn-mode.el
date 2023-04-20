@@ -338,20 +338,21 @@
 (defun bqn-help-symbol-info-at-point ()
   "Show full documentation for the primitve at point in a separate buffer."
   (interactive)
-  (when (looking-at bqn-help--function-regexp)
-    (if-let* ((symbol (match-string 0))
-              (long   (bqn-symbols-doc-get-long-doc symbol))
-              (extra  (bqn-symbols-doc-get-extra-doc symbol))
-              (sep    "\n\n========================================\n\n")
-              (doc-buffer (get-buffer-create "*bqn-help*")))
-        (with-current-buffer doc-buffer
-          (let ((inhibit-read-only t))
-            (erase-buffer)
-            (insert long sep extra))
-          (goto-char (point-min))
-          (bqn-help--mode)
-          (display-buffer doc-buffer))
-      (message "No help for %s found!" symbol))))
+  (unless (looking-at bqn-help--function-regexp)
+    (user-error "No BQN primitive at point"))
+  (if-let* ((symbol (match-string 0))
+            (long   (bqn-symbols-doc-get-long-doc symbol))
+            (extra  (bqn-symbols-doc-get-extra-doc symbol))
+            (sep    "\n\n========================================\n\n")
+            (doc-buffer (get-buffer-create "*bqn-help*")))
+      (with-current-buffer doc-buffer
+        (let ((inhibit-read-only t))
+          (erase-buffer)
+          (insert long sep extra))
+        (goto-char (point-min))
+        (bqn-help--mode)
+        (display-buffer doc-buffer))
+    (message "No help for %s found!" symbol))) ;should never happen
 
 (defun bqn--make-glyph-map (modifier)
   "Create a new keymap using the string prefix MODIFIER."
