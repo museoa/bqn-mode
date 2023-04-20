@@ -319,13 +319,13 @@
     table)
   "Syntax table for `bqn-mode'.")
 
-(defvar bqn-help--function-regexp
+(defvar bqn-help--regexp
   (regexp-opt (append (mapcar #'cadr bqn-symbols--list)
                       (bqn-symbols-doc--symbols)))
   "Regex to match BQN functions.")
 
 (defun bqn-help--eldoc ()
-  (when (looking-at bqn-help--function-regexp)
+  (when (looking-at bqn-help--regexp)
     (bqn-symbols-doc-get-short-doc (match-string 0))))
 
 (define-derived-mode bqn-help--mode special-mode
@@ -338,7 +338,7 @@
 (defun bqn-help-symbol-info-at-point ()
   "Show full documentation for the primitve at point in a separate buffer."
   (interactive)
-  (unless (looking-at bqn-help--function-regexp)
+  (unless (looking-at bqn-help--regexp)
     (user-error "No BQN primitive at point"))
   (if-let* ((symbol (match-string 0))
             (long   (bqn-symbols-doc-get-long-doc symbol))
