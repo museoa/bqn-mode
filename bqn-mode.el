@@ -328,7 +328,7 @@
   (when (looking-at bqn-help--function-regexp)
     (bqn-symbols-doc-get-short-doc (match-string 0))))
 
-(define-derived-mode bqn-help-documentation-mode special-mode
+(define-derived-mode bqn-help--mode special-mode
   "BQN Documentation"
   "Major mode for displaying BQN documentation."
   (setq-local font-lock-defaults bqn--font-lock-defaults)
@@ -349,7 +349,7 @@
             (erase-buffer)
             (insert long sep extra))
           (goto-char (point-min))
-          (bqn-help-documentation-mode)
+          (bqn-help--mode)
           (display-buffer doc-buffer))
       (message "No help for %s found!" symbol))))
 
