@@ -339,26 +339,22 @@
   (buffer-face-set 'bqn-default))
 
 ;; General interactive help
-(defvar bqn-help-*documentation-buffer-name* "*bqn-help*")
-
 (defun bqn-help-symbol-info-at-point ()
-  "Get multi-line documentation for the thing at point, or nil."
+  "Show full documentation for the primitve at point in a separate buffer."
   (interactive)
   (when (looking-at bqn-help--function-regexp)
     (if-let* ((symbol (match-string 0))
               (long   (bqn-symbols-doc-get-long-doc symbol))
               (extra  (bqn-symbols-doc-get-extra-doc symbol))
               (sep    "\n\n========================================\n\n")
-              (doc-buffer (get-buffer-create
-                           bqn-help-*documentation-buffer-name*)))
-        (with-current-buffer doc-buffer ;; we have a hit
-          (read-only-mode 0)            ; set read only
-          (delete-region (point-min) (point-max))
-          (insert long sep extra)
+              (doc-buffer (get-buffer-create "*bqn-help*")))
+        (with-current-buffer doc-buffer
+          (let ((inhibit-read-only t))
+            (erase-buffer)
+            (insert long sep extra))
           (goto-char (point-min))
           (bqn-help-documentation-mode)
-          (read-only-mode 1)            ; unset read only
-          (pop-to-buffer doc-buffer))
+          (display-buffer doc-buffer))
       (message "No help for %s found!" symbol))))
 
 (defun bqn--make-glyph-map (modifier)
