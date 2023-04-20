@@ -319,7 +319,6 @@
     table)
   "Syntax table for `bqn-mode'.")
 
-;; Eldoc functions
 (defvar bqn-help--function-regexp
   (regexp-opt (append (mapcar #'cadr bqn-symbols--list)
                       (bqn-symbols-doc--symbols)))
@@ -329,7 +328,6 @@
   (when (looking-at bqn-help--function-regexp)
     (bqn-symbols-doc-get-short-doc (match-string 0))))
 
-;; Help functions
 (define-derived-mode bqn-help-documentation-mode special-mode
   "BQN Documentation"
   "Major mode for displaying BQN documentation."
@@ -337,7 +335,6 @@
   (setq-local eldoc-documentation-function #'bqn-help--eldoc)
   (buffer-face-set 'bqn-default))
 
-;; General interactive help
 (defun bqn-help-symbol-info-at-point ()
   "Show full documentation for the primitve at point in a separate buffer."
   (interactive)
