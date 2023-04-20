@@ -2322,25 +2322,23 @@ and position 2 is any extra description.")
              bqn-symbols-doc--symbol-doc-table)
     symbols))
 
-(defun bqn-symbols-doc--get-doc (symbol doc)
+(defun bqn-symbols-doc--get-doc (symbol slot)
   "Retrieve a docstring for SYMBOL, given a stringp SYMBOL and a keywordp DOC.
 Return nil if no docstring is found."
-  (let ((docs (gethash symbol bqn-symbols-doc--symbol-doc-table)))
-    (and docs (aref docs (cond ((eq doc :short) 0)
-                               ((eq doc :long)  1)
-                               ((eq doc :extra) 2))))))
+  (when-let ((docs (gethash symbol bqn-symbols-doc--symbol-doc-table)))
+    (aref docs slot)))
 
 (defun bqn-symbols-doc-get-short-doc (symbol)
   "Given SYMBOL as stringp, retrieve a single-line doc string for SYMBOL, or nil."
-  (bqn-symbols-doc--get-doc symbol :short))
+  (bqn-symbols-doc--get-doc symbol 0))
 
 (defun bqn-symbols-doc-get-long-doc (symbol)
   "Given SYMBOL as stringp, retrieve a multi-line doc string for SYMBOL, or nil."
-  (bqn-symbols-doc--get-doc symbol :long))
+  (bqn-symbols-doc--get-doc symbol 1))
 
 (defun bqn-symbols-doc-get-extra-doc (symbol)
   "Given SYMBOL as stringp, retrieve a extra doc string for SYMBOL, or nil."
-  (bqn-symbols-doc--get-doc symbol :extra))
+  (bqn-symbols-doc--get-doc symbol 2))
 
 (provide 'bqn-symbols-doc)
 
