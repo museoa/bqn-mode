@@ -341,20 +341,6 @@
 ;; General interactive help
 (defvar bqn-help-*documentation-buffer-name* "*bqn-help*")
 
-(defun bqn-help--bqn-symbols-info (test)
-  "Find entry in `bqn-symbols--list' using the filter functionp TEST."
-  (seq-filter test bqn-symbols--list))
-
-(defun bqn-help-symbol-at-point-is-called ()
-  "Show the canonical name of the symbol at point in the minibuffer."
-  (interactive)
-  (when (looking-at bqn-help--function-regexp)
-    (if-let* ((symbol (match-string 0))
-              (result (bqn-help--bqn-symbols-info
-                       (lambda (v) (equal (cadr v) symbol)))))
-        (message "We call symbol %s %s" symbol (caar result))
-      (message "No name for %s found" symbol))))
-
 (defun bqn-help-symbol-info-at-point ()
   "Get multi-line documentation for the thing at point, or nil."
   (interactive)
