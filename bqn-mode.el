@@ -118,48 +118,25 @@
 
 ;;;; input method
 
-(quail-define-package "BQN-Z" "UTF-8" "⍉" t
-                      "Input mode for BQN"
-                      '(("\t" . quail-completion))
-                      t                 ; forget-last-selection
-                      nil               ; deterministic
-                      nil               ; kbd-translate
-                      t                 ; show-layout
-                      nil               ; create-decode-map
-                      nil               ; maximum-shortest
-                      nil               ; overlay-plist
-                      nil               ; update-translation-function
-                      nil               ; conversion-keys
-                      t                 ; simple
-                      )
+(quail-define-package "BQN-Z" "UTF-8" "⍉"
+                      t "Input mode for BQN" '(("\t" . quail-completion))
+                      t nil nil t nil nil nil nil nil t)
 
-(defvar bqn-key-prefix--transcription-alist)
-(defun bqn-key-prefix--set (prefix new)
-  "Set a key PREFIX to the NEW one."
+(defvar bqn--glyph-prefix-table)
+(defun bqn--glyph-prefix-set (symbol new)
+  (setq bqn--glyph-prefix-table
+        (mapcar (lambda (s) (cons (string new (cadr s)) (car s))) bqn--symbols))
   (quail-select-package "BQN-Z")
-  (quail-install-map
-   (let* ((prefix (string new))
-          (bqn-key-prefix--transcription-alist
-           (mapcar
-            (lambda (s)
-              (cons (concat prefix (char-to-string (cadr s)))
-                    (char-to-string (car s))))
-            bqn--symbols)))
-     (quail-map-from-table
-      '((default bqn-key-prefix--transcription-alist)))))
-  (set-default prefix new))
+  (quail-install-map (quail-map-from-table '((default bqn--glyph-prefix-table))))
+  (set-default symbol new))
 
-(defun bqn-key-prefix--initialize (prefix new)
-  "Initialize the key PREFIX with the NEW one."
-  (custom-initialize-default prefix new)
-  (bqn-key-prefix--set prefix (eval new)))
-
-(defcustom bqn-key-prefix ?\\
-  "Set a character to serve as prefix key for BQN symbol input."
+(define-obsolete-variable-alias 'bqn-key-prefix
+  'bqn-glyph-prefix "2023-04-21")
+(defcustom bqn-glyph-prefix ?\\
+  "Prefix character for BQN symbol input."
   :type 'character
   :group 'bqn
-  :initialize #'bqn-key-prefix--initialize
-  :set #'bqn-key-prefix--set)
+  :set #'bqn--glyph-prefix-set)
 
 ;;;; core functionality
 
