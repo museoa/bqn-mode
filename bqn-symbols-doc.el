@@ -14,9 +14,6 @@
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
-;;; Commentary:
-;; - implements eldoc for bqn-mode
-;;
 ;;; Code:
 
 ;; Arrays and hashes are not very Lispy, however they will be employed here
