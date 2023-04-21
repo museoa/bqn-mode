@@ -175,21 +175,20 @@
 (defun bqn-help-symbol-info-at-point ()
   "Show full documentation for the primitive at point in a separate buffer."
   (interactive)
-  (let ((c (char-after (point))))
-    (unless (bqn--symbol c)
+  (let* ((c (char-after (point)))
+         (info (bqn--symbol c)))
+    (unless info
       (user-error "No BQN primitive at point"))
-    (if-let* ((long   (bqn--symbol-description (bqn--symbol c)))
-              (extra  (bqn--symbol-examples (bqn--symbol c)))
-              (sep    "\n\n==================== Examples ====================\n\n")
-              (doc-buffer (get-buffer-create "*bqn-help*")))
-        (with-current-buffer doc-buffer
-          (let ((inhibit-read-only t))
-            (erase-buffer)
-            (insert long sep extra))
-          (goto-char (point-min))
-          (bqn-help--mode)
-          (display-buffer doc-buffer))
-      (message "No help for %s found!" c)))) ;should never happen
+    (let ((doc-buffer (get-buffer-create "*bqn-help*")))
+      (with-current-buffer doc-buffer
+        (let ((inhibit-read-only t))
+          (erase-buffer)
+          (insert (bqn--symbol-description info)
+                  "\n\n==================== Examples ====================\n\n"
+                  (bqn--symbol-examples info)))
+        (goto-char (point-min))
+        (bqn-help--mode))
+      (display-buffer doc-buffer))))
 
 (defun bqn--make-glyph-map (modifier)
   "Create a new keymap using the string prefix MODIFIER."
