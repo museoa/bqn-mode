@@ -286,9 +286,9 @@
   "Create a new keymap using the string prefix MODIFIER."
   (let ((map (make-sparse-keymap)))
     (pcase-dolist (`(,ch ,key) bqn--symbols)
-      (let ((cmd (lambda () (interactive) (insert ch)))
-            (key (single-key-description key)))
-        (define-key map (kbd (concat modifier key)) cmd)))
+      (define-key map
+                  (kbd (concat modifier (single-key-description key)))
+                  (lambda () (interactive) (insert ch))))
     ;; (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN"))) ;has not been used so far
     map))
 
