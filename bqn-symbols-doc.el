@@ -22,20 +22,13 @@
 ;; Arrays and hashes are not very Lispy, however they will be employed here
 ;; because we want the lowest latency possible for an end-user-facing structure.
 ;; For all intents and purposes, this table should be regarded as read-only;
-;; indeed, it is "cached" at byte-compile time via eval-when-compile
+;; indeed, it is "cached" at byte-compile time via eval-when-compile.
 (defconst bqn-help--symbol-docs
   (eval-when-compile
     (let ((table '(
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; The format of each entry follows the model below
-;;; (<symb> . [short-description long-description extra-description])
-;;; where:
-;;; - <symb> is the symbol to be described
-;;; - short-description should be no more than 80 characters (to fit modeline)
-;;; - long-description should state what symbol is and what forms symbol has
-;;; - extra-description should provide examples, preferably REPL-like
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                   (?\` . [ "𝔽` 𝕩: Scan | 𝕨 𝔽` 𝕩: Scan With initial | Input: `"
+                   ;; top row
+                   (?\` . [ nil
+                            "𝔽` 𝕩: Scan | 𝕨 𝔽` 𝕩: Scan With initial | Input: `"
                             "\
 𝔽` 𝕩: Scan
 - Scan over 𝕩 with 𝔽 from left to right, producing intermediate values.
@@ -68,7 +61,8 @@ Examples:
     ⟨5-1, (5-1)-2, ((5-1)-2)-3⟩
 ⟨ 4 2 ¯1 ⟩"])
 
-                   (?¬ . [ "¬ 𝕩: Logical Not | 𝕨 ¬ 𝕩: Span | Input: \\~"
+                   (?¬ . [ ?~
+                           "¬ 𝕩: Logical Not | 𝕨 ¬ 𝕩: Span | Input: \\~"
                            "\
 ¬ 𝕩: Logical Not
 - Logical Not of 𝕩.
@@ -91,7 +85,8 @@ Examples:
     3‿4 ¬ 0‿2
 ⟨ 4 3 ⟩"])
 
-                   (?˜ . [ "𝔽˜ 𝕩: Self | 𝕨 𝔽˜ 𝕩: Swap | Input: \\~"
+                   (?˜ . [ ?\`
+                           "𝔽˜ 𝕩: Self | 𝕨 𝔽˜ 𝕩: Swap | Input: \\`"
                            "\
 𝔽˜ 𝕩: Self
 - Supplies 𝕩 as a left argument to 𝔽 (𝕩 𝔽 𝕩).
@@ -112,7 +107,8 @@ Examples:
     1 -˜ 2
 1"])
 
-                   (?! . [ "! 𝕩: Assert | 𝕨 ! 𝕩: Assert With Message | Input: !"
+                   (?! . [ nil
+                           "! 𝕩: Assert | 𝕨 ! 𝕩: Assert With Message | Input: !"
                            "\
 ! 𝕩: Assert
 - Throw an error if 𝕩 is not 1.
@@ -140,7 +136,8 @@ Error: two
     \"hello error\" ! \"hello\"
 Error: hello error"])
 
-                   (?⎉ . [ "𝔽⎉𝕘 𝕩, 𝕨 𝔽⎉𝕘 𝕩: Rank | Input: \\!"
+                   (?⎉ . [ ?!
+                           "𝔽⎉𝕘 𝕩, 𝕨 𝔽⎉𝕘 𝕩: Rank | Input: \\!"
                            "\
 𝔽⎉𝕘 𝕩, 𝕨 𝔽⎉𝕘 𝕩: Rank
 - Apply 𝔽 to cells at ranks given in 𝕘. Non-negative numbers indicate the rank
@@ -166,7 +163,8 @@ Examples:
   QRST\"
        ┘"])
 
-                   (?˘ . [ "𝔽˘ 𝕩, 𝕨 𝔽˘ 𝕩: Cells | Input: \\1"
+                   (?˘ . [ ?1
+                           "𝔽˘ 𝕩, 𝕨 𝔽˘ 𝕩: Cells | Input: \\1"
                            "\
 𝔽˘ 𝕩, 𝕨 𝔽˘ 𝕩: Cells
 - Apply 𝔽 to/between the major cells of the arguments. (𝔽⎉¯1)"
@@ -190,7 +188,8 @@ Examples:
   6 7 8
         ┘"])
 
-                   (?@ . [ "Null Character | Input: @"
+                   (?@ . [ nil
+                           "Null Character | Input: @"
                            "\
 @: Null Character
 - Code point 0 in ASCII.
@@ -207,7 +206,8 @@ Examples:
     @+64
 '@'"])
 
-                   (?⚇ . [ "𝔽⚇𝕘 𝕩, 𝕨 𝔽⚇𝕘 𝕩: Depth | Input: \\@"
+                   (?⚇ . [ ?@
+                           "𝔽⚇𝕘 𝕩, 𝕨 𝔽⚇𝕘 𝕩: Depth | Input: \\@"
                            "\
 𝔽⚇𝕘 𝕩, 𝕨 𝔽⚇𝕘 𝕩: Depth
 - Apply 𝔽 to the cells of the arguments at depth given in 𝕘.
@@ -224,7 +224,8 @@ Examples:
     (+´↕)⚇0 ⟨2,4‿7,3⟩  # Implements pervasion
 ⟨ 1 ⟨ 6 21 ⟩ 3 ⟩"])
 
-                   (?¨ . [ "𝔽¨ 𝕩, 𝕨 𝔽¨ 𝕩: Each | Input: \\2"
+                   (?¨ . [ ?2
+                           "𝔽¨ 𝕩, 𝕨 𝔽¨ 𝕩: Each | Input: \\2"
                            "\
 𝔽¨ 𝕩, 𝕨 𝔽¨ 𝕩: Each
 - Apply 𝔽 to/between the elements of the arguments. (𝔽⚇¯1)"
@@ -240,7 +241,8 @@ Examples:
     4‿5‿6 ∾¨ 1‿2‿3
 ⟨ ⟨ 4 1 ⟩ ⟨ 5 2 ⟩ ⟨ 6 3 ⟩ ⟩"])
 
-                   (?\# . [ "#: Comment | Input: #"
+                   (?\# . [ nil
+                            "#: Comment | Input: #"
                             "\
 #: Comment
 - Create a comment that extends to the end of the line.
@@ -254,7 +256,8 @@ Examples:
     \"Hello world!\" # this is ignored!
 \"Hello world!\""])
 
-                   (?⍟ . [ "𝔽⍟𝔾 𝕩, 𝕨 𝔽⍟𝔾 𝕩: Repeat | Input: \\#"
+                   (?⍟ . [ ?\#
+                           "𝔽⍟𝔾 𝕩, 𝕨 𝔽⍟𝔾 𝕩: Repeat | Input: \\#"
                            "\
 𝔽⍟𝔾 𝕩, 𝕨 𝔽⍟𝔾 𝕩: Repeat
 - Apply 𝔾 to 𝕨 and 𝕩, then apply 𝔽 to 𝕩 that many times.
@@ -271,7 +274,8 @@ Examples:
     3 ∾⍟{≠𝕩} ⟨4,5,6⟩
 ⟨ 3 3 3 4 5 6 ⟩"])
 
-                   (?⁼ . [ "𝔽⁼ 𝕩, 𝕨 𝔽⁼ 𝕩: Undo | Input: \\3"
+                   (?⁼ . [ ?3
+                           "𝔽⁼ 𝕩, 𝕨 𝔽⁼ 𝕩: Undo | Input: \\3"
                            "\
 𝔽⁼ 𝕩, 𝕨 𝔽⁼ 𝕩: Undo | Input: \\#
 - Invert the function 𝔽, or use its defined inverse.
@@ -297,7 +301,8 @@ Examples:
     ⋆⁼ 2.718281828459045
 1"])
 
-                   (?◶ . [ "𝔽◶𝕘 𝕩, 𝕨 𝔽◶𝕘 𝕩: Choose | Input: \\$"
+                   (?◶ . [ ?$
+                           "𝔽◶𝕘 𝕩, 𝕨 𝔽◶𝕘 𝕩: Choose | Input: \\$"
                            "\
 𝔽◶𝕘 𝕩, 𝕨 𝔽◶𝕘 𝕩: Choose
 - Apply 𝔽 to the arguments and use the result to pick (⊑) a function from list
@@ -317,7 +322,8 @@ Examples:
     F 2
 0.5"])
 
-                   (?⌜ . [ "𝕨 𝔽⌜ 𝕩: Table | Input: \\4"
+                   (?⌜ . [ ?4
+                           "𝕨 𝔽⌜ 𝕩: Table | Input: \\4"
                            "\
 𝕨 𝔽⌜ 𝕩: Table
 - Apply 𝔽 between every possible pair of the elements of the arguments."
@@ -339,7 +345,8 @@ Examples:
                  ┘
 "])
 
-                   (?⊘ . [ "𝔽⊘𝔾 𝕩: Valences | 𝕨 𝔽⊘𝔾 𝕩: Dyadic Valences | Input: \\%"
+                   (?⊘ . [ ?%
+                           "𝔽⊘𝔾 𝕩: Valences | 𝕨 𝔽⊘𝔾 𝕩: Dyadic Valences | Input: \\%"
                            "\
 𝔽⊘𝔾 𝕩: Valences
 - Apply 𝔽 to 𝕩.
@@ -360,7 +367,8 @@ Examples:
     4 -⊘+ 5
 9"])
 
-                   (?´ . [ "𝔽´ 𝕩: Fold | 𝕨 𝔽´ 𝕩: Fold With Initial | Input: \\5"
+                   (?´ . [ ?5
+                           "𝔽´ 𝕩: Fold | 𝕨 𝔽´ 𝕩: Fold With Initial | Input: \\5"
                            "\
 𝔽´ 𝕩: Fold
 - Fold over 𝕩 with 𝔽 from right to left i.e. Insert 𝔽 between the elements of 𝕩.
@@ -394,7 +402,8 @@ Examples:
     1-2-3-5
 ¯3"])
 
-                   (?⎊ . [ "𝔽⎊𝔾 𝕩, 𝕨 𝔽⎊𝔾 𝕩: Catch | Input: \\^"
+                   (?⎊ . [ ?^
+                           "𝔽⎊𝔾 𝕩, 𝕨 𝔽⎊𝔾 𝕩: Catch | Input: \\^"
                            "\
 𝔽⎊𝔾 𝕩, 𝕨 𝔽⎊𝔾 𝕩: Catch
 - Apply 𝔽 to the arguments.
@@ -411,7 +420,8 @@ Examples:
 ⟨ 1 2 3 4 ⟩
 "])
 
-                   (?˝ . [ "𝔽˝ 𝕩: Insert | 𝕨 𝔽˝ 𝕩: Insert With Initial | Input: \\6"
+                   (?˝ . [ ?6
+                           "𝔽˝ 𝕩: Insert | 𝕨 𝔽˝ 𝕩: Insert With Initial | Input: \\6"
                            "\
 𝔽˝ 𝕩: Insert
 - Fold over cells of 𝕩 with 𝔽 from end to start, that is, insert 𝔽 between the
@@ -439,7 +449,8 @@ Examples:
     0‿1‿2 + 3‿4‿5 + 6‿7‿8 + 1‿1‿1
 ⟨ 10 13 16 ⟩"])
 
-                   (?∞ . [ "∞: Infinity | Input: \\8"
+                   (?∞ . [ ?8
+                           "∞: Infinity | Input: \\8"
                            "\
 ∞: Infinity
 - Mathematical constant Infinity, a numeric literal. Can be negative (¯∞)."
@@ -454,7 +465,8 @@ Examples:
     1+∞
 ∞"])
 
-                   (?\( . [ "(: Begin Expression | Input: ("
+                   (?\( . [ nil
+                            "(: Begin Expression | Input: ("
                             "\
 (: Begin Expression
 - Starts an expression, and only one expression.
@@ -469,7 +481,8 @@ Examples:
     (1 + 2) - 3
 0"])
 
-                   (?⟨ . [ "⟨: Begin list | Input: \\("
+                   (?⟨ . [ ?\(
+                           "⟨: Begin list | Input: \\("
                            "\
 ⟨: Begin list
 - Starts a list.
@@ -484,8 +497,9 @@ Examples:
     ⟨+ ⋄ - ⋄ 56⟩
 ⟨ + - 56 ⟩"])
 
-                   (?¯ . [ "¯: Minus | Input: \\9"
-                            "\
+                   (?¯ . [ ?9
+                           "¯: Minus | Input: \\9"
+                           "\
 ¯: Minus
 - Prefix before numbers to indicate that they are negative.
 - Note that this is not the same as -, since it is part of the number, rather
@@ -498,7 +512,8 @@ Examples:
     ¯1‿2‿3
 ⟨ ¯1 2 3 ⟩"])
 
-                   (?\) . [ "): End Expression | Input: )"
+                   (?\) . [ nil
+                            "): End Expression | Input: )"
                             "\
 ): End Expression
 - The closing symbol for (.
@@ -511,8 +526,9 @@ Examples:
     (1 + 2) - 3
 0"])
 
-                   (?⟩ . [ "⟩: End list | Input: \\)"
-                            "\
+                   (?⟩ . [ ?\)
+                           "⟩: End list | Input: \\)"
+                           "\
 ⟩: End list
 - Ends a list started by a ⟨.
 - See ⟨ documentation for more details."
@@ -524,8 +540,9 @@ Examples:
     ⟨+ ⋄ - ⋄ 56⟩
 ⟨ + - 56 ⟩"])
 
-                   (?• . [ "•: System | Input: \\0"
-                            "\
+                   (?• . [ ?0
+                           "•: System | Input: \\0"
+                           "\
 •: System
 - A prefix for system functions.
 - •listSys gives a list of defined system value names.
@@ -533,8 +550,9 @@ Examples:
                             "\
 "])
 
-                   (?- . [ "- 𝕩: Negate | 𝕨 - 𝕩: Subtract | Input: -"
-                            "\
+                   (?- . [ nil
+                           "- 𝕩: Negate | 𝕨 - 𝕩: Subtract | Input: -"
+                           "\
 - 𝕩: Negate
 - Additive Inverse of 𝕩.
 
@@ -562,7 +580,8 @@ Examples:
     'b' - 'a'
 1"])
 
-                   (?√ . [ "√ 𝕩: Square root | 𝕨 √ 𝕩: Root | Input: \\_"
+                   (?√ . [ ?_
+                           "√ 𝕩: Square root | 𝕨 √ 𝕩: Root | Input: \\_"
                             "\
 √ 𝕩: Square root
 - Self-explaining.
@@ -582,7 +601,8 @@ Examples:
     1‿2‿3‿4 √ 4
 ⟨ 4 2 1.5874010519681994 1.4142135623730951 ⟩"])
 
-                   (?÷ . [ "÷ 𝕩: Reciprocal | 𝕨 ÷ 𝕩: Divide | Input: \\-"
+                   (?÷ . [ ?-
+                           "÷ 𝕩: Reciprocal | 𝕨 ÷ 𝕩: Divide | Input: \\-"
                             "\
 ÷ 𝕩: Reciprocal
 - Gives 1 ÷ 𝕩.
@@ -603,7 +623,8 @@ Examples:
 2
 "])
 
-                   (?+ . [ "+ 𝕩: Conjugate | 𝕨 + 𝕩: Add | Input: +"
+                   (?+ . [ nil
+                           "+ 𝕩: Conjugate | 𝕨 + 𝕩: Add | Input: +"
                             "\
 + 𝕩: Conjugate
 - Complex conjugate of 𝕩.
@@ -632,7 +653,8 @@ Examples:
     'a' + 4
 'e'"])
 
-                   (?= . [ "= 𝕩: Rank | 𝕨 = 𝕩: Equal To | Input: ="
+                   (?= . [ nil
+                           "= 𝕩: Rank | 𝕨 = 𝕩: Equal To | Input: ="
                             "\
 = 𝕩: Rank
 - Returns the number of dimensions in 𝕩.
@@ -675,7 +697,8 @@ Examples:
     'a' = 'a'
 1"])
 
-                   (?⋆ . [ "⋆ 𝕩: Exponential | 𝕨 ⋆ 𝕩: Power | Input: \\+"
+                   (?⋆ . [ ?+
+                           "⋆ 𝕩: Exponential | 𝕨 ⋆ 𝕩: Power | Input: \\+"
                             "\
 ⋆ 𝕩: Exponential
 - e (Euler's constant) to the power of 𝕩.
@@ -698,7 +721,8 @@ Examples:
     2‿3 ⋆ 3‿¯4
 ⟨ 8 0.012345679012345678 ⟩"])
 
-                   (?× . [ "× 𝕩: Sign | 𝕨 × 𝕩: Multiply | Input: \\-"
+                   (?× . [ ?=
+                           "× 𝕩: Sign | 𝕨 × 𝕩: Multiply | Input: \\="
                             "\
 × 𝕩: Sign
 - Sign of 𝕩.
@@ -721,8 +745,9 @@ Examples:
     2 × 2‿3‿4
 ⟨ 4 6 8 ⟩
 "])
-
-                   (?⌽ . [ "⌽ 𝕩: Reverse | 𝕨 ⌽ 𝕩: Rotate | Input: \\q"
+                   ;; first row
+                   (?⌽ . [ ?q
+                           "⌽ 𝕩: Reverse | 𝕨 ⌽ 𝕩: Rotate | Input: \\q"
                             "\
 ⌽ 𝕩: Reverse
 - Reverse 𝕩 along the first axis.
@@ -756,7 +781,8 @@ Examples:
   3 4 5
         ┘"])
 
-                   (?𝕎 . [ "𝕎: Left Argument | Input: \\W"
+                   (?𝕎 . [ ?W
+                           "𝕎: Left Argument | Input: \\W"
                             "\
 𝕨: Left Argument
 - A variable assigned to the left argument of a block.
@@ -769,7 +795,8 @@ Examples:
     -‿÷ {𝕎𝕩}¨ 4
 ⟨ ¯4 0.25 ⟩"])
 
-                   (?𝕨 . [ "𝕨: Left Argument | Input: \\w"
+                   (?𝕨 . [ ?w
+                           "𝕨: Left Argument | Input: \\w"
                             "\
 𝕨: Left Argument
 - A variable assigned to the left argument of a block.
@@ -782,7 +809,8 @@ Examples:
     -‿÷ {𝕎𝕩}¨ 4
 ⟨ ¯4 0.25 ⟩"])
 
-                   (?⍷ . [ "⍷ 𝕩: Deduplicate | 𝕨 ⍷ 𝕩: Find | Input: \\E"
+                   (?⍷ . [ ?E
+                           "⍷ 𝕩: Deduplicate | 𝕨 ⍷ 𝕩: Find | Input: \\E"
                             "\
 ⍷ 𝕩: Deduplicate
 - Unique major cells of 𝕩.
@@ -824,7 +852,8 @@ Examples:
   0 0 1 0 0 0 1
                 ┘"])
 
-                   (?∊ . [ "∊ 𝕩: Mark Firsts | 𝕨 ∊ 𝕩: Member Of | Input: \\e"
+                   (?∊ . [ ?e
+                           "∊ 𝕩: Mark Firsts | 𝕨 ∊ 𝕩: Member Of | Input: \\e"
                             "\
 ∊ 𝕩: Mark Firsts
 - Mark the first occurrence of each major cell in 𝕩 with a 1, and all other
@@ -857,7 +886,8 @@ Examples:
 · 0
     ┘"])
 
-                   (?𝕣 . [ "𝕣: Current Modifier | Input: \\R"
+                   (?𝕣 . [ ?R
+                           "𝕣: Current Modifier | Input: \\R"
                             "\
 𝕣: Current Modifier
 - A variable assigned to the current modifier block.
@@ -868,7 +898,8 @@ Examples:
     +{𝕣⊣𝕩} 4
 (1-modifier block)"])
 
-                   (?↑ . [ "↑ 𝕩: Prefixes | 𝕨 ↑ 𝕩: Take | Input: \\r"
+                   (?↑ . [ ?r
+                           "↑ 𝕩: Prefixes | 𝕨 ↑ 𝕩: Take | Input: \\r"
                             "\
 ↑ 𝕩: Prefixes
 - Prefixes of array 𝕩 along its first axis.
@@ -922,7 +953,8 @@ Examples:
   9 10 11
           ┘"])
 
-                   (?⍋ [ "⍋ 𝕩: Grade Up | 𝕨 ⍋ 𝕩: Bins Up | Input: \\T"
+                   (?⍋ . [ ?T
+                         "⍋ 𝕩: Grade Up | 𝕨 ⍋ 𝕩: Bins Up | Input: \\T"
                           "\
 ⍋ 𝕩: Grade Up
 - Indices of 𝕩 that would sort its major cells in ascending order.
@@ -947,9 +979,10 @@ Examples:
     ┘
 
     3‿4‿5‿7 ⍋ 2‿6
-⟨ 0 3 ⟩"] .)
+⟨ 0 3 ⟩"])
 
-                   (?∧ . [ "∧ 𝕩: Sort Up | 𝕨 ∧ 𝕩: Logical And | Input: \\t"
+                   (?∧ . [ ?t
+                           "∧ 𝕩: Sort Up | 𝕨 ∧ 𝕩: Logical And | Input: \\t"
                             "\
 ∧ 𝕩: Sort Up
 - Sort array 𝕩 in ascending order.
@@ -969,7 +1002,8 @@ Examples:
 ⟨ 1 0 ⟩
 "])
 
-                   (?⊔ . [ "⊔ 𝕩: Group Indices | 𝕨 ⊔ 𝕩: Group | Input: \\u"
+                   (?⊔ . [ ?u
+                           "⊔ 𝕩: Group Indices | 𝕨 ⊔ 𝕩: Group | Input: \\u"
                             "\
 ⊔ 𝕩: Group Indices
 - Group the indices of the major cells of 𝕩 by their respective values.
@@ -1000,7 +1034,8 @@ Examples:
     1‿0‿1‿¯1‿¯1‿3‿3‿10  ⊔ 4‿5‿6‿6‿4‿7‿5
 ⟨ ⟨ 5 ⟩ ⟨ 4 6 ⟩ ⟨⟩ ⟨ 7 5 ⟩ ⟨⟩ ⟨⟩ ⟨⟩ ⟨⟩ ⟨⟩ ⟨⟩ ⟩"])
 
-                   (?⊑ . [ "⊑ 𝕩: First | 𝕨 ⊑ 𝕩: Pick | Input: \\I"
+                   (?⊑ . [ ?I
+                           "⊑ 𝕩: First | 𝕨 ⊑ 𝕩: Pick | Input: \\I"
                             "\
 ⊑ 𝕩: First
 - First element of 𝕩.
@@ -1025,7 +1060,8 @@ Examples:
     2‿0 ⊑ b
 6"])
 
-                   (?⊏ . [ "⊏ 𝕩: First Cell | 𝕨 ⊏ 𝕩: Select | Input: \\i"
+                   (?⊏ . [ ?i
+                           "⊏ 𝕩: First Cell | 𝕨 ⊏ 𝕩: Select | Input: \\i"
                             "\
 ⊏ 𝕩: First Cell
 - First major cell of 𝕩.
@@ -1055,7 +1091,8 @@ Examples:
   0 1 2
         ┘"])
 
-                   (?⊒ . [ "⊒ 𝕩: Occurrence Count | 𝕨 ⊒ 𝕩: Progressive Index Of | Input: \\O"
+                   (?⊒ . [ ?O
+                           "⊒ 𝕩: Occurrence Count | 𝕨 ⊒ 𝕩: Progressive Index Of | Input: \\O"
                             "\
 ⊒ 𝕩: Occurrence Count
 - Number of times each major cell of 𝕩 has occurred before the current position.
@@ -1081,7 +1118,8 @@ Examples:
     \"aaabb\" ⊒ \"ababababab\"
 ⟨ 0 3 1 4 2 5 5 5 5 5 ⟩"])
 
-                   (?⊐ . [ "⊐ 𝕩: Classify | 𝕨 ⊐ 𝕩: Index Of | Input: \\o"
+                   (?⊐ . [ ?o
+                           "⊐ 𝕩: Classify | 𝕨 ⊐ 𝕩: Index Of | Input: \\o"
                             "\
 ⊐ 𝕩: Classify
 - Translate major cells of 𝕩 to unique ID numbers based on first occurrence.
@@ -1108,7 +1146,8 @@ Examples:
     b ⊐ ≍9‿0‿9
 ⟨ 1 ⟩"])
 
-                   (?π . [ "π: Pi | Input: \\p"
+                   (?π . [ ?p
+                           "π: Pi | Input: \\p"
                             "\
 π: Pi
 - The mathematical constant pi, a numeric literal.
@@ -1121,7 +1160,8 @@ Examples:
     ¯π
 ¯3.141592653589793"])
 
-                   (?{ . [ "{: Begin Block | Input: {"
+                   (?{ . [ nil
+                           "{: Begin Block | Input: {"
                             "\
 {: Begin Block
 - Starts a block, which can be one of:
@@ -1148,7 +1188,8 @@ Examples:
     {5+4+6}   # Immediate block
 15"])
 
-                   (?\[ . [ "[ : Begin array | Input: ["
+                   (?\[ . [ nil
+                            "[ : Begin array | Input: ["
                             "\
 [: Begin array
 - Starts a high-rank array.
@@ -1167,7 +1208,8 @@ Examples:
     [↕4, ↕5]
 Error: >: Elements didn't have equal shapes (contained shapes ⟨4⟩ and ⟨5⟩)"])
 
-                   (?⊣ . [ "⊣ 𝕩: Identity | 𝕨 ⊣ 𝕩: Left | Input: \\{"
+                   (?⊣ . [ ?{
+                           "⊣ 𝕩: Identity | 𝕨 ⊣ 𝕩: Left | Input: \\{"
                             "\
 ⊣ 𝕩: Identity
 - Return 𝕩.
@@ -1185,7 +1227,8 @@ Examples:
     'a' ⊣ 1‿2‿3
 'a'"])
 
-                   (?← . [ "n ← v: Define | Input: \\["
+                   (?← . [ ?\[
+                           "n ← v: Define | Input: \\["
                             "\
 n ← v: Define
 - Defines a new variable with name n and value v.
@@ -1204,7 +1247,8 @@ Examples:
 
     C ← ↑"])
 
-                   (?} . [ "}: End Block | Input: }"
+                   (?} . [ nil
+                           "}: End Block | Input: }"
                             "\
 }: End Block
 - Starts a block, which starts with }.
@@ -1226,7 +1270,8 @@ Examples:
     {5+4+6}   # Immediate block
 15"])
 
-                   (?\] . [ "]: End array | Input: ]"
+                   (?\] . [ nil
+                            "]: End array | Input: ]"
                             "\
 ]: End array
 - Ends an array started by a [.
@@ -1242,7 +1287,8 @@ Examples:
     [↕4, ↕5]
 Error: >: Elements didn't have equal shapes (contained shapes ⟨4⟩ and ⟨5⟩)"])
 
-                   (?⊢ . [ "⊢ 𝕩: Identity | 𝕨 ⊢ 𝕩: Right | Input: \\}"
+                   (?⊢ . [ ?}
+                           "⊢ 𝕩: Identity | 𝕨 ⊢ 𝕩: Right | Input: \\}"
                             "\
 ⊢ 𝕩: Identity
 - Return 𝕩.
@@ -1260,7 +1306,8 @@ Examples:
     'a' ⊢ 1‿2‿3
 ⟨ 1 2 3 ⟩"])
 
-                   (?\| . [ "| 𝕩: Absolute Value | 𝕨 | 𝕩: Modulus | Input: |"
+                   (?\| . [ nil
+                            "| 𝕩: Absolute Value | 𝕨 | 𝕩: Modulus | Input: |"
                             "\
 | 𝕩: Absolute Value
 - Absolute Value of 𝕩.
@@ -1282,8 +1329,9 @@ Examples:
 
     2 | 3‿4‿¯5
 ⟨ 1 0 1 ⟩"])
-
-                   (?⍉ . [ "⍉ 𝕩: Transpose | 𝕨 ⍉ 𝕩: Reorder Axes | Input: \\a"
+                   ;; second row
+                   (?⍉ . [ ?a
+                           "⍉ 𝕩: Transpose | 𝕨 ⍉ 𝕩: Reorder Axes | Input: \\a"
                             "\
 ⍉ 𝕩: Transpose
 - Move the first axis of 𝕩 to the end.
@@ -1313,7 +1361,8 @@ Examples:
     ≢ 1‿3‿2‿0‿4 ⍉ c
 ⟨ 5 2 4 3 6 ⟩"])
 
-                   (?𝕊 . [ "𝕊: Current Function | Input: \\S"
+                   (?𝕊 . [ ?S
+                           "𝕊: Current Function | Input: \\S"
                             "\
 𝕊: Current Function
 - A variable assigned to the current function block.
@@ -1328,7 +1377,8 @@ Examples:
     {𝕤‿𝕤}4
 ⟨ (function block) (function block) ⟩"])
 
-                   (?𝕤 . [ "𝕤: Current Function | Input: \\s"
+                   (?𝕤 . [ ?s
+                           "𝕤: Current Function | Input: \\s"
                             "\
 𝕊: Current Function
 - A variable assigned to the current function block.
@@ -1343,7 +1393,8 @@ Examples:
     {𝕤‿𝕤}4
 ⟨ (function block) (function block) ⟩"])
 
-                   (?↕ . [ "↕ 𝕩: Range | 𝕨 ↕ 𝕩: Windows | Input: \\d"
+                   (?↕ . [ ?d
+                           "↕ 𝕩: Range | 𝕨 ↕ 𝕩: Windows | Input: \\d"
                             "\
 ↕ 𝕩: Range
 - Return all indices that would index into an array of shape 𝕩.
@@ -1389,7 +1440,8 @@ Examples:
   7 8
       ┘"])
 
-                   (?𝔽 . [ "𝔽: Modifier Left operand | Input: \\F"
+                   (?𝔽 . [ ?F
+                           "𝔽: Modifier Left operand | Input: \\F"
                             "\
 𝔽: Modifier Left operand
 - A variable assigned to the left operand of a modifier block.
@@ -1399,7 +1451,8 @@ Examples:
     5 +{𝕗⊣𝕨} 1
 +"])
 
-                   (?𝕗 . [ "𝕗: Modifier Left operand | Input: \\f"
+                   (?𝕗 . [ ?f
+                           "𝕗: Modifier Left operand | Input: \\f"
                             "\
 𝔽: Modifier Left operand
 - A variable assigned to the left operand of a modifier block.
@@ -1409,7 +1462,8 @@ Examples:
     5 +{𝕗⊣𝕨} 1
 +"])
 
-                   (?𝔾 . [ "𝔾: 2-Modifier Right operand | Input: \\G"
+                   (?𝔾 . [ ?G
+                           "𝔾: 2-Modifier Right operand | Input: \\G"
                             "\
 𝔾: 2-Modifier Right operand
 - A variable assigned to the right operand of a 2-modifier block.
@@ -1419,7 +1473,8 @@ Examples:
     5 +{𝕘}3 1
 3"])
 
-                   (?𝕘 . [ "𝕘: 2-Modifier Right operand | Input: \\g"
+                   (?𝕘 . [ ?g
+                           "𝕘: 2-Modifier Right operand | Input: \\g"
                             "\
 𝔾: 2-Modifier Right operand
 - A variable assigned to the right operand of a 2-modifier block.
@@ -1429,7 +1484,8 @@ Examples:
     5 +{𝕘}3 1
 3"])
 
-                   (?« . [ "« 𝕩: Nudge Back | 𝕨 « 𝕩: Shift Before | Input: \\H"
+                   (?« . [ ?H
+                           "« 𝕩: Nudge Back | 𝕨 « 𝕩: Shift Before | Input: \\H"
                             "\
 « 𝕩: Nudge Back
 - Remove the first element of 𝕩, add a cell of fill values to the end of the
@@ -1465,7 +1521,8 @@ Examples:
   1 2 3
         ┘"])
 
-                   (?⊸ . [ "𝕗⊸𝔾 𝕩: Bind Left | 𝔽⊸𝔾 𝕩: Before | 𝕨 𝔽⊸𝔾 𝕩: Dyadic Before | Input: \\h"
+                   (?⊸ . [ ?h
+                           "𝕗⊸𝔾 𝕩: Bind Left | 𝔽⊸𝔾 𝕩: Before | 𝕨 𝔽⊸𝔾 𝕩: Dyadic Before | Input: \\h"
                             "\
 𝕗⊸𝔾 𝕩: Bind Left
 - Supply 𝕗 as a left argument to 𝔾 (𝕗 𝔾 𝕩).
@@ -1504,7 +1561,8 @@ Examples:
     (- 2) + 1
 ¯1"])
 
-                   (?∘ . [ "𝔽∘𝔾 𝕩: Atop | 𝕨 𝔽∘𝔾 𝕩: Dyadic Atop | Input: \\j"
+                   (?∘ . [ ?j
+                           "𝔽∘𝔾 𝕩: Atop | 𝕨 𝔽∘𝔾 𝕩: Dyadic Atop | Input: \\j"
                             "\
 𝔽∘𝔾 𝕩: Atop
 - Apply 𝔾 to 𝕩, then apply 𝔽 (𝔽 𝔾 𝕩).
@@ -1530,7 +1588,8 @@ Examples:
     - 1 + 2
 ¯3"])
 
-                   (?⌾ . [ "𝔽⌾𝔾 𝕩, 𝕨 𝔽⌾𝔾 𝕩: Under | Input: \\K"
+                   (?⌾ . [ ?K
+                           "𝔽⌾𝔾 𝕩, 𝕨 𝔽⌾𝔾 𝕩: Under | Input: \\K"
                             "\
 𝔽⌾𝔾 𝕩, 𝕨 𝔽⌾𝔾 𝕩: Under
 - Apply transformation 𝔾 to all arguments
@@ -1550,7 +1609,8 @@ Examples:
     1 +⌾√ 9
 16"])
 
-                   (?○ . [ "𝔽○𝔾 𝕩: Atop | 𝕨 𝔽○𝔾 𝕩: Over | Input: \\k"
+                   (?○ . [ ?k
+                           "𝔽○𝔾 𝕩: Atop | 𝕨 𝔽○𝔾 𝕩: Over | Input: \\k"
                             "\
 
 𝔽○𝔾 𝕩: Atop
@@ -1577,7 +1637,8 @@ Examples:
     (- 1) + (- 2)
 ¯3"])
 
-                   (?» . [ "» 𝕩: Nudge | 𝕨 » 𝕩: Shift After | Input: \\L"
+                   (?» . [ ?L
+                           "» 𝕩: Nudge | 𝕨 » 𝕩: Shift After | Input: \\L"
                             "\
 » 𝕩: Nudge
 - Remove the last element of 𝕩, add a cell of fill values to the start of the
@@ -1613,7 +1674,8 @@ Examples:
   9 9 9
         ┘"])
 
-                   (?⟜ . [ "𝔽⟜𝕘 𝕩: Bind | 𝔽⟜𝔾 𝕩: After | 𝕨 𝔽⟜𝔾 𝕩: Dyadic After | Input: \\l"
+                   (?⟜ . [ ?L
+                           "𝔽⟜𝕘 𝕩: Bind | 𝔽⟜𝔾 𝕩: After | 𝕨 𝔽⟜𝔾 𝕩: Dyadic After | Input: \\l"
                             "\
 𝔽⟜𝕘 𝕩: Bind
 - Supply 𝕘 as a right argument to 𝔽 (𝕩 𝔽 𝕘).
@@ -1653,7 +1715,8 @@ Error: Double subjects (missing ‿?)
     2 × (- 1)
 ¯2"])
 
-                   (?· . [ "·: Nothing | Input: \\:"
+                   (?· . [ ?:
+                           "·: Nothing | Input: \\:"
                             "\
 ·: Nothing
 - Indicates no value.
@@ -1683,7 +1746,8 @@ Examples:
     F 1‿2‿3
 ⟨ 1 3 ⟩"])
 
-                   (?⋄ . [ "⋄: Separator | Input: \\;"
+                   (?⋄ . [ ?\;
+                           "⋄: Separator | Input: \\;"
                             "\
 , or ⋄: Separator
 - Separates statements in blocks, programs, and arrays.
@@ -1702,7 +1766,8 @@ Examples:
     {1 ⋄ 2 ⋄ 3}
 3"])
 
-                   (?\" . [ "\"charseq\": String | Input: \""
+                   (?\" . [ nil
+                            "\"charseq\": String | Input: \""
                              "\
 \"charseq\": String
 - Literal notation for a string, or list of characters.
@@ -1716,7 +1781,8 @@ Examples:
     2 ⊑ \"ab\"\"cd\"
 '\"'"])
 
-                   (?\' . [ "'': Character | Input: '"
+                   (?\' . [ nil
+                            "'': Character | Input: '"
                             "\
 'c': Character
 - A character literal whose value is the character between quotes.
@@ -1726,7 +1792,8 @@ Examples:
     'a'‿'b'
 \"ab\""])
 
-                   (?˙ . [ "𝔽˙ 𝕩, 𝕨 𝔽˙ 𝕩: Constant | Input:\\\""
+                   (?˙ . [ ?\"
+                           "𝔽˙ 𝕩, 𝕨 𝔽˙ 𝕩: Constant | Input:\\\""
                             "\
 𝔽˙ 𝕩, 𝕨 𝔽˙ 𝕩: Constant
 - Returns a function that will always return 𝕗."
@@ -1738,7 +1805,8 @@ Examples:
     \"hello\" {𝕨+𝕩}˙ 2
 (function block)"])
 
-                   (?↩ . [ "n ↩ v: Change | n F↩: Modify | n F↩ v: Modify | Input: \\'"
+                   (?↩ . [ ?\'
+                           "n ↩ v: Change | n F↩: Modify | n F↩ v: Modify | Input: \\'"
                             "\
 n ↩ v: Change
 - Changes the value of variable with name n to value v.
@@ -1765,8 +1833,9 @@ Error: Undefined identifier
 
     ⊢ b ↓˜↩ 6
 \" eht ni ees ot hsiw uoy egnahc eht eB\""])
-
-                   (?⋈ . [ "⋈ 𝕩: Enlist | 𝕨 ⋈ 𝕩: Pair | Input: \\Z"
+                   ;; third row
+                   (?⋈ . [ ?Z
+                           "⋈ 𝕩: Enlist | 𝕨 ⋈ 𝕩: Pair | Input: \\Z"
                             "\
 ⋈ 𝕩: Enlist
 - Put 𝕩 in a single element list. (⟨𝕩⟩)
@@ -1803,7 +1872,8 @@ Examples:
           ┘
                                  ┘"])
 
-                   (?⥊ . [ "⥊ 𝕩: Deshape | 𝕨 ⥊ 𝕩: Reshape | Input: \\z"
+                   (?⥊ . [ ?z
+                           "⥊ 𝕩: Deshape | 𝕨 ⥊ 𝕩: Reshape | Input: \\z"
                             "\
 ⥊ 𝕩: Deshape
 - Put all elements of 𝕩 in a rank 1 array, promoting to an array if necessary.
@@ -1847,7 +1917,8 @@ Examples:
   3 0
       ┘"])
 
-                   (?𝕏 . [ "𝕏: Right Argument | Input: \\X"
+                   (?𝕏 . [ ?X
+                           "𝕏: Right Argument | Input: \\X"
                             "\
 𝕩: Right Argument
 - A variable assigned to the right argument of a block.
@@ -1857,7 +1928,8 @@ Examples:
     5 {𝕩} 1
 1"])
 
-                   (?𝕩 . [ "𝕩: Right Argument | Input: \\x"
+                   (?𝕩 . [ ?x
+                           "𝕩: Right Argument | Input: \\x"
                             "\
 𝕩: Right Argument
 - A variable assigned to the right argument of a block.
@@ -1867,7 +1939,8 @@ Examples:
     5 {𝕩} 1
 1"])
 
-                   (?↓ . [ "↓ 𝕩: Suffixes | 𝕨 ↓ 𝕩: Drop | Input: \\c"
+                   (?↓ . [ ?c
+                           "↓ 𝕩: Suffixes | 𝕨 ↓ 𝕩: Drop | Input: \\c"
                             "\
 ↓ 𝕩: Suffixes
 - Suffixes of array 𝕩 along its first axis
@@ -1912,7 +1985,8 @@ Examples:
 ╵ 12
      ┘"])
 
-                   (?⍒ . [ "⍒ 𝕩: Grade Down | 𝕨 ⍒ 𝕩: Bins Down | Input: \\V"
+                   (?⍒ . [ ?V
+                           "⍒ 𝕩: Grade Down | 𝕨 ⍒ 𝕩: Bins Down | Input: \\V"
                             "\
 ⍒ 𝕩: Grade Down
 - Indices of 𝕩 that would sort its major cells in descending order.
@@ -1942,7 +2016,8 @@ Examples:
     7‿5‿4‿3 ⍒ 2‿6
 ⟨ 4 1 ⟩"])
 
-                   (?∨ . [ "∨ 𝕩: Sort Down | 𝕨 ∨ 𝕩: Logical Or | Input: \\v"
+                   (?∨ . [ ?v
+                           "∨ 𝕩: Sort Down | 𝕨 ∨ 𝕩: Logical Or | Input: \\v"
                             "\
 ∨ 𝕩: Sort Down
 - Sort array 𝕩 in descending order.
@@ -1964,7 +2039,8 @@ Examples:
     0 ∨ 0
 0"])
 
-                   (?⌈ . [ "⌈ 𝕩: Ceiling | 𝕨 ⌈ 𝕩: Maximum | Input: \\B"
+                   (?⌈ . [ ?B
+                           "⌈ 𝕩: Ceiling | 𝕨 ⌈ 𝕩: Maximum | Input: \\B"
                             "\
 ⌈ 𝕩: Ceiling
 - Round 𝕩 up to the nearest integer.
@@ -1984,7 +2060,8 @@ Examples:
     2‿3 ⌈ 4‿2
 ⟨ 4 3 ⟩"])
 
-                   (?⌊ . [ "⌊ 𝕩: Floor | 𝕨 ⌊ 𝕩: Minimum | Input: \\b"
+                   (?⌊ . [ ?b
+                           "⌊ 𝕩: Floor | 𝕨 ⌊ 𝕩: Minimum | Input: \\b"
                             "\
 ⌊ 𝕩: Floor
 - Round 𝕩 down to the nearest integer.
@@ -2004,7 +2081,8 @@ Examples:
     2‿3 ⌊ 4‿2
 ⟨ 2 2 ⟩"])
 
-                   (?≢ . [ "≢ 𝕩: Shape | 𝕨 ≢ 𝕩: Not Match | Input: \\M"
+                   (?≢ . [ ?M
+                           "≢ 𝕩: Shape | 𝕨 ≢ 𝕩: Not Match | Input: \\M"
                             "\
 ≢ 𝕩: Shape
 - Length of each dimension of x.
@@ -2028,7 +2106,8 @@ Examples:
     ⟨1⟩ ≢ ⟨1⟩
 0"])
 
-                   (?≡ . [ "≡ 𝕩: Depth | 𝕨 ≡ 𝕩: Match | Input: \\m"
+                   (?≡ . [ ?m
+                           "≡ 𝕩: Depth | 𝕨 ≡ 𝕩: Match | Input: \\m"
                             "\
 ≡ 𝕩: Depth
 - Highest level of nesting in 𝕩.
@@ -2052,7 +2131,8 @@ Examples:
     ⟨1⟩ ≡ ⟨1⟩
 1"])
 
-                   (?< . [ "< 𝕩: Enclose | 𝕨 < 𝕩: Lesser Than | Input: <"
+                   (?< . [ nil
+                           "< 𝕩: Enclose | 𝕨 < 𝕩: Lesser Than | Input: <"
                             "\
 < 𝕩: Enclose
 - Create a unit array containing 𝕩. ((≢<𝕩) ≡ ⟨⟩)
@@ -2077,7 +2157,8 @@ Examples:
     2‿3‿0 < 3‿1‿0
 ⟨ 1 0 0 ⟩"])
 
-                   (?\, . [ ",: Separator | Input: ,"
+                   (?\, . [ nil
+                            ",: Separator | Input: ,"
                             "\
 , or ⋄: Separator
 - Separates statements in blocks, programs, and arrays.
@@ -2096,7 +2177,8 @@ Examples:
     {1 ⋄ 2 ⋄ 3}
 3"])
 
-                   (?≤ . [ "𝕨 ≤ 𝕩: Lesser Than or Equal To | Input: \\<"
+                   (?≤ . [ ?<
+                           "𝕨 ≤ 𝕩: Lesser Than or Equal To | Input: \\<"
                             "\
 𝕨 ≤ 𝕩: Lesser Than or Equal To
 - 𝕨 and 𝕩 can both be either numbers or characters.
@@ -2109,7 +2191,8 @@ Examples:
     2‿3‿0 ≤ 3‿1‿0
 ⟨ 1 0 1 ⟩"])
 
-                   (?∾ . [ "∾ 𝕩: Join | 𝕨 ∾ 𝕩: Join To | Input: \\,"
+                   (?∾ . [ ?\,
+                           "∾ 𝕩: Join | 𝕨 ∾ 𝕩: Join To | Input: \\,"
                             "\
 ∾ 𝕩: Join
 - Join all elements of 𝕩 together.
@@ -2150,7 +2233,8 @@ Examples:
   9 10 11
           ┘"])
 
-                   (?> . [ "> 𝕩: Merge | 𝕨 > 𝕩: Greater Than | Input: >"
+                   (?> . [ nil
+                           "> 𝕩: Merge | 𝕨 > 𝕩: Greater Than | Input: >"
                             "\
 > 𝕩: Merge
 - Combine an array of arrays into one array.
@@ -2186,7 +2270,8 @@ Examples:
     'a' > 'b'
 0"])
 
-                   (?\. . [ "ns . name: Namespace Field | Input: ."
+                   (?\. . [ nil
+                            "ns . name: Namespace Field | Input: ."
                             "\
 ns . name: Namespace Field
 - Access a field with name name in namespace ns.
@@ -2199,7 +2284,8 @@ Examples:
     {F⇐-}.F 5
 ¯5"])
 
-                   (?≥ . [ "𝕨 ≥ 𝕩: Lesser Than or Equal To | Input: \\>"
+                   (?≥ . [ ?>
+                           "𝕨 ≥ 𝕩: Lesser Than or Equal To | Input: \\>"
                             "\
 𝕨 ≤ 𝕩: Lesser Than or Equal To
 - 𝕨 and 𝕩 can both be either numbers or characters.
@@ -2212,7 +2298,8 @@ Examples:
     2‿3‿0 ≥ 3‿1‿0
 ⟨ 0 1 1 ⟩"])
 
-                   (?≍ . [ "≍ 𝕩: Solo | 𝕨 ≍ 𝕩: Couple | Input: \\."
+                   (?≍ . [ ?\.
+                           "≍ 𝕩: Solo | 𝕨 ≍ 𝕩: Couple | Input: \\."
                             "\
 ≍ 𝕩: Solo
 - Add a dimension to 𝕩.
@@ -2253,7 +2340,8 @@ Examples:
   2 3
       ┘"])
 
-                   (?? . [ "?: Predicate | Input: ?"
+                   (?? . [ nil
+                           "?: Predicate | Input: ?"
                             "\
 ?: Predicate
 - Follows a statement in a block, which must return 0 or 1.
@@ -2273,7 +2361,8 @@ Examples:
     4 Min 2
 2"])
 
-                   (?/ . [ "/ 𝕩: Indices | 𝕨 / 𝕩: Replicate | Input: /"
+                   (?/ . [ nil
+                           "/ 𝕩: Indices | 𝕨 / 𝕩: Replicate | Input: /"
                             "\
 / 𝕩: Indices
 - Repeat the index of each element in 𝕩 by the element's value. 𝕩 must be rank
@@ -2296,7 +2385,8 @@ Examples:
     1‿0‿1 / 1‿2‿3
 ⟨ 1 3 ⟩"])
 
-                   (?⇐ . [ "n ⇐ v: Export Definition | n ⇐: Export names | Input: \\?"
+                   (?⇐ . [ ??
+                           "n ⇐ v: Export Definition | n ⇐: Export names | Input: \\?"
                             "\
 n ⇐ v: Export Definition
 - Define a variable with name n and export it from the current namespace.
@@ -2318,7 +2408,8 @@ Error: No key found
     ns1.alsoexported
 0"])
 
-                   (?≠ . [ "≠ 𝕩: Length | 𝕨 ≠ 𝕩: Not Equal To | Input: \\/"
+                   (?≠ . [ ?/
+                           "≠ 𝕩: Length | 𝕨 ≠ 𝕩: Not Equal To | Input: \\/"
                             "\
 ≠ 𝕩: Length
 - Length of the first dimension of 𝕩.
@@ -2352,7 +2443,8 @@ Examples:
 0
 "])
 
-                   (?‿ . [ "‿: Strand | Input: \\ (slash & space)"
+                   (?‿ . [ 32
+                           "‿: Strand | Input: \\ (slash & space)"
                             "\
 ‿: Strand
 - Create a list via strand notation.
@@ -2369,26 +2461,38 @@ Examples:
       (dolist (entry table)
         (puthash (car entry) (cdr entry) ht))
       ht))
-  "Hash map from BQN symbols as keys to 3-vector of documentation strings:
-A short description for eldoc, a long description, and examples.
+  "Hash map from BQN symbols as keys to 4-vector of information:
 
-Content as found at https://mlochbaum.github.io/BQN/help/index.html.")
+- input key if(!) reachable via `bqn-glyph-prefix', else nil
+- short description with no more than 80 characters (to fit echo area)
+- long description states what symbol is and what forms symbol has
+- extra description provides examples, preferably REPL-like
+
+Description and examples as of
+https://mlochbaum.github.io/BQN/help/index.html.")
 
 (defun bqn-help--symbol-get (symbol)
   (gethash symbol bqn-help--symbol-docs))
+
+(defun bqn-help--symbol-non-doc-info (&optional all)
+  (let ((lst nil))
+    (maphash
+     (lambda (k v) (if (or all (aref v 0)) (push (cons (aref v 0) k) lst)))
+     bqn-help--symbol-docs)
+    lst))
 
 (defun bqn-help--symbol-doc (symbol slot)
   (when-let ((docs (gethash symbol bqn-help--symbol-docs)))
     (aref docs slot)))
 
 (defun bqn-help--symbol-doc-short (symbol)
-  (bqn-help--symbol-doc symbol 0))
-
-(defun bqn-help--symbol-doc-long (symbol)
   (bqn-help--symbol-doc symbol 1))
 
-(defun bqn-help--symbol-doc-extra (symbol)
+(defun bqn-help--symbol-doc-long (symbol)
   (bqn-help--symbol-doc symbol 2))
+
+(defun bqn-help--symbol-doc-extra (symbol)
+  (bqn-help--symbol-doc symbol 3))
 
 (provide 'bqn-symbols-doc)
 
