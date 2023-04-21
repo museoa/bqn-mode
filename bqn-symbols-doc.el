@@ -25,13 +25,13 @@
     (let ((table '(
                    ;; top row
                    (?\` . [ nil
-                            "𝔽` 𝕩: Scan | 𝕨 𝔽` 𝕩: Scan With initial | Input: `"
+                            "𝔽` 𝕩: Scan | 𝕨 𝔽` 𝕩: Scan With Initial | Input: `"
                             "\
 𝔽` 𝕩: Scan
 - Scan over 𝕩 with 𝔽 from left to right, producing intermediate values.
 
 𝕨 𝔽` 𝕩: Scan With initial
--Monadic scan, but use 𝕨 as initial left argument."
+- Monadic scan, but use 𝕨 as initial left argument."
                             "\
 Examples:
     +` 1‿2‿3
