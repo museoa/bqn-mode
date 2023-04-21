@@ -177,7 +177,7 @@
       (user-error "No BQN primitive at point"))
     (if-let* ((long   (bqn-help--symbol-doc-long c))
               (extra  (bqn-help--symbol-doc-extra c))
-              (sep    "\n\n========================================\n\n")
+              (sep    "\n\n==================== Examples ====================\n\n")
               (doc-buffer (get-buffer-create "*bqn-help*")))
         (with-current-buffer doc-buffer
           (let ((inhibit-read-only t))

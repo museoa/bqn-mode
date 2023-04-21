@@ -33,7 +33,6 @@
 𝕨 𝔽` 𝕩: Scan With initial
 - Monadic scan, but use 𝕨 as initial left argument."
                             "\
-Examples:
     +` 1‿2‿3
 ⟨ 1 3 6 ⟩
 
@@ -66,7 +65,6 @@ Examples:
 𝕨 𝔽˜ 𝕩: Swap
 - Swaps the arguments of 𝔽 (𝕩 𝔽 𝕨)."
                            "\
-Examples:
     1 + 1
 2
 
@@ -89,7 +87,6 @@ Examples:
 - Count of numbers in the inclusive range from 𝕩 to 𝕨.
 - Pervasive."
                            "\
-Examples:
     ¬ 0
 1
 
@@ -111,7 +108,6 @@ Examples:
 - Throw an error with message 𝕨 if 𝕩 is not 1.
 "
                            "\
-Examples:
     ! 1
 1
 
@@ -135,7 +131,6 @@ Error: hello error"])
 𝔽˘ 𝕩, 𝕨 𝔽˘ 𝕩: Cells
 - Apply 𝔽 to/between the major cells of the arguments. (𝔽⎉¯1)"
                            "\
-Examples:
     a ← 3‿3 ⥊ ↕9
 
 
@@ -164,8 +159,6 @@ Examples:
   - ⎉ b‿c Rank-b cells of 𝕨 and rank-c cells of 𝕩 (dyadic)
   - ⎉ a‿b‿c Rank-a cells of 𝕩 (monadic), b-cells of 𝕨 and c-cells of 𝕩 (dyadic)"
                            "\
-
-Examples:
     a ← 3‿2‿4⥊\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"
 
     ⌽⎉2 a
@@ -187,7 +180,6 @@ Examples:
 - Add to a code point number to ger that character.
 "
                            "\
-Examples:
     @+50
 '2'
 
@@ -202,7 +194,6 @@ Examples:
 𝔽¨ 𝕩, 𝕨 𝔽¨ 𝕩: Each
 - Apply 𝔽 to/between the elements of the arguments. (𝔽⚇¯1)"
                            "\
-Examples:
     <¨ 1‿2‿3
 ┌─
 · ┌·    ┌·    ┌·
@@ -220,7 +211,6 @@ Examples:
 - Negative numbers count down from the top level and non-negative ones from the
   bottom up."
                            "\
-Examples:
     1⊸↓⚇1 ⟨⟨1,2,3⟩, ⟨4,5,6⟩⟩
 ⟨ ⟨ 2 3 ⟩ ⟨ 5 6 ⟩ ⟩
 
@@ -237,7 +227,6 @@ Examples:
 - Anything written in comments is ignored.
 "
                             "\
-Examples:
     1 + 2 # + 3 + 4
 3
 
@@ -251,7 +240,6 @@ Examples:
 - Not all functions have inverses.
 "
                            "\
-Examples:
     1 - 2
 ¯1
 
@@ -277,7 +265,6 @@ Examples:
 - If 𝕨 is given, use it each time as a constant left argument.
 - If 𝔾 returns an array, give 𝔽⍟𝕩 for each of its elements."
                            "\
-Examples:
     1 +⍟⊢ 4
 8
 
@@ -292,7 +279,6 @@ Examples:
 𝕨 𝔽⌜ 𝕩: Table
 - Apply 𝔽 between every possible pair of the elements of the arguments."
                            "\
-Examples:
     1‿2‿3‿4 +⌜ 4‿5‿6‿7
 ┌─
 ╵ 5 6  7  8
@@ -317,7 +303,6 @@ Examples:
 - Apply the picked function to the arguments.
 "
                            "\
-Examples:
     F ← ⊢◶+‿-‿÷‿×
 
     F 0
@@ -338,7 +323,6 @@ Examples:
 𝕨 𝔽´ 𝕩: Fold With Initial
 - Monadic fold, but use 𝕨 as initial right argument."
                            "\
-Examples:
     +´ 1‿2‿3
 6
 
@@ -371,7 +355,6 @@ Examples:
 𝕨 𝔽⊘𝔾 𝕩: Dyadic Valences
 - Apply 𝔾 to 𝕨 and 𝕩."
                            "\
-Examples:
     +⊘- 5
 5
 
@@ -392,7 +375,6 @@ Examples:
 𝕨 𝔽˝ 𝕩: Insert With Initial
 - Monadic insert, but use 𝕨 as initial right argument."
                            "\
-Examples:
     a ← 3‿3 ⥊ ↕9
 
     +˝ a
@@ -421,7 +403,6 @@ Examples:
 - Otherwise, return the result of 𝔽.
 "
                            "\
-Examples:
     ∾⎊{\"error occurred with argument: \"∾•Fmt 𝕩} 1
 \"error occurred with argument: 1\"
 
@@ -434,7 +415,6 @@ Examples:
 ∞: Infinity
 - Mathematical constant Infinity, a numeric literal. Can be negative (¯∞)."
                            "\
-Examples:
     ∞
 ∞
 
@@ -452,7 +432,6 @@ Examples:
 - ( supercedes any precedence order, so that an expression in () is evaluated
   fully before it can be used in the outer context."
                             "\
-Examples:
     1 + 2 - 3
 0
 
@@ -466,7 +445,6 @@ Examples:
 - Note that this is not the same as -, since it is part of the number, rather
   than a primitive that negates its value."
                             "\
-Examples:
     -1‿2‿3
 ⟨ ¯1 ¯2 ¯3 ⟩
 
@@ -481,7 +459,6 @@ Examples:
 - Lists can be nested in other lists.
 - Must end with a corresponding ⟩."
                            "\
-Examples:
     ⟨1, 2, 3⟩
 ⟨ 1 2 3 ⟩
 
@@ -494,7 +471,6 @@ Examples:
 - The closing symbol for (.
 - See ( documentation for more details."
                             "\
-Examples:
     1 + 2 - 3
 0
 
@@ -516,7 +492,6 @@ Examples:
 - Ends a list started by a ⟨.
 - See ⟨ documentation for more details."
                             "\
-Examples:
     ⟨1, 2, 3⟩
 ⟨ 1 2 3 ⟩
 
@@ -533,7 +508,6 @@ Examples:
 - 𝕨 and 𝕩 can be characters or numbers.
 "
                             "\
-Examples:
     - 1
 ¯1
 
@@ -562,7 +536,6 @@ Examples:
 - 𝕨 divided by 𝕩.
 - Pervasive."
                             "\
-Examples:
     ÷ 5
 0.2
 
@@ -583,7 +556,6 @@ Examples:
 - 𝕨 th root of 𝕩.
 - Pervasive."
                             "\
-Examples:
     √ 2
 1.4142135623730951
 
@@ -602,7 +574,6 @@ Examples:
 - Do argument atoms match?
 - Pervasive."
                             "\
-Examples:
     = 0
 0
 
@@ -648,7 +619,6 @@ Examples:
 
 Pervasive."
                             "\
-Examples:
 
     + 1
 1
@@ -678,7 +648,6 @@ Examples:
 - 𝕨 multiplied by 𝕩.
 - Pervasive."
                             "\
-Examples:
     × ¯5‿0‿5‿1
 ⟨ ¯1 0 1 1 ⟩
 
@@ -699,7 +668,6 @@ Examples:
 - 𝕨 to the power of 𝕩.
 - Pervasive."
                             "\
-Examples:
     ⋆ 0‿1‿2‿3
 ⟨ 1 2.718281828459045 7.38905609893065 20.085536923187668 ⟩
 
@@ -723,7 +691,6 @@ Examples:
   of rotation.
 "
                             "\
-Examples:
     ⌽ 1‿2‿3
 ⟨ 3 2 1 ⟩
 
@@ -753,7 +720,6 @@ Examples:
 - A variable assigned to the left argument of a block.
 - 𝕎 can be used to access the left argument as a function."
                             "\
-Examples:
     5 {𝕨} 1
 5
 
@@ -766,7 +732,6 @@ Examples:
 - A variable assigned to the left argument of a block.
 - 𝕎 can be used to access the left argument as a function."
                             "\
-Examples:
     5 {𝕨} 1
 5
 
@@ -782,7 +747,6 @@ Examples:
 𝕨 ∊ 𝕩: Member Of
 - Is each cell in 𝕨 a major cell of 𝕩?"
                             "\
-Examples:
     ∊ 4‿5‿6‿6‿4‿7‿5
 ⟨ 1 1 1 0 0 1 0 ⟩
 
@@ -817,7 +781,6 @@ Examples:
 - Result is the same shape as (≢𝕨)↕x.
 "
                             "\
-Examples:
     ⍷ 4‿5‿6‿6‿4‿7‿5
 ⟨ 4 5 6 7 ⟩
 
@@ -859,7 +822,6 @@ Examples:
 - If any of the elements in 𝕨 are greater than the length of their respective
   dimension, the dimension is extended with a fill value."
                             "\
-Examples:
     ↑ 1‿2‿3‿4
 ⟨ ⟨⟩ ⟨ 1 ⟩ ⟨ 1 2 ⟩ ⟨ 1 2 3 ⟩ ⟨ 1 2 3 4 ⟩ ⟩
 
@@ -909,7 +871,6 @@ Examples:
 - Add underscores to the beginning and/or end (_𝕣, _𝕣_) to use it in a modifier
   role."
                             "\
-Examples:
     +{𝕣⊣𝕩} 4
 (1-modifier block)"])
                    (?∧ . [ ?t
@@ -922,7 +883,6 @@ Examples:
 - Logical And of 𝕨 and 𝕩.
 - Pervasive."
                             "\
-Examples:
     ∧ 3‿1‿4‿1‿5
 ⟨ 1 1 3 4 5 ⟩
 
@@ -943,7 +903,6 @@ Examples:
   𝕨 less than or equal to that cell.
 - 𝕨 must be sorted in ascending order."
                           "\
-Examples:
     a ← 3‿2‿1
 
     ⍋ a
@@ -972,7 +931,6 @@ Examples:
 - An extra element can be added to the end of 𝕨 to specify length of the
   result."
                             "\
-Examples:
     ⊔ 4‿5‿6‿6‿4‿7‿5
 ⟨ ⟨⟩ ⟨⟩ ⟨⟩ ⟨⟩ ⟨ 0 4 ⟩ ⟨ 1 6 ⟩ ⟨ 2 3 ⟩ ⟨ 5 ⟩ ⟩
 
@@ -999,7 +957,6 @@ Examples:
 𝕨 ⊏ 𝕩: Select
 - Select the major cells of 𝕩 at the indices in 𝕨."
                             "\
-Examples:
     ⊏ ⟨1, 2, 3⟩
 ┌·
 · 1
@@ -1029,7 +986,6 @@ Examples:
 𝕨 ⊑ 𝕩: Pick
 Pick the element of 𝕩 at index 𝕨."
                             "\
-Examples:
     ⊑ ⟨1, 2, 3⟩
 1
 
@@ -1056,7 +1012,6 @@ Examples:
   of 𝕨.
 - If a cell is not found in 𝕨, the length of 𝕨 (≠𝕨) is used for that position."
                             "\
-Examples:
     ⊐ 5‿6‿2‿2‿5‿1
 ⟨ 0 1 2 2 0 3 ⟩
 
@@ -1083,7 +1038,6 @@ Examples:
 - If there are no more matches left, the length of 𝕨 is placed in that
   position."
                             "\
-Examples:
     ⊒   2‿7‿1‿8‿1‿7‿1‿8‿2‿8‿4
 ⟨ 0 0 0 0 1 1 2 1 1 2 0 ⟩
 
@@ -1105,7 +1059,6 @@ Examples:
 - The mathematical constant pi, a numeric literal.
 - Can be negative (¯π)."
                             "\
-Examples:
     π
 3.141592653589793
 
@@ -1121,7 +1074,6 @@ Examples:
 - They become major cells of the result.
 - Must end with a corresponding ]."
                             "\
-Examples:
     [\"abc\", \"def\"]
 ┌─
 ╵\"abc
@@ -1142,7 +1094,6 @@ Error: >: Elements didn't have equal shapes (contained shapes ⟨4⟩ and ⟨5�
   - Immediate Block
 - Must end with a corresponding }."
                             "\
-Examples:
     {𝕨 + 𝕩}   # Function
 (function block)
 
@@ -1164,7 +1115,6 @@ n ← v: Define
 - Defines a new variable with name n and value v.
 - Variable n must not already exist in the scope."
                             "\
-Examples:
     ⊢ a ← 1
 1
 
@@ -1185,7 +1135,6 @@ Examples:
 𝕨 ⊣ 𝕩: Left
 - Return 𝕨."
                             "\
-Examples:
     ⊣ 5
 5
 
@@ -1201,7 +1150,6 @@ Examples:
 - Ends an array started by a [.
 - See Begin Array for more details."
                             "\
-Examples:
     [\"abc\", \"def\"]
 ┌─
 ╵\"abc
@@ -1217,7 +1165,6 @@ Error: >: Elements didn't have equal shapes (contained shapes ⟨4⟩ and ⟨5�
 - Starts a block, which starts with }.
 - See Begin Block for more details."
                             "\
-Examples:
     {𝕨 + 𝕩}   # Function
 (function block)
 
@@ -1241,7 +1188,6 @@ Examples:
 𝕨 ⊢ 𝕩: Right
 - Return 𝕩."
                             "\
-Examples:
     ⊢ 5
 5
 
@@ -1261,7 +1207,6 @@ Examples:
 - Remainder of 𝕩 divided by 𝕨.
 - Pervasive."
                             "\
-Examples:
     | ¯2
 2
 
@@ -1284,7 +1229,6 @@ Examples:
 - Rearrange the axes of 𝕩 as per the axis indices in 𝕨.
 "
                             "\
-Examples:
     a ← 3‿3 ⥊ ↕9
 
     ⍉ a
@@ -1312,7 +1256,6 @@ Examples:
 - 𝕤 accesses the same value but has a subject role.
 - 𝕊 can be used for recursion."
                             "\
-Examples:
     F ← {𝕊 0: 1; 𝕩 × 𝕊 𝕩-1} # Factorial
     F 5
 120
@@ -1327,7 +1270,6 @@ Examples:
 - 𝕤 accesses the same value but has a subject role.
 - 𝕊 can be used for recursion."
                             "\
-Examples:
     F ← {𝕊 0: 1; 𝕩 × 𝕊 𝕩-1} # Factorial
     F 5
 120
@@ -1344,7 +1286,6 @@ Examples:
 𝕨 ↕ 𝕩: Windows
 - Overlapping slices from 𝕩 of shape 𝕨."
                             "\
-Examples:
     ↕ 4
 ⟨ 0 1 2 3 ⟩
 
@@ -1387,7 +1328,6 @@ Examples:
 - A variable assigned to the left operand of a modifier block.
 - 𝕗 can be used to access the left operand as a subject."
                             "\
-Examples:
     5 +{𝕗⊣𝕨} 1
 +"])
                    (?𝔽 . [ ?F
@@ -1397,7 +1337,6 @@ Examples:
 - A variable assigned to the left operand of a modifier block.
 - 𝕗 can be used to access the left operand as a subject."
                             "\
-Examples:
     5 +{𝕗⊣𝕨} 1
 +"])
                    (?𝕘 . [ ?g
@@ -1407,7 +1346,6 @@ Examples:
 - A variable assigned to the right operand of a 2-modifier block.
 - 𝕘 can be used to access the right operand as a subject."
                             "\
-Examples:
     5 +{𝕘}3 1
 3"])
                    (?𝔾 . [ ?G
@@ -1417,7 +1355,6 @@ Examples:
 - A variable assigned to the right operand of a 2-modifier block.
 - 𝕘 can be used to access the right operand as a subject."
                             "\
-Examples:
     5 +{𝕘}3 1
 3"])
                    (?⊸ . [ ?h
@@ -1435,7 +1372,6 @@ Examples:
 - Apply 𝔽 to 𝕨, and supply it as a left argument to 𝔾 ((𝔽 𝕨) 𝔾 𝕩).
 - 𝔽 must be monadic, 𝔾 must be dyadic."
                             "\
-Examples:
     3⊸- 9
 ¯6
 
@@ -1470,7 +1406,6 @@ Examples:
 - Remove the first ≠𝕨 (length) major cells from 𝕩, join 𝕨 to the end of 𝕩.
 - Ranks must match."
                             "\
-Examples:
     78 « 1‿2‿3
 ⟨ 2 3 78 ⟩
 
@@ -1506,7 +1441,6 @@ Examples:
 - Apply 𝔾 to 𝕨 and 𝕩, then apply 𝔽 (𝔽 (𝕨 𝔾 𝕩)).
 - 𝔽 must be monadic, and 𝔾 must be dyadic."
                             "\
-Examples:
     -∘- 5
 5
 
@@ -1533,7 +1467,6 @@ Examples:
 - Apply 𝔾 to 𝕨 and 𝕩, then apply 𝔽 to them ((𝔾 𝕨) 𝔽 (𝔾 𝕩)).
 - 𝔽 must be dyadic, 𝔾 must be monadic."
                             "\
-Examples:
     -○- 5
 5
 
@@ -1559,7 +1492,6 @@ Examples:
   - A function invertible by ⁼ (Undo)
   - A structural modification"
                             "\
-Examples:
     9⌾(1⊸⊑) 1‿2‿3
 ⟨ 1 9 3 ⟩
 
@@ -1584,7 +1516,6 @@ Examples:
 
 𝔽 must be dyadic, 𝔾 must be monadic."
                             "\
-Examples:
     -⟜3 9
 6
 
@@ -1619,7 +1550,6 @@ Error: Double subjects (missing ‿?)
 - Remove the last ≠𝕨 (length) major cells from 𝕩, join 𝕨 to the start of 𝕩.
 - Ranks must match."
                             "\
-Examples:
     » 1‿2‿3
 ⟨ 0 1 2 ⟩
 
@@ -1651,7 +1581,6 @@ Examples:
 - Separates statements in blocks, programs, and arrays.
 - Characters , and ⋄ are interchangeable with each other and with newline."
                             "\
-Examples:
     a ← 3 , ⊢ b ← 2
 2
 
@@ -1679,7 +1608,6 @@ Examples:
   - For pattern matching in assignment or a block header, Nothing indicates an
     unused value."
                             "\
-Examples:
     · ⌽ \"abc\"  # Reverse instead of Rotate
 \"cba\"
 
@@ -1700,7 +1628,6 @@ Examples:
 - A character literal whose value is the character between quotes.
 - Any character can be used, even ' and newline."
                             "\
-Examples:
     'a'‿'b'
 \"ab\""])
                    (?\" . [ nil
@@ -1711,7 +1638,6 @@ Examples:
 - Double quotes must be escaped by writing them twice.
 - Any other characters can be included directly."
                              "\
-Examples:
     2 ⊑ \"string\"
 'r'
 
@@ -1730,7 +1656,6 @@ n F↩: Modify
 n F↩ v: Modify
 - Assign n F v to n."
                             "\
-Examples:
     a ↩ 1
 Error: Undefined identifier
 
@@ -1751,7 +1676,6 @@ Error: Undefined identifier
 𝔽˙ 𝕩, 𝕨 𝔽˙ 𝕩: Constant
 - Returns a function that will always return 𝕗."
                             "\
-Examples:
     \"hello\" 1˙ 2
 1
 
@@ -1775,7 +1699,6 @@ Examples:
   - ⌽: Round length up
   - ↑: Round length up, and use element fill to add extra elements."
                             "\
-Examples:
     ⥊ 1
 ⟨ 1 ⟩
 
@@ -1811,7 +1734,6 @@ Examples:
 𝕨 ⋈ 𝕩: Pair
 - Put 𝕨 and 𝕩 in a two element list. (⟨𝕨, 𝕩⟩)"
                             "\
-Examples:
     ⋈ 1
 ⟨ 1 ⟩
 
@@ -1846,7 +1768,6 @@ Examples:
 - A variable assigned to the right argument of a block.
 - 𝕏 can be used to access the right argument as a function."
                             "\
-Examples:
     5 {𝕩} 1
 1"])
                    (?𝕏 . [ ?X
@@ -1856,7 +1777,6 @@ Examples:
 - A variable assigned to the right argument of a block.
 - 𝕏 can be used to access the right argument as a function."
                             "\
-Examples:
     5 {𝕩} 1
 1"])
                    (?↓ . [ ?c
@@ -1870,7 +1790,6 @@ Examples:
   dimension of 𝕩.
 - Negative numbers drop from the end."
                             "\
-Examples:
     ↓ 1‿2‿3‿4
 ⟨ ⟨ 1 2 3 4 ⟩ ⟨ 2 3 4 ⟩ ⟨ 3 4 ⟩ ⟨ 4 ⟩ ⟨⟩ ⟩
 
@@ -1914,7 +1833,6 @@ Examples:
 - Logical Or of 𝕨 and 𝕩.
 - Pervasive."
                             "\
-Examples:
     ∨ 3‿1‿4‿1‿5
 ⟨ 5 4 3 1 1 ⟩
 
@@ -1939,7 +1857,6 @@ Examples:
 - Right Pervasive.
 "
                             "\
-Examples:
     a ← 1‿2‿3
 
     ⍒ a
@@ -1967,7 +1884,6 @@ Examples:
 - Minimum of 𝕨 and 𝕩.
 - Pervasive."
                             "\
-Examples:
     ⌊ 1.2‿π‿3‿7.89
 ⟨ 1 3 3 7 ⟩
 
@@ -1987,7 +1903,6 @@ Examples:
 - Maximum of 𝕨 and 𝕩.
 - Pervasive."
                             "\
-Examples:
     ⌈ 1.2‿π‿3‿7.89
 ⟨ 2 4 3 8 ⟩
 
@@ -2005,7 +1920,6 @@ Examples:
 𝕨 ≡ 𝕩: Match
 - Does 𝕨 exactly match 𝕩?"
                             "\
-Examples:
     ≡ 2‿3‿4
 1
 
@@ -2029,7 +1943,6 @@ Examples:
 𝕨 ≢ 𝕩: Not Match
 - Does 𝕨 not exactly match 𝕩?"
                             "\
-Examples:
     ≢ 1
 ⟨⟩
 
@@ -2051,7 +1964,6 @@ Examples:
 - Separates statements in blocks, programs, and arrays.
 - Characters , and ⋄ are interchangeable with each other and with newline."
                             "\
-Examples:
     a ← 3 , ⊢ b ← 2
 2
 
@@ -2073,7 +1985,6 @@ Examples:
 - 𝕨 and 𝕩 can both be either numbers or characters.
 - Pervasive."
                             "\
-Examples:
     <1
 ┌·
 · 1
@@ -2098,7 +2009,6 @@ Examples:
 𝕨 ∾ 𝕩: Join To
 - Join 𝕨 to 𝕩 along the first axis."
                             "\
-Examples:
     ∾ ⟨1‿2, 3, 4‿5⟩
 ⟨ 1 2 3 4 5 ⟩
 
@@ -2136,7 +2046,6 @@ Examples:
 - 𝕨 and 𝕩 can both be either numbers or characters.
 - Pervasive."
                             "\
-Examples:
     1 ≤ 3
 1
 
@@ -2149,7 +2058,6 @@ ns . name: Namespace Field
 - Access a field with name name in namespace ns.
 - Field must have been exported with ⇐."
                             "\
-Examples:
     {a⇐1} . a
 1
 
@@ -2168,7 +2076,6 @@ Examples:
 - 𝕨 and 𝕩 can both be either numbers or characters.
 - Pervasive."
                             "\
-Examples:
     a ← ⟨⟨1, 2⟩, ⟨3, 4⟩⟩
 
     >a
@@ -2200,7 +2107,6 @@ Examples:
 𝕨 ≍ 𝕩: Couple
 - Join 𝕨 and 𝕩 along a newly created axis."
                             "\
-Examples:
     ≍ 1
 ⟨ 1 ⟩
 
@@ -2239,7 +2145,6 @@ Examples:
 - 𝕨 and 𝕩 can both be either numbers or characters.
 - Pervasive."
                             "\
-Examples:
     1 ≥ 3
 0
 
@@ -2256,7 +2161,6 @@ Examples:
 - Repeat each major cell in 𝕩 by the corresponding element in 𝕨.
 - Unit 𝕨 applies to all elements."
                             "\
-Examples:
     / 1‿2‿3
 ⟨ 0 1 1 2 2 2 ⟩
 
@@ -2277,7 +2181,6 @@ Examples:
 - Variables defined before the ? stay if execution continues (1) but don't carry
   over to other bodies (0)."
                             "\
-Examples:
     {0 ? 3 ; 4}
 4
 
@@ -2298,7 +2201,6 @@ Examples:
 - Do argument atoms not match?
 - Pervasive."
                             "\
-Examples:
     ≠ 3
 1
 
@@ -2332,7 +2234,6 @@ n ⇐: Export names
 - Export the names given in n from the current namespace.
 - Names must be defined somewhere in the scope."
                             "\
-Examples:
     ns ← { exported ⇐ 5, unexported ← 0}
     ns.exported
 5
@@ -2352,7 +2253,6 @@ Error: No key found
 - Placing ‿ between valid BQN expressions will create a list out of the end
   results of those expressions."
                             "\
-Examples:
     1‿2‿3
 ⟨ 1 2 3 ⟩
 
