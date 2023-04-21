@@ -30,91 +30,6 @@
   :prefix 'bqn
   :group 'languages)
 
-(defvar bqn--symbols
-  '(;; Top row
-    (?˜ ?\`)
-    (?¬ ?~)
-    (?˘ ?1)
-    (?⎉ ?!)
-    (?¨ ?2)
-    (?⚇ ?@)
-    (?⁼ ?3)
-    (?⍟ ?\#)
-    (?⌜ ?4)
-    (?◶ ?$)
-    (?´ ?5)
-    (?⊘ ?%)
-    (?˝ ?6)
-    (?⎊ ?^)
-    (?∞ ?8)
-    (?¯ ?9)
-    (?⟨ ?\()
-    (?• ?0)
-    (?⟩ ?\))
-    (?÷ ?-)
-    (?√ ?_)
-    (?× ?=)
-    (?⋆ ?+)
-    ;; First row
-    (?⌽ ?q)
-    (?𝕨 ?w)
-    (?𝕎 ?W)
-    (?∊ ?e)
-    (?⍷ ?E)
-    (?↑ ?r)
-    (?𝕣 ?R)
-    (?∧ ?t)
-    (?⍋ ?T)
-    (?⊔ ?u)
-    (?⊏ ?i)
-    (?⊑ ?I)
-    (?⊐ ?o)
-    (?⊒ ?O)
-    (?π ?p)
-    (?← ?\[)
-    (?⊣ ?{)
-    (?⊢ ?})
-    ;; Second row
-    (?⍉ ?a)
-    (?𝕤 ?s)
-    (?𝕊 ?S)
-    (?↕ ?d)
-    (?𝕗 ?f)
-    (?𝔽 ?F)
-    (?𝕘 ?g)
-    (?𝔾 ?G)
-    (?⊸ ?h)
-    (?« ?H)
-    (?∘ ?j)
-    (?○ ?k)
-    (?⌾ ?K)
-    (?⟜ ?l)
-    (?» ?L)
-    (?⋄ ?\;)
-    (?· ?:)
-    (?↩ ?\')
-    (?˙ ?\")
-    ;; Third row
-    (?⥊ ?z)
-    (?⋈ ?Z)
-    (?𝕩 ?x)
-    (?𝕏 ?X)
-    (?↓ ?c)
-    (?∨ ?v)
-    (?⍒ ?V)
-    (?⌊ ?b)
-    (?⌈ ?B)
-    (?≡ ?m)
-    (?≢ ?M)
-    (?∾ ?\,)
-    (?≤ ?<)
-    (?≍ ?\.)
-    (?≥ ?>)
-    (?≠ ?/)
-    (?⇐ ??)
-    ;; Space bar
-    (?‿ ? )))
-
 ;;;; input method
 
 (quail-define-package "BQN-Z" "UTF-8" "⍉"
@@ -124,7 +39,8 @@
 (defvar bqn--glyph-prefix-table)
 (defun bqn--glyph-prefix-set (symbol new)
   (setq bqn--glyph-prefix-table
-        (mapcar (lambda (s) (cons (string new (cadr s)) (car s))) bqn--symbols))
+        (mapcar (lambda (s) (cons (string new (car s)) (cdr s)))
+                (bqn-help--symbol-non-doc-info)))
   ;; add input "escape" using the prefix key again:
   (push (cons (string new new) new) bqn--glyph-prefix-table)
   (quail-select-package "BQN-Z")
@@ -226,8 +142,8 @@
 
 (defvar bqn-syntax--table
   (let ((table (make-syntax-table)))
-    (dolist (s bqn--symbols)
-      (modify-syntax-entry (car s) "." table))
+    (dolist (s (bqn-help--symbol-non-doc-info 'all))
+      (modify-syntax-entry (cdr s) "." table))
     (dolist (s (string-to-list "$%&*+-/<=>|"))
       (modify-syntax-entry s "." table))
     (modify-syntax-entry ?'  "\"" table)
@@ -275,10 +191,12 @@
 (defun bqn--make-glyph-map (modifier)
   "Create a new keymap using the string prefix MODIFIER."
   (let ((map (make-sparse-keymap)))
-    (pcase-dolist (`(,ch ,key) bqn--symbols)
-      (define-key map
-                  (kbd (concat modifier (single-key-description key)))
-                  (lambda () (interactive) (insert ch))))
+    (mapc
+     (lambda (x)
+       (define-key map
+                   (kbd (concat modifier (single-key-description (car x))))
+                   (lambda () (interactive) (insert (cdr x)))))
+     (bqn-help--symbol-non-doc-info))
     ;; (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN"))) ;has not been used so far
     map))
 
