@@ -243,7 +243,7 @@
 
 (defun bqn-help--eldoc ()
   (let ((c (char-after (point))))
-    (when (memql c (bqn-help--symbols))
+    (when (bqn-help--symbol-get c)
       (bqn-help--symbol-doc-short c))))
 
 (define-derived-mode bqn-help--mode special-mode
@@ -257,7 +257,7 @@
   "Show full documentation for the primitive at point in a separate buffer."
   (interactive)
   (let ((c (char-after (point))))
-    (unless (memql c (bqn-help--symbols))
+    (unless (bqn-help--symbol-get c)
       (user-error "No BQN primitive at point"))
     (if-let* ((long   (bqn-help--symbol-doc-long c))
               (extra  (bqn-help--symbol-doc-extra c))

@@ -2374,10 +2374,8 @@ A short description for eldoc, a long description, and examples.
 
 Content as found at https://mlochbaum.github.io/BQN/help/index.html.")
 
-(defun bqn-help--symbols ()
-  (let (symbols)
-    (maphash (lambda (sym _) (push sym symbols)) bqn-help--symbol-docs)
-    symbols))
+(defun bqn-help--symbol-get (symbol)
+  (gethash symbol bqn-help--symbol-docs))
 
 (defun bqn-help--symbol-doc (symbol slot)
   (when-let ((docs (gethash symbol bqn-help--symbol-docs)))
