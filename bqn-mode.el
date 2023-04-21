@@ -22,7 +22,7 @@
 (require 'comint)
 (require 'quail)
 (require 'pulse)
-(require 'bqn-symbols-doc)
+(require 'bqn-symbols)
 
 ;;;###autoload
 (defgroup bqn nil
@@ -40,7 +40,7 @@
 (defun bqn--glyph-prefix-set (symbol new)
   (setq bqn--glyph-prefix-table
         (mapcar (lambda (s) (cons (string new (car s)) (cdr s)))
-                (bqn-help--symbol-non-doc-info)))
+                (bqn--symbols-no-doc)))
   ;; add input "escape" using the prefix key again:
   (push (cons (string new new) new) bqn--glyph-prefix-table)
   (quail-select-package "BQN-Z")
@@ -142,7 +142,7 @@
 
 (defvar bqn-syntax--table
   (let ((table (make-syntax-table)))
-    (dolist (s (bqn-help--symbol-non-doc-info 'all))
+    (dolist (s (bqn--symbols-no-doc 'all))
       (modify-syntax-entry (cdr s) "." table))
     (dolist (s (string-to-list "$%&*+-/<=>|"))
       (modify-syntax-entry s "." table))
@@ -157,9 +157,9 @@
     table)
   "Syntax table for `bqn-mode'.")
 
-(defun bqn-help--eldoc ()
+(defun bqn--eldoc ()
   (let ((c (char-after (point))))
-    (when-let ((docs (bqn-help--symbol-get c)))
+    (when-let ((docs (bqn--symbol c)))
       (concat (bqn--symbol-eldoc docs) " | Input: "
               (if-let ((prefixed (bqn--symbol-prefixed docs)))
                   (string bqn-glyph-prefix prefixed)
@@ -169,17 +169,17 @@
   "BQN Documentation"
   "Major mode for displaying BQN documentation."
   (setq-local font-lock-defaults bqn--font-lock-defaults)
-  (setq-local eldoc-documentation-function #'bqn-help--eldoc)
+  (setq-local eldoc-documentation-function #'bqn--eldoc)
   (buffer-face-set 'bqn-default))
 
 (defun bqn-help-symbol-info-at-point ()
   "Show full documentation for the primitive at point in a separate buffer."
   (interactive)
   (let ((c (char-after (point))))
-    (unless (bqn-help--symbol-get c)
+    (unless (bqn--symbol c)
       (user-error "No BQN primitive at point"))
-    (if-let* ((long   (bqn--symbol-description (bqn-help--symbol-get c)))
-              (extra  (bqn--symbol-examples (bqn-help--symbol-get c)))
+    (if-let* ((long   (bqn--symbol-description (bqn--symbol c)))
+              (extra  (bqn--symbol-examples (bqn--symbol c)))
               (sep    "\n\n==================== Examples ====================\n\n")
               (doc-buffer (get-buffer-create "*bqn-help*")))
         (with-current-buffer doc-buffer
@@ -199,7 +199,7 @@
        (define-key map
                    (kbd (concat modifier (single-key-description (car x))))
                    (lambda () (interactive) (insert (cdr x)))))
-     (bqn-help--symbol-non-doc-info))
+     (bqn--symbols-no-doc))
     ;; (define-key map [menu-bar bqn] (cons "BQN" (make-sparse-keymap "BQN"))) ;has not been used so far
     map))
 
@@ -235,7 +235,7 @@ BQN buffers (or recreate them)."
     (set-keymap-parent bqn-mode-map
                        (make-composed-keymap prog-mode-map bqn--glyph-map)))
   (setq-local font-lock-defaults bqn--font-lock-defaults)
-  (setq-local eldoc-documentation-function #'bqn-help--eldoc)
+  (setq-local eldoc-documentation-function #'bqn--eldoc)
   (setq-local comment-start "# ")
   (buffer-face-set 'bqn-default))
 
