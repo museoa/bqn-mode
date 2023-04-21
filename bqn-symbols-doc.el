@@ -1364,12 +1364,12 @@ Examples:
   ⟨ 3 0 ⟩ ⟨ 3 1 ⟩ ⟨ 3 2 ⟩ ⟨ 3 3 ⟩ ⟨ 3 4 ⟩
                                           ┘
 
-    5 ↕ "abcdefg"
+    5 ↕ \"abcdefg\"
 ┌─
-╵"abcde
-                            bcdef
-                            cdefg"
-        ┘
+╵ \"abcde
+   bcdef
+   cdefg\"
+          ┘
 
     a ← 3‿3⥊↕9
 
