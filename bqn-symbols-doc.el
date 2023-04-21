@@ -2019,7 +2019,7 @@ Examples:
     2‿3‿0 < 3‿1‿0
 ⟨ 1 0 0 ⟩"])
 
-                   (?, . [ ",: Separator | Input: ,"
+                   (?\, . [ ",: Separator | Input: ,"
                             "\
 , or ⋄: Separator
 - Separates statements in blocks, programs, and arrays.
