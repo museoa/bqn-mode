@@ -1,4 +1,4 @@
-;;; bqn-symbols-doc.el --- Documentation table for BQN symbols -*- lexical-binding: t; -*-
+;;; bqn-symbols.el --- Documentation table for BQN symbols -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2021-2023 Jeff Young
 ;; Copyright (C) 2023 bqn-mode project
@@ -20,7 +20,7 @@
 ;; because we want the lowest latency possible for an end-user-facing structure.
 ;; For all intents and purposes, this table should be regarded as read-only;
 ;; indeed, it is "cached" at byte-compile time via eval-when-compile.
-(defconst bqn-help--symbol-docs
+(defconst bqn--symbols
   (eval-when-compile
     (let ((table '(
                    ;; top row
@@ -2261,8 +2261,8 @@ Error: No key found
 Description and examples as of
 https://mlochbaum.github.io/BQN/help/index.html.")
 
-(defun bqn-help--symbol-get (symbol)
-  (gethash symbol bqn-help--symbol-docs))
+(defun bqn--symbol (c)
+  (gethash c bqn--symbols))
 (defsubst bqn--symbol-prefixed (info)
   (aref info 0))
 (defsubst bqn--symbol-eldoc (info)
@@ -2272,13 +2272,13 @@ https://mlochbaum.github.io/BQN/help/index.html.")
 (defsubst bqn--symbol-examples (info)
   (aref info 3))
 
-(defun bqn-help--symbol-non-doc-info (&optional all)
+(defun bqn--symbols-no-doc (&optional all)
   (let ((lst nil))
     (maphash
      (lambda (k v) (if (or all (aref v 0)) (push (cons (aref v 0) k) lst)))
-     bqn-help--symbol-docs)
+     bqn--symbols)
     lst))
 
-(provide 'bqn-symbols-doc)
+(provide 'bqn-symbols)
 
-;;; bqn-symbols-doc.el ends here
+;;; bqn-symbols.el ends here
