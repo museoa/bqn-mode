@@ -2263,6 +2263,14 @@ https://mlochbaum.github.io/BQN/help/index.html.")
 
 (defun bqn-help--symbol-get (symbol)
   (gethash symbol bqn-help--symbol-docs))
+(defsubst bqn--symbol-prefixed (info)
+  (aref info 0))
+(defsubst bqn--symbol-eldoc (info)
+  (aref info 1))
+(defsubst bqn--symbol-description (info)
+  (aref info 2))
+(defsubst bqn--symbol-examples (info)
+  (aref info 3))
 
 (defun bqn-help--symbol-non-doc-info (&optional all)
   (let ((lst nil))
@@ -2270,23 +2278,6 @@ https://mlochbaum.github.io/BQN/help/index.html.")
      (lambda (k v) (if (or all (aref v 0)) (push (cons (aref v 0) k) lst)))
      bqn-help--symbol-docs)
     lst))
-
-(defun bqn-help--symbol-doc (symbol slot)
-  (when-let ((docs (gethash symbol bqn-help--symbol-docs)))
-    (aref docs slot)))
-
-(defun bqn-help--symbol-doc-short (symbol)
-  (when-let ((docs (bqn-help--symbol-get symbol)))
-    (concat (aref docs 1) " | Input: "
-            (if-let ((prefixed (aref docs 0)))
-                (string bqn-glyph-prefix prefixed)
-              (string symbol)))))
-
-(defun bqn-help--symbol-doc-long (symbol)
-  (bqn-help--symbol-doc symbol 2))
-
-(defun bqn-help--symbol-doc-extra (symbol)
-  (bqn-help--symbol-doc symbol 3))
 
 (provide 'bqn-symbols-doc)
 

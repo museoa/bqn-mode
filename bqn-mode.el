@@ -159,8 +159,11 @@
 
 (defun bqn-help--eldoc ()
   (let ((c (char-after (point))))
-    (when (bqn-help--symbol-get c)
-      (bqn-help--symbol-doc-short c))))
+    (when-let ((docs (bqn-help--symbol-get c)))
+      (concat (bqn--symbol-eldoc docs) " | Input: "
+              (if-let ((prefixed (bqn--symbol-prefixed docs)))
+                  (string bqn-glyph-prefix prefixed)
+                (string c))))))
 
 (define-derived-mode bqn-help--mode special-mode
   "BQN Documentation"
@@ -175,8 +178,8 @@
   (let ((c (char-after (point))))
     (unless (bqn-help--symbol-get c)
       (user-error "No BQN primitive at point"))
-    (if-let* ((long   (bqn-help--symbol-doc-long c))
-              (extra  (bqn-help--symbol-doc-extra c))
+    (if-let* ((long   (bqn--symbol-description (bqn-help--symbol-get c)))
+              (extra  (bqn--symbol-examples (bqn-help--symbol-get c)))
               (sep    "\n\n==================== Examples ====================\n\n")
               (doc-buffer (get-buffer-create "*bqn-help*")))
         (with-current-buffer doc-buffer
