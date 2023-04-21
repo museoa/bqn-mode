@@ -2312,7 +2312,9 @@ Examples:
         (puthash (car entry) (cdr entry) ht))
       ht))
   "Hash map from BQN symbols as keys to 3-vector of documentation strings:
-A short description for eldoc, a long description, and examples.")
+A short description for eldoc, a long description, and examples.
+
+Content as found at https://mlochbaum.github.io/BQN/help/index.html.")
 
 (defun bqn-help--symbols ()
   (let (symbols)

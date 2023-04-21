@@ -178,17 +178,17 @@
 
 (defface bqn-primitive-function
   '((t (:inherit font-lock-builtin-face)))
-  "Face used for BQN functions."
+  "Face used for primitive BQN functions."
   :group 'bqn)
 
 (defface bqn-primitive-one-modifier
   '((t (:inherit font-lock-preprocessor-face)))
-  "Face used for BQN 1-modifiers."
+  "Face used for primitive BQN 1-modifiers."
   :group 'bqn)
 
 (defface bqn-primitive-two-modifier
   '((t (:inherit font-lock-keyword-face)))
-  "Face used for BQN 2-modifiers."
+  "Face used for primitive BQN 2-modifiers."
   :group 'bqn)
 
 (defface bqn-box
@@ -254,7 +254,7 @@
   (buffer-face-set 'bqn-default))
 
 (defun bqn-help-symbol-info-at-point ()
-  "Show full documentation for the primitve at point in a separate buffer."
+  "Show full documentation for the primitive at point in a separate buffer."
   (interactive)
   (let ((c (char-after (point))))
     (unless (memql c (bqn-help--symbols))
@@ -336,7 +336,7 @@ BQN buffers (or recreate them)."
 (define-obsolete-variable-alias 'bqn-comint-interpreter-arguments
   'bqn-interpreter-arguments "2023-04-14")
 (defcustom bqn-interpreter-arguments '()
-  "Commandline arguments to pass to the BQN interpreter."
+  "Command-line arguments to pass to the BQN interpreter."
   :type 'string
   :group 'bqn)
 
@@ -344,7 +344,7 @@ BQN buffers (or recreate them)."
   "Name of BQN comint process.")
 
 (defcustom bqn-comint-flash-on-send t
-  "When non-nil flash the region sent to BQN process."
+  "When non-nil, flash the region sent to BQN process."
   :type 'boolean
   :group 'bqn)
 
@@ -405,7 +405,9 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
       (select-window (display-buffer pbuf)))))
 
 (defun bqn-comint-send-dwim (&optional arg)
-  "Send the active region, else the current line to the BQN process."
+  "Send the active region, else the current line to the BQN process.
+
+With non-nil prefix ARG, switch to the process buffer."
   (interactive "P")
   (cond
    ((use-region-p)
@@ -415,7 +417,9 @@ When FOLLOW is non-nil, switch to the inferior process buffer."
     (bqn-comint-send-region (line-beginning-position) (line-end-position) arg))))
 
 (defun bqn-comint-send-buffer (&optional arg)
-  "Send the current buffer to BQN process."
+  "Send the current buffer to BQN process.
+
+With non-nil prefix ARG, switch to the process buffer."
   (interactive "P")
   (bqn-comint-send-region (point-min) (point-max) arg))
 
