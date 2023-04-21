@@ -32,146 +32,95 @@
 
 (defvar bqn--symbols
   '(;; Top row
-    ;; `
-    ("high-tilde" ?˜ ?\`)
-    ("logical-not" ?¬ ?~)
-    ;; 1
-    ("breve" ?˘ ?1)
-    ("circle-notch" ?⎉ ?!)
-    ;; 2
-    ("diaeresis" ?¨ ?2)
-    ("circled-diaeresis" ?⚇ ?@)
-    ;; 3
-    ("high-equals" ?⁼ ?3)
-    ("circle-star" ?⍟ ?\#)
-    ;; 4
-    ("corner" ?⌜ ?4)
-    ("circle-corner" ?◶ ?$)
-    ;; 5
-    ("acute" ?´ ?5)
-    ("circle-slash" ?⊘ ?%)
-    ;; 6
-    ("double-acute" ?˝ ?6)
-    ("circle-triangle" ?⎊ ?^)
-    ;; 7
-    ("hydrant" ?⍎ ?&)
-    ;; 8
-    ("infinity" ?∞ ?8)
-    ("thorn" ?⍕ ?*)
-    ;; 9
-    ("high-minus" ?¯ ?9)
-    ("open-angle" ?⟨ ?\()
-    ;; 0
-    ("bullet" ?• ?0)
-    ("close-angle" ?⟩ ?\))
-    ;; -
-    ("division-sign" ?÷ ?-)
-    ("root" ?√ ?_)
-    ;; =
-    ("multiplication-sign" ?× ?=)
-    ("star" ?⋆ ?+)
-
+    (?˜ ?\`)
+    (?¬ ?~)
+    (?˘ ?1)
+    (?⎉ ?!)
+    (?¨ ?2)
+    (?⚇ ?@)
+    (?⁼ ?3)
+    (?⍟ ?\#)
+    (?⌜ ?4)
+    (?◶ ?$)
+    (?´ ?5)
+    (?⊘ ?%)
+    (?˝ ?6)
+    (?⎊ ?^)
+    (?⍎ ?&)
+    (?∞ ?8)
+    (?⍕ ?*)
+    (?¯ ?9)
+    (?⟨ ?\()
+    (?• ?0)
+    (?⟩ ?\))
+    (?÷ ?-)
+    (?√ ?_)
+    (?× ?=)
+    (?⋆ ?+)
     ;; First row
-    ;; q
-    ("circle-stile" ?⌽ ?q)
-    ("down-left-arrow" ?↙ ?Q)
-    ;; w
-    ("double-w" ?𝕨 ?w)
-    ("double-upper-w" ?𝕎 ?W)
-    ;; e
-    ("epsilon" ?∊ ?e)
-    ("epsilon-underbar" ?⍷ ?E)
-    ;; r
-    ("up-arrow" ?↑ ?r)
-    ("double-r" ?𝕣 ?R)
-    ;; t
-    ("logical-and" ?∧ ?t)
-    ("up-grade" ?⍋ ?T)
-    ;; y
-    ;; u
-    ("square-cup" ?⊔ ?u)
-    ;; i
-    ("open-square" ?⊏ ?i)
-    ("open-square-underbar" ?⊑ ?I)
-    ;; o
-    ("close-square" ?⊐ ?o)
-    ("close-square-underbar" ?⊒ ?O)
-    ;; p
-    ("pi" ?π ?p)
-    ("iota" ?⍳ ?P)
-    ;; [
-    ("left-arrow" ?← ?\[)
-    ("left-tack" ?⊣ ?{)
-    ;; ]
-    ("right-arrow" ?→ ?\])
-    ("right-tack" ?⊢ ?})
-    ;; \
-    ("backslash" ?\\ ?\\)
-
+    (?⌽ ?q)
+    (?↙ ?Q)
+    (?𝕨 ?w)
+    (?𝕎 ?W)
+    (?∊ ?e)
+    (?⍷ ?E)
+    (?↑ ?r)
+    (?𝕣 ?R)
+    (?∧ ?t)
+    (?⍋ ?T)
+    (?⊔ ?u)
+    (?⊏ ?i)
+    (?⊑ ?I)
+    (?⊐ ?o)
+    (?⊒ ?O)
+    (?π ?p)
+    (?⍳ ?P)
+    (?← ?\[)
+    (?⊣ ?{)
+    (?→ ?\])
+    (?⊢ ?})
+    (?\\ ?\\)
     ;; Second row
-    ;; a
-    ("circle-backslash" ?⍉ ?a)
-    ("up-left-arrow" ?↖ ?A)
-    ;; s
-    ("double-s" ?𝕤 ?s)
-    ("double-upper-s" ?𝕊 ?S)
-    ;; d
-    ("up-down-arrow" ?↕ ?d)
-    ;; f
-    ("double-f" ?𝕗 ?f)
-    ("double-upper-f" ?𝔽 ?F)
-    ;; g
-    ("double-g" ?𝕘 ?g)
-    ("double-upper-g" ?𝔾 ?G)
-    ;; h
-    ("left-loop" ?⊸ ?h)
-    ("left-chevron" ?« ?H)
-    ;; j
-    ("jot" ?∘ ?j)
-    ;; k
-    ("circle" ?○ ?k)
-    ("circle-jot" ?⌾ ?K)
-    ;; l
-    ("right-loop" ?⟜ ?l)
-    ("right-chevron" ?» ?L)
-    ;; ;
-    ("diamond" ?⋄ ?\;)
-    ("middle-dot" ?· ?:)
-    ;; '
-    ("left-hook-arrow" ?↩ ?\')
-    ("high-dot" ?˙ ?\")
-
+    (?⍉ ?a)
+    (?↖ ?A)
+    (?𝕤 ?s)
+    (?𝕊 ?S)
+    (?↕ ?d)
+    (?𝕗 ?f)
+    (?𝔽 ?F)
+    (?𝕘 ?g)
+    (?𝔾 ?G)
+    (?⊸ ?h)
+    (?« ?H)
+    (?∘ ?j)
+    (?○ ?k)
+    (?⌾ ?K)
+    (?⟜ ?l)
+    (?» ?L)
+    (?⋄ ?\;)
+    (?· ?:)
+    (?↩ ?\')
+    (?˙ ?\")
     ;; Third row
-    ;; z
-    ("zigzag" ?⥊ ?z)
-    ("bowtie" ?⋈ ?Z)
-    ;; x
-    ("double-x" ?𝕩 ?x)
-    ("double-upper-x" ?𝕏 ?X)
-    ;; c
-    ("down-arrow" ?↓ ?c)
-    ;; v
-    ("logical-or" ?∨ ?v)
-    ("down-grade" ?⍒ ?V)
-    ;; b
-    ("left-floor" ?⌊ ?b)
-    ("left-ceiling" ?⌈ ?B)
-    ;; n
-    ;; m
-    ("identical-to" ?≡ ?m)
-    ("not-identical-to" ?≢ ?M)
-    ;; ,
-    ("join" ?∾ ?\,)
-    ("less-than-or-equal-to" ?≤ ?<)
-    ;; .
-    ("couple" ?≍ ?\.)
-    ("greater-than-or-equal-to" ?≥ ?>)
-    ;; /
-    ("not-equal-to" ?≠ ?/)
-    ("left-double-arrow" ?⇐ ??)
-
+    (?⥊ ?z)
+    (?⋈ ?Z)
+    (?𝕩 ?x)
+    (?𝕏 ?X)
+    (?↓ ?c)
+    (?∨ ?v)
+    (?⍒ ?V)
+    (?⌊ ?b)
+    (?⌈ ?B)
+    (?≡ ?m)
+    (?≢ ?M)
+    (?∾ ?\,)
+    (?≤ ?<)
+    (?≍ ?\.)
+    (?≥ ?>)
+    (?≠ ?/)
+    (?⇐ ??)
     ;; Space bar
-    ("ligature" ?‿ ? )))
+    (?‿ ? )))
 
 ;;;; input method
 
@@ -199,8 +148,8 @@
           (bqn-key-prefix--transcription-alist
            (mapcar
             (lambda (s)
-              (cons (concat prefix (char-to-string (caddr s)))
-                    (char-to-string (cadr s))))
+              (cons (concat prefix (char-to-string (cadr s)))
+                    (char-to-string (car s))))
             bqn--symbols)))
      (quail-map-from-table
       '((default bqn-key-prefix--transcription-alist)))))
@@ -306,7 +255,7 @@
 (defvar bqn-syntax--table
   (let ((table (make-syntax-table)))
     (dolist (s bqn--symbols)
-      (modify-syntax-entry (cadr s) "." table))
+      (modify-syntax-entry (car s) "." table))
     (dolist (s (string-to-list "$%&*+-/<=>|"))
       (modify-syntax-entry s "." table))
     (modify-syntax-entry ?'  "\"" table)
@@ -321,7 +270,7 @@
   "Syntax table for `bqn-mode'.")
 
 (defvar bqn-help--chars
-  (let ((lst (mapcar #'cadr bqn--symbols))
+  (let ((lst (mapcar #'car bqn--symbols))
         (todo (bqn-help--symbols)))
     (while todo
       (let ((c (pop todo)))
@@ -364,7 +313,7 @@
 (defun bqn--make-glyph-map (modifier)
   "Create a new keymap using the string prefix MODIFIER."
   (let ((map (make-sparse-keymap)))
-    (pcase-dolist (`(,_ ,ch ,key) bqn--symbols)
+    (pcase-dolist (`(,ch ,key) bqn--symbols)
       (let ((cmd (lambda () (interactive) (insert ch)))
             (key (single-key-description key)))
         (define-key map (kbd (concat modifier key)) cmd)))
