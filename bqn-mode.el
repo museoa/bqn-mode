@@ -74,7 +74,6 @@
     (?← ?\[)
     (?⊣ ?{)
     (?⊢ ?})
-    (?\\ ?\\)
     ;; Second row
     (?⍉ ?a)
     (?𝕤 ?s)
@@ -126,6 +125,8 @@
 (defun bqn--glyph-prefix-set (symbol new)
   (setq bqn--glyph-prefix-table
         (mapcar (lambda (s) (cons (string new (cadr s)) (car s))) bqn--symbols))
+  ;; add input "escape" using the prefix key again:
+  (push (cons (string new new) new) bqn--glyph-prefix-table)
   (quail-select-package "BQN-Z")
   (quail-install-map (quail-map-from-table '((default bqn--glyph-prefix-table))))
   (set-default symbol new))
