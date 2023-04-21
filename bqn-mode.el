@@ -26,7 +26,7 @@
 
 ;;;###autoload
 (defgroup bqn nil
-  "Major mode for interacting with the BQN interpreter."
+  "Support for the BQN array programming language."
   :prefix 'bqn
   :group 'languages)
 
