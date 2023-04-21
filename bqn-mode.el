@@ -55,6 +55,11 @@
   :group 'bqn
   :set #'bqn--glyph-prefix-set)
 
+(defcustom bqn-use-input-method t
+  "Should BQN source and comint modes auto-enable the `BQN-Z' input method?"
+  :type 'boolean
+  :group 'bqn)
+
 ;;;; core functionality
 
 (defface bqn-default
@@ -233,6 +238,8 @@ BQN buffers (or recreate them)."
   (when bqn-glyph-map-modifier
     (set-keymap-parent bqn-mode-map
                        (make-composed-keymap prog-mode-map bqn--glyph-map)))
+  (when bqn-use-input-method
+    (activate-input-method "BQN-Z"))
   (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function #'bqn--eldoc)
   (setq-local comment-start "# ")
@@ -350,6 +357,8 @@ With non-nil prefix ARG, switch to the process buffer."
   (when bqn-glyph-map-modifier
     (set-keymap-parent bqn-comint-mode-map
                        (make-composed-keymap comint-mode-map bqn--glyph-map)))
+  (when bqn-use-input-method
+    (activate-input-method "BQN-Z"))
   (setq-local font-lock-defaults bqn--font-lock-defaults)
   (buffer-face-set 'bqn-default))
 
