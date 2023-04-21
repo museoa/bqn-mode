@@ -105,8 +105,7 @@
 - Throw an error if 𝕩 is not 1.
 
 𝕨 ! 𝕩: Assert With Message
-- Throw an error with message 𝕨 if 𝕩 is not 1.
-"
+- Throw an error with message 𝕨 if 𝕩 is not 1."
                            "\
     ! 1
 1
@@ -177,8 +176,7 @@ Error: hello error"])
                            "\
 @: Null Character
 - Code point 0 in ASCII.
-- Add to a code point number to ger that character.
-"
+- Add to a code point number to ger that character."
                            "\
     @+50
 '2'
@@ -237,8 +235,7 @@ Error: hello error"])
                            "\
 𝔽⁼ 𝕩, 𝕨 𝔽⁼ 𝕩: Undo | Input: \\#
 - Invert the function 𝔽, or use its defined inverse.
-- Not all functions have inverses.
-"
+- Not all functions have inverses."
                            "\
     1 - 2
 ¯1
@@ -300,8 +297,7 @@ Error: hello error"])
 𝔽◶𝕘 𝕩, 𝕨 𝔽◶𝕘 𝕩: Choose
 - Apply 𝔽 to the arguments and use the result to pick (⊑) a function from list
   𝕘.
-- Apply the picked function to the arguments.
-"
+- Apply the picked function to the arguments."
                            "\
     F ← ⊢◶+‿-‿÷‿×
 
@@ -372,6 +368,7 @@ Error: hello error"])
 𝔽˝ 𝕩: Insert
 - Fold over cells of 𝕩 with 𝔽 from end to start, that is, insert 𝔽 between the
   major cells of 𝕩.
+
 𝕨 𝔽˝ 𝕩: Insert With Initial
 - Monadic insert, but use 𝕨 as initial right argument."
                            "\
@@ -505,8 +502,7 @@ Error: hello error"])
 
 𝕨 - 𝕩: Subtract
 - Subtract 𝕩 from 𝕨.
-- 𝕨 and 𝕩 can be characters or numbers.
-"
+- 𝕨 and 𝕩 can be characters or numbers."
                             "\
     - 1
 ¯1
@@ -616,8 +612,7 @@ Error: hello error"])
 𝕨 + 𝕩: Add
 - 𝕨 added to 𝕩.
 - Either 𝕨 or 𝕩 can be a character, and if so, the other has to be an integer.
-
-Pervasive."
+- Pervasive."
                             "\
 
     + 1
@@ -688,8 +683,7 @@ Pervasive."
 
 𝕨 ⌽ 𝕩: Rotate
 - Move the first 𝕨 elements of 𝕩 to its end. Negative 𝕨 reverses the direction
-  of rotation.
-"
+  of rotation."
                             "\
     ⌽ 1‿2‿3
 ⟨ 3 2 1 ⟩
@@ -778,8 +772,7 @@ Pervasive."
 𝕨 ⍷ 𝕩: Find
 - Mark the top left location of the occurrences of 𝕨 in 𝕩 with a 1, and other
   locations with 0.
-- Result is the same shape as (≢𝕨)↕x.
-"
+- Result is the same shape as (≢𝕨)↕x."
                             "\
     ⍷ 4‿5‿6‿6‿4‿7‿5
 ⟨ 4 5 6 7 ⟩
@@ -1226,8 +1219,7 @@ Error: >: Elements didn't have equal shapes (contained shapes ⟨4⟩ and ⟨5�
 - Move the first axis of 𝕩 to the end.
 
 𝕨 ⍉ 𝕩: Reorder Axes
-- Rearrange the axes of 𝕩 as per the axis indices in 𝕨.
-"
+- Rearrange the axes of 𝕩 as per the axis indices in 𝕨."
                             "\
     a ← 3‿3 ⥊ ↕9
 
@@ -1458,7 +1450,6 @@ Error: >: Elements didn't have equal shapes (contained shapes ⟨4⟩ and ⟨5�
                    (?○ . [ ?k
                            "𝔽○𝔾 𝕩: Atop | 𝕨 𝔽○𝔾 𝕩: Over | Input: \\k"
                             "\
-
 𝔽○𝔾 𝕩: Atop
 - Apply 𝔾 to 𝕩, then apply 𝔽 (𝔽 𝔾 𝕩).
 - 𝔽 and 𝔾 must be monadic.
