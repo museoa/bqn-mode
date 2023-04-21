@@ -241,19 +241,9 @@
     table)
   "Syntax table for `bqn-mode'.")
 
-(defvar bqn-help--chars
-  (let ((lst (mapcar #'car bqn--symbols))
-        (todo (bqn-help--symbols)))
-    (while todo
-      (let ((c (pop todo)))
-        (unless (memql c lst)
-          (push c lst))))
-    lst)
-  "List of characters for which to look up help.")
-
 (defun bqn-help--eldoc ()
   (let ((c (char-after (point))))
-    (when (memql c bqn-help--chars)
+    (when (memql c (bqn-help--symbols))
       (bqn-help--symbol-doc-short c))))
 
 (define-derived-mode bqn-help--mode special-mode
@@ -267,7 +257,7 @@
   "Show full documentation for the primitve at point in a separate buffer."
   (interactive)
   (let ((c (char-after (point))))
-    (unless (memql c bqn-help--chars)
+    (unless (memql c (bqn-help--symbols))
       (user-error "No BQN primitive at point"))
     (if-let* ((long   (bqn-help--symbol-doc-long c))
               (extra  (bqn-help--symbol-doc-extra c))
