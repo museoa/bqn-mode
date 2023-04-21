@@ -756,6 +756,19 @@ Examples:
   3 4 5
         ┘"])
 
+                   (?𝕎 . [ "𝕎: Left Argument | Input: \\W"
+                            "\
+𝕨: Left Argument
+- A variable assigned to the left argument of a block.
+- 𝕎 can be used to access the left argument as a function."
+                            "\
+Examples:
+    5 {𝕨} 1
+5
+
+    -‿÷ {𝕎𝕩}¨ 4
+⟨ ¯4 0.25 ⟩"])
+
                    (?𝕨 . [ "𝕨: Left Argument | Input: \\w"
                             "\
 𝕨: Left Argument
@@ -1315,6 +1328,21 @@ Examples:
     {𝕤‿𝕤}4
 ⟨ (function block) (function block) ⟩"])
 
+                   (?𝕤 . [ "𝕤: Current Function | Input: \\s"
+                            "\
+𝕊: Current Function
+- A variable assigned to the current function block.
+- 𝕤 accesses the same value but has a subject role.
+- 𝕊 can be used for recursion."
+                            "\
+Examples:
+    F ← {𝕊 0: 1; 𝕩 × 𝕊 𝕩-1} # Factorial
+    F 5
+120
+
+    {𝕤‿𝕤}4
+⟨ (function block) (function block) ⟩"])
+
                    (?↕ . [ "↕ 𝕩: Range | 𝕨 ↕ 𝕩: Windows | Input: \\d"
                             "\
 ↕ 𝕩: Range
@@ -1371,7 +1399,27 @@ Examples:
     5 +{𝕗⊣𝕨} 1
 +"])
 
+                   (?𝕗 . [ "𝕗: Modifier Left operand | Input: \\f"
+                            "\
+𝔽: Modifier Left operand
+- A variable assigned to the left operand of a modifier block.
+- 𝕗 can be used to access the left operand as a subject."
+                            "\
+Examples:
+    5 +{𝕗⊣𝕨} 1
++"])
+
                    (?𝔾 . [ "𝔾: 2-Modifier Right operand | Input: \\G"
+                            "\
+𝔾: 2-Modifier Right operand
+- A variable assigned to the right operand of a 2-modifier block.
+- 𝕘 can be used to access the right operand as a subject."
+                            "\
+Examples:
+    5 +{𝕘}3 1
+3"])
+
+                   (?𝕘 . [ "𝕘: 2-Modifier Right operand | Input: \\g"
                             "\
 𝔾: 2-Modifier Right operand
 - A variable assigned to the right operand of a 2-modifier block.
@@ -1798,6 +1846,16 @@ Examples:
 
   3 0
       ┘"])
+
+                   (?𝕏 . [ "𝕏: Right Argument | Input: \\X"
+                            "\
+𝕩: Right Argument
+- A variable assigned to the right argument of a block.
+- 𝕏 can be used to access the right argument as a function."
+                            "\
+Examples:
+    5 {𝕩} 1
+1"])
 
                    (?𝕩 . [ "𝕩: Right Argument | Input: \\x"
                             "\
