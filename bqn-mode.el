@@ -168,7 +168,6 @@
 (define-derived-mode bqn-help--mode special-mode
   "BQN Documentation"
   "Major mode for displaying BQN documentation."
-  (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function #'bqn--eldoc)
   (buffer-face-set 'bqn-default))
 
@@ -185,7 +184,12 @@
           (erase-buffer)
           (insert (bqn--symbol-description info)
                   "\n\n==================== Examples ====================\n\n"
-                  (bqn--symbol-examples info)))
+                  (with-temp-buffer
+                    (set-syntax-table bqn-syntax--table)
+                    (setq-local font-lock-defaults bqn--font-lock-defaults)
+                    (insert (bqn--symbol-examples info))
+                    (font-lock-ensure)
+                    (buffer-string))))
         (goto-char (point-min))
         (bqn-help--mode))
       (display-buffer doc-buffer))))
