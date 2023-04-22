@@ -142,7 +142,7 @@
 
 (defvar bqn-syntax--table
   (let ((table (make-syntax-table)))
-    (dolist (s (bqn--symbols-no-doc 'all))
+    (dolist (s (bqn--symbols-no-doc))
       (modify-syntax-entry (cdr s) "." table))
     (dolist (s (string-to-list "$%&*+-/<=>|"))
       (modify-syntax-entry s "." table))
