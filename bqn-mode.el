@@ -172,6 +172,13 @@
     table)
   "Syntax table for `bqn-mode'.")
 
+(defconst bqn--syntax-propertize
+  (syntax-propertize-rules
+   ;; double quotes inside strings are not escaped, but repeated:
+   ("\\(\"\\)\\([^\\\"]\\|\\(\"\"\\)\\)+\\(\"\\)" (1 "\"") (3 ".") (4 "\""))
+   ;; character constants permit *any* single char, incl. the single quote:
+   ("\\('\\)\\('\\)\\('\\)" (1 "\"") (2 ".") (3 "\""))))
+
 (defun bqn--eldoc ()
   (let ((c (char-after (point))))
     (when-let ((docs (bqn--symbol c)))
@@ -201,6 +208,7 @@
                   "\n\n==================== Examples ====================\n\n"
                   (with-temp-buffer
                     (set-syntax-table bqn-syntax--table)
+                    (setq-local syntax-propertize-function bqn--syntax-propertize)
                     (setq-local font-lock-defaults bqn--font-lock-defaults)
                     (insert (bqn--symbol-examples info))
                     (font-lock-ensure)
@@ -254,6 +262,7 @@ BQN buffers (or recreate them)."
                        (make-composed-keymap prog-mode-map bqn--glyph-map)))
   (when bqn-use-input-method
     (activate-input-method "BQN-Z"))
+  (setq-local syntax-propertize-function bqn--syntax-propertize)
   (setq-local font-lock-defaults bqn--font-lock-defaults)
   (setq-local eldoc-documentation-function #'bqn--eldoc)
   (setq-local comment-start "# ")
@@ -373,6 +382,7 @@ With non-nil prefix ARG, switch to the process buffer."
                        (make-composed-keymap comint-mode-map bqn--glyph-map)))
   (when bqn-use-input-method
     (activate-input-method "BQN-Z"))
+  (setq-local syntax-propertize-function bqn--syntax-propertize)
   (setq-local font-lock-defaults bqn--font-lock-defaults)
   (buffer-face-set 'bqn-default))
 
