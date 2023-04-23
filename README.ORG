@@ -1,0 +1,51 @@
+# -*- mode: org; coding: utf-8-unix; fill-column: 80 -*-
+
+#+TITLE: bqn-mode
+
+* Synopsis
+
+Emacs major mode for BQN programming language.
+
+Extracted from the original [[https://github.com/mlochbaum/BQN][BQN]] repository
+and independently maintained since approx. 2021.
+
+Before that, bqn-mode was derived and heavily based on the venerable
+[[https://github.com/lokedhs/gnu-apl-mode][gnu-apl-mode]].
+
+* Installing bqn-mode
+
+** From sources
+
+After =git clone= this repository, you can just add the following snippet to you
+=init.el= file:
+
+#+begin_src lisp
+(add-to-list 'load-path "~/path/to/bqn-mode")
+(require 'bqn-mode)
+#+end_src
+
+** From MELPA
+
+bqn-mode is available on [[https://melpa.org/#/bqn-mode][MELPA]].
+
+1. Configure your =package-archives= to include MELPA.
+   - The EmacsWiki has a clean and comprehensive
+     [[https://www.emacswiki.org/emacs/InstallingPackages][tutorial]].
+2. You can now use the typical =M-x list-packages= interface to find and install
+   =bqn-mode=.
+
+* Fonts
+
+BQN uses a peculiar set of symbols, not always available on the default fonts of
+major operating systems. Nonetheless there are many fonts available around the
+Web. Here are some links:
+
+- [[https://dzaima.github.io/BQN386/][Dzaima's BQN386]]
+  - [[https://github.com/dzaima/BQN386][Github repository]]
+
+- [[https://aplwiki.com/wiki/Fonts][Fonts article on APL Wiki]]
+
+* Contact
+
+This page itself :) Feel free to open issues and send pull requests via GitHub
+interface.
