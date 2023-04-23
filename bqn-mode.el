@@ -147,18 +147,31 @@
 
 (defvar bqn-syntax--table
   (let ((table (make-syntax-table)))
-    (dolist (s (bqn--symbols-no-doc))
+    ;; - semantically, BQN's primitives are rather "symbols" than punctuation
+    ;; - but symbols are more problematic because 1) we cannot prevent them
+    ;;   from being lumped together, also with user identifiers and 2) it
+    ;;   removes the option to use symbol boundaries in font-lock expressions
+    (dolist (s (bqn--symbols-no-doc))   ;with prefix-input == non-ASCII glyphs
       (modify-syntax-entry (cdr s) "." table))
-    (dolist (s (string-to-list "$%&*+-/<=>|"))
-      (modify-syntax-entry s "." table))
-    (modify-syntax-entry ?'  "\"" table)
-    (modify-syntax-entry ?#  "<" table)
-    (modify-syntax-entry ?\n ">" table)
+    ;; TODO 𝔾𝕘𝔽𝕗𝕊𝕤𝕏𝕩𝕎𝕨𝕣 might use "_"?
+    ;; correct syntax for system values, nothing and number parts, extra parens
+    (modify-syntax-entry ?•  "'" table) ;expression prefix
+    (modify-syntax-entry ?·  "_" table)
     (modify-syntax-entry ?¯  "_" table)
     (modify-syntax-entry ?π  "_" table)
     (modify-syntax-entry ?∞  "_" table)
-    (modify-syntax-entry ?⟩  ")⟨" table)
-    (modify-syntax-entry ?⟨  "(⟩" table)
+    (modify-syntax-entry ?\⟩  ")⟨" table)
+    (modify-syntax-entry ?\⟨  "(⟩" table)
+    ;; adjust ASCII glyph syntax relative to standard table
+    ;; - fine: [{}]() are "()", \" is "\"" ,.:; are "."
+    ;; - not legal BQN: $%&* (ww__)
+    ;; - ?!` are already "."
+    (dolist (s (string-to-list "+-/<=>|"))
+      (modify-syntax-entry s "." table))
+    (modify-syntax-entry ?@  "_" table) ;like "nothing" above
+    (modify-syntax-entry ?#  "<" table)
+    (modify-syntax-entry ?\n ">" table)
+    (modify-syntax-entry ?'  "\"" table)
     table)
   "Syntax table for `bqn-mode'.")
 
