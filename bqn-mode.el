@@ -145,7 +145,7 @@
      ("[^ \r\n]" . 'error))
     nil nil nil))
 
-(defvar bqn-syntax--table
+(defvar bqn--syntax-table
   (let ((table (make-syntax-table)))
     ;; - semantically, BQN's primitives are rather "symbols" than punctuation
     ;; - but symbols are more problematic because 1) we cannot prevent them
@@ -210,7 +210,7 @@
           (insert (bqn--symbol-description info)
                   "\n\n==================== Examples ====================\n\n"
                   (with-temp-buffer
-                    (set-syntax-table bqn-syntax--table)
+                    (set-syntax-table bqn--syntax-table)
                     (setq-local syntax-propertize-function bqn--syntax-propertize)
                     (setq-local font-lock-defaults bqn--font-lock-defaults)
                     (insert (bqn--symbol-examples info))
@@ -258,7 +258,7 @@ BQN buffers (or recreate them)."
 ;;;###autoload
 (define-derived-mode bqn-mode prog-mode "BQN"
   "Major mode for editing BQN files."
-  :syntax-table bqn-syntax--table
+  :syntax-table bqn--syntax-table
   :group 'bqn
   (when bqn-glyph-map-modifier
     (set-keymap-parent bqn-mode-map
@@ -378,7 +378,7 @@ With non-nil prefix ARG, switch to the process buffer."
 
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
-  :syntax-table bqn-syntax--table
+  :syntax-table bqn--syntax-table
   :group 'bqn
   (when bqn-glyph-map-modifier
     (set-keymap-parent bqn-comint-mode-map
