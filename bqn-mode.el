@@ -57,6 +57,11 @@
   :type 'boolean
   :group 'bqn)
 
+(defcustom bqn-font-lock-eval t
+  "Should evaluation results show syntax highlighting?"
+  :type 'boolean
+  :group 'bqn)
+
 ;;;; core functionality
 
 (defface bqn-default
@@ -373,6 +378,59 @@ With non-nil prefix ARG, switch to the process buffer."
   (interactive "P")
   (bqn-comint-send-region (point-min) (point-max) arg))
 
+;; https://stackoverflow.com/questions/46631920/silently-send-command-to-comint-without-printing-prompt
+(defun bqn--comint-call-process-silently (process command)
+  "Send COMMAND to PROCESS. Returns nil if process does not exist."
+  (when process
+    (with-temp-buffer
+     (comint-redirect-send-command-to-process
+      (bqn-comint--escape command) (current-buffer) process nil t)
+     ;; Wait for the process to complete
+     (with-current-buffer (process-buffer process)
+       (while (and (null comint-redirect-completed)
+                 (accept-process-output process 0.1))))
+     (goto-char (point-min))
+     ;; Get output while skipping the next prompt
+     (when bqn-font-lock-eval
+       (set-syntax-table bqn--syntax-table)
+       (setq-local syntax-propertize-function bqn--syntax-propertize)
+       (setq-local font-lock-defaults bqn--font-lock-defaults)
+       (font-lock-ensure))
+     (string-trim-right (buffer-string)))))
+
+(defun bqn-comint-evaluate-command (command)
+  "Sends a COMMAND to an existin bqn comint process or start a new
+one if one doesn't already exist."
+  (let ((proc (get-buffer-process (bqn-comint-buffer))))
+    (bqn--comint-call-process-silently proc command)))
+
+(defun bqn-comint-eval-region (start end)
+  "Evaluate the region bounded by START and END with the
+bqn-comint-process-session and echoes the result."
+  (interactive "r")
+  (when (= start end)
+    (error "Attempt to evaluate empty region to %s" bqn-comint--process-name))
+  (when (and bqn-comint-flash-on-send (pulse-available-p))
+    (pulse-momentary-highlight-region start end))
+  (let ((region (buffer-substring-no-properties start end))
+        (process (get-buffer-process (bqn-comint-buffer))))
+    (message "%s" (bqn--comint-call-process-silently process region))))
+
+(defun bqn-comint-eval-dwim ()
+  "Evaluate the active region or the current line, displaying the result."
+  (interactive)
+  (cond
+   ((use-region-p)
+    (bqn-comint-eval-region (region-beginning) (region-end))
+    (deactivate-mark))
+   (t
+    (bqn-comint-eval-region (line-beginning-position) (line-end-position)))))
+
+(defun bqn-comint-eval-buffer ()
+  "Evaluate the current buffer contents, displaying the result."
+  (interactive)
+  (bqn-comint-eval-region (point-min) (point-max)))
+
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
   :syntax-table bqn--syntax-table
@@ -384,6 +442,8 @@ With non-nil prefix ARG, switch to the process buffer."
     (activate-input-method "BQN-Z"))
   (setq-local syntax-propertize-function bqn--syntax-propertize)
   (setq-local font-lock-defaults bqn--font-lock-defaults)
+  (setq-local comint-prompt-regexp "^   $")
+  (setq-local comint-prompt-read-only t)
   (buffer-face-set 'bqn-default))
 
 (provide 'bqn-mode)
