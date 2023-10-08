@@ -158,7 +158,7 @@
     ;; TODO 𝔾𝕘𝔽𝕗𝕊𝕤𝕏𝕩𝕎𝕨𝕣 might use "_"?
     ;; correct syntax for system values, nothing and number parts, extra parens
     (modify-syntax-entry ?•  "'" table) ;expression prefix
-    (modify-syntax-entry ?·  "_" table)
+    (modify-syntax-entry ?·  "." table)
     (modify-syntax-entry ?¯  "_" table)
     (modify-syntax-entry ?π  "_" table)
     (modify-syntax-entry ?∞  "_" table)
@@ -170,7 +170,7 @@
     ;; - ?!` are already "."
     (dolist (s (string-to-list "+-/<=>|"))
       (modify-syntax-entry s "." table))
-    (modify-syntax-entry ?@  "_" table) ;like "nothing" above
+    (modify-syntax-entry ?@  "." table)
     (modify-syntax-entry ?#  "<" table)
     (modify-syntax-entry ?\n ">" table)
     (modify-syntax-entry ?'  "\"" table)
