@@ -389,7 +389,7 @@ With non-nil prefix ARG, switch to the process buffer."
      ;; Wait for the process to complete
      (with-current-buffer (process-buffer process)
        (while (and (null comint-redirect-completed)
-                 (accept-process-output process 0.1))))
+                 (accept-process-output process))))
      (goto-char (point-min))
      ;; Get output while skipping the next prompt
      (when bqn-font-lock-eval
