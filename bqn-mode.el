@@ -304,11 +304,28 @@ BQN buffers (or recreate them)."
   :type 'boolean
   :group 'bqn)
 
+(defun bqn--comint-prefix ()
+  "The prefix for BQNs comint buffers."
+  (concat "*" bqn-comint--process-name "-"))
+
+(defconst bqn--comint-suffix "*"
+  "The suffix for BQNs comint buffers.")
+
+(defun bqn--comint-buffer-name ()
+  "Return the name of the comint buffer associated to the current buffer.
+Note that the comint buffer may not exist yet, use `bqn-comint-buffer'
+to create it."
+  (let* ((pref (bqn--comint-prefix))
+         (buf (or (buffer-file-name) (buffer-name))))
+    (if (string-prefix-p pref buf)
+        buf
+      (concat pref buf bqn--comint-suffix))))
+
 ;;;###autoload
 (defun bqn-comint-buffer ()
   "Run an inferior BQN process inside Emacs and return its buffer."
   (interactive)
-  (let ((buf-name (concat "*" bqn-comint--process-name "*")))
+  (let ((buf-name (bqn--comint-buffer-name)))
     ;; same buffer name as auto-created when passing nil below
     (if-let ((buf (get-buffer buf-name)))
         (if (comint-check-proc buf)
