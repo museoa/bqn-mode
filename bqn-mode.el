@@ -6,7 +6,7 @@
 
 ;; Author: Marshall Lochbaum <mwlochbaum@gmail.com>
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "26.1") (compat "30.0.0.0"))
+;; Package-Requires: ((emacs "26.1") (compat "30.0.0.0") (eros "0.1.0"))
 ;; URL: https://github.com/museoa/bqn-mode
 ;; SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -305,6 +305,15 @@ BQN buffers (or recreate them)."
   :type 'boolean
   :group 'bqn)
 
+(defcustom bqn-comint-use-overlay nil
+  "When non-nil, use overlays for all `bqn-comint-eval-*' style functions.
+Else, the result in the minibuffer instead."
+  :type 'boolean
+  :group 'bqn
+  :set (lambda (sym val)
+         (when val (require 'eros))
+         (set-default-toplevel-value sym val)))
+
 (defun bqn--comint-prefix ()
   "The prefix for BQNs comint buffers."
   (concat "*" bqn-comint--process-name "-"))
@@ -431,9 +440,19 @@ bqn-comint-process-session and echoes the result."
     (error "Attempt to evaluate empty region to %s" bqn-comint--process-name))
   (when (and bqn-comint-flash-on-send (pulse-available-p))
     (pulse-momentary-highlight-region start end))
-  (let ((region (buffer-substring-no-properties start end))
-        (process (get-buffer-process (bqn-comint-buffer))))
-    (message "%s" (bqn--comint-call-process-silently process region))))
+  (let* ((region (buffer-substring-no-properties start end))
+         (process (get-buffer-process (bqn-comint-buffer)))
+         (response (bqn--comint-call-process-silently process region))
+         (r-lines (string-lines response))
+         (single-line? (= 1 (length r-lines))))
+    (cond
+     (bqn-comint-use-overlay            ; Use overlay
+      (eros--make-result-overlay response
+        :where end
+        :duration eros-eval-result-duration
+        :format (if single-line? " ⇒ %s" "%s")))
+     (t                                 ; Insert in minibuffer
+      (message "%s" response)))))
 
 (defun bqn-comint-eval-dwim ()
   "Evaluate the active region or the current line, displaying the result."
