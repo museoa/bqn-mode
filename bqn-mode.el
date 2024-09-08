@@ -266,6 +266,7 @@ BQN buffers (or recreate them)."
   (when bqn-glyph-map-modifier
     (set-keymap-parent bqn-mode-map
                        (make-composed-keymap prog-mode-map bqn--glyph-map)))
+  (keymap-set bqn-mode-map "C-c C-z" #'bqn-comint-bring)
   (when bqn-use-input-method
     (activate-input-method "BQN-Z"))
   (setq-local syntax-propertize-function bqn--syntax-propertize)
@@ -449,6 +450,17 @@ bqn-comint-process-session and echoes the result."
   (interactive)
   (bqn-comint-eval-region (point-min) (point-max)))
 
+(defun bqn-comint-bring ()
+  "Toggle between the comint buffer and its associated buffer."
+  (interactive)
+  (let* ((comint (bqn-comint-buffer))
+         (buf (thread-last
+                (buffer-name comint)
+                (string-remove-prefix (bqn--comint-prefix))
+                (string-remove-suffix bqn--comint-suffix)
+                get-file-buffer)))
+    (pop-to-buffer (if (equal (current-buffer) comint) buf comint))))
+
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
   :syntax-table bqn--syntax-table
@@ -456,6 +468,7 @@ bqn-comint-process-session and echoes the result."
   (when bqn-glyph-map-modifier
     (set-keymap-parent bqn-comint-mode-map
                        (make-composed-keymap comint-mode-map bqn--glyph-map)))
+  (keymap-set bqn-comint-mode-map "C-c C-z" #'bqn-comint-bring)
   (when bqn-use-input-method
     (activate-input-method "BQN-Z"))
   (setq-local syntax-propertize-function bqn--syntax-propertize)
