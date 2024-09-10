@@ -266,6 +266,7 @@ BQN buffers (or recreate them)."
   (when bqn-glyph-map-modifier
     (set-keymap-parent bqn-mode-map
                        (make-composed-keymap prog-mode-map bqn--glyph-map)))
+  (keymap-set bqn-mode-map "C-c C-z" #'bqn-comint-bring)
   (when bqn-use-input-method
     (activate-input-method "BQN-Z"))
   (setq-local syntax-propertize-function bqn--syntax-propertize)
@@ -467,6 +468,7 @@ bqn-comint-process-session and echoes the result."
   (when bqn-glyph-map-modifier
     (set-keymap-parent bqn-comint-mode-map
                        (make-composed-keymap comint-mode-map bqn--glyph-map)))
+  (keymap-set bqn-comint-mode-map "C-c C-z" #'bqn-comint-bring)
   (when bqn-use-input-method
     (activate-input-method "BQN-Z"))
   (setq-local syntax-propertize-function bqn--syntax-propertize)
