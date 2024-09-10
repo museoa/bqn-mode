@@ -449,6 +449,17 @@ bqn-comint-process-session and echoes the result."
   (interactive)
   (bqn-comint-eval-region (point-min) (point-max)))
 
+(defun bqn-comint-bring ()
+  "Toggle between the comint buffer and its associated buffer."
+  (interactive)
+  (let* ((comint (bqn-comint-buffer))
+         (buf (thread-last
+                (buffer-name comint)
+                (string-remove-prefix (bqn--comint-prefix))
+                (string-remove-suffix bqn--comint-suffix)
+                get-file-buffer)))
+    (pop-to-buffer (if (equal (current-buffer) comint) buf comint))))
+
 (define-derived-mode bqn-comint-mode comint-mode "BQN interactive"
   "Major mode for inferior BQN processes."
   :syntax-table bqn--syntax-table
