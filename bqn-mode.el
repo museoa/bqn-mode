@@ -432,10 +432,12 @@ one if one doesn't already exist."
   (let ((proc (get-buffer-process (bqn-comint-buffer))))
     (bqn--comint-call-process-silently proc command)))
 
-(defun bqn-comint-eval-region (start end)
+(defun bqn-comint-eval-region (start end &optional arg)
   "Evaluate the region bounded by START and END with the
-bqn-comint-process-session and echoes the result."
-  (interactive "r")
+bqn-comint-process-session and echoes the result.  If ARG is non-nil or
+when called with a prefix \\[universal-argument], insert the result in
+the current buffer instead."
+  (interactive "rP")
   (when (= start end)
     (error "Attempt to evaluate empty region to %s" bqn-comint--process-name))
   (when (and bqn-comint-flash-on-send (pulse-available-p))
@@ -446,6 +448,13 @@ bqn-comint-process-session and echoes the result."
          (r-lines (string-lines response))
          (single-line? (= 1 (length r-lines))))
     (cond
+     (arg                               ; Insert in buffer
+      (save-excursion
+        (goto-char end)
+        (if single-line?
+            (insert " # ⇒ " response)
+          (dolist (l r-lines)
+            (insert "\n# " l)))))
      (bqn-comint-use-overlay            ; Use overlay
       (eros--make-result-overlay response
         :where end
@@ -454,20 +463,24 @@ bqn-comint-process-session and echoes the result."
      (t                                 ; Insert in minibuffer
       (message "%s" response)))))
 
-(defun bqn-comint-eval-dwim ()
-  "Evaluate the active region or the current line, displaying the result."
-  (interactive)
+(defun bqn-comint-eval-dwim (&optional arg)
+  "Evaluate the active region or the current line, displaying the result.
+If ARG is non-nil or when called with a prefix \\[universal-argument],
+insert the result in the current buffer instead."
+  (interactive "P")
   (cond
    ((use-region-p)
-    (bqn-comint-eval-region (region-beginning) (region-end))
+    (bqn-comint-eval-region (region-beginning) (region-end) arg)
     (deactivate-mark))
    (t
-    (bqn-comint-eval-region (line-beginning-position) (line-end-position)))))
+    (bqn-comint-eval-region (line-beginning-position) (line-end-position) arg))))
 
-(defun bqn-comint-eval-buffer ()
-  "Evaluate the current buffer contents, displaying the result."
-  (interactive)
-  (bqn-comint-eval-region (point-min) (point-max)))
+(defun bqn-comint-eval-buffer (&optional arg)
+  "Evaluate the current buffer contents, displaying the result.
+If ARG is non-nil or when called with a prefix \\[universal-argument],
+insert the result in the current buffer instead."
+  (interactive "P")
+  (bqn-comint-eval-region (point-min) (point-max) arg))
 
 (defun bqn-comint-bring ()
   "Toggle between the comint buffer and its associated buffer."
