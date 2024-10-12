@@ -2496,7 +2496,7 @@ https://mlochbaum.github.io/BQN/help/index.html.")
      ("_𝕣\\|•?\\_<_[A-Za-z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-one-modifier)
      ("[𝔽𝔾𝕎𝕏𝕊]\\|•?\\_<[A-Z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-function)
      ("[𝕗𝕘𝕨𝕩𝕤𝕣]\\|•?\\_<[a-z][A-Z_a-z0-9π∞¯]*\\_>" . 'bqn-subject) ;TODO had single • --- why?
-     ("\\_<¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\(i¯?\\(\\([0-9]+\\.\\)?[0-9]+\\(e¯?[0-9]+\\)?\\|π\\|∞\\)\\)?\\_>"
+     ("\\_<¯?\\(\\([0-9][0-9_]*\\.\\)?[0-9][0-9_]*\\(e¯?[0-9_]+\\)?\\|π\\|∞\\)\\(i¯?\\(\\([0-9_]+\\.\\)?[0-9_]+\\(e¯?[0-9_]+\\)?\\|π\\|∞\\)\\)?\\_>"
       . ,(if (facep 'font-lock-number-face) ''font-lock-number-face ''font-lock-constant-face))
      ;; *after* numbers have been parsed:
      ("\\." . ,(if (facep 'font-lock-punctuation-face) ''font-lock-punctuation-face ''default))
