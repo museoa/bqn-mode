@@ -19,6 +19,7 @@
 (require 'comint)
 (require 'quail)
 (require 'pulse)
+(require 'subr-x)
 
 (defvar bqn-keymap-mode-reference
   "\
