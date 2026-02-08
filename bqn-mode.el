@@ -2705,7 +2705,15 @@ to create it."
                     bqn-comint--process-name buf-name
                     bqn-interpreter nil bqn-interpreter-arguments)))
         (with-current-buffer buf
-          (bqn-comint-mode))
+          (bqn-comint-mode)
+          ;; Wait for prompt.
+          (let ((proc (get-buffer-process buf)))
+            (while (and (process-live-p proc)
+                        (save-excursion
+                          (goto-char (point-max))
+                          (forward-line 0)
+                          (not (looking-at-p comint-prompt-regexp))))
+              (accept-process-output proc 0.05))))
         buf))))
 
 (defun bqn-comint--escape (str)
