@@ -2546,9 +2546,9 @@ https://mlochbaum.github.io/BQN/help/index.html.")
 
 (defun bqn--eldoc ()
   (let ((c (char-after (point))))
-    (when-let ((docs (bqn--symbol c)))
+    (when-let* ((docs (bqn--symbol c)))
       (concat (bqn--symbol-eldoc docs) " | Input: "
-              (if-let ((prefixed (bqn--symbol-prefixed docs)))
+              (if-let* ((prefixed (bqn--symbol-prefixed docs)))
                   (string bqn-glyph-prefix prefixed)
                 (string c))))))
 
@@ -2696,7 +2696,7 @@ to create it."
   (interactive)
   (let ((buf-name (bqn--comint-buffer-name)))
     ;; same buffer name as auto-created when passing nil below
-    (if-let ((buf (get-buffer buf-name)))
+    (if-let* ((buf (get-buffer buf-name)))
         (if (comint-check-proc buf)
             buf
           (error "Buffer '%s' exists but has no live process" buf-name))
