@@ -16,6 +16,7 @@
 
 ;;; Code:
 
+(require 'ansi-color)
 (require 'comint)
 (require 'quail)
 (require 'pulse)
@@ -2786,6 +2787,7 @@ With non-nil prefix ARG, switch to the process buffer."
                  (accept-process-output process))))
      (goto-char (point-min))
      ;; Get output while skipping the next prompt
+     (ansi-color-filter-region (point-min) (point-max))
      (when bqn-font-lock-eval
        (set-syntax-table bqn--syntax-table)
        (setq-local syntax-propertize-function bqn--syntax-propertize)
@@ -2872,7 +2874,7 @@ insert the result in the current buffer instead."
     (activate-input-method "BQN-Z"))
   (setq-local syntax-propertize-function bqn--syntax-propertize)
   (setq-local font-lock-defaults bqn--font-lock-defaults)
-  (setq-local comint-prompt-regexp "^   $")
+  (setq-local comint-prompt-regexp "^\\(\e\\[\\?2004h\\)?   $")
   (setq-local comint-prompt-read-only t)
   (buffer-face-set 'bqn-default))
 
